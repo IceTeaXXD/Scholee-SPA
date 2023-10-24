@@ -15,6 +15,8 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { Link } from 'react-router-dom'; 
+
 
 const Register = () => {
 const [showPassword, setShowPassword] = useState(false);
@@ -92,7 +94,7 @@ const [showPassword, setShowPassword] = useState(false);
         </FormControl>
         <FormControl>
           <FormLabel>
-            Already have an account? <a href="/login">Log In</a>
+            Already have an account? <Link to="/login">Log In</Link>
           </FormLabel>
         </FormControl>
       </Flex>

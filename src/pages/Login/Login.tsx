@@ -11,6 +11,7 @@ import {
   extendTheme,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { Link } from 'react-router-dom'; 
 
 const Login = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -62,7 +63,7 @@ const Login = () => {
         </FormControl>
         <FormControl>
           <FormLabel>
-            Don't have an account? <a href="/register">Register</a>
+            Don't have an account? <Link to="/register">Register</Link>
           </FormLabel>
         </FormControl>
       </Flex>
