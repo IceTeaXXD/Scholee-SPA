@@ -1,6 +1,6 @@
 import { Button, Flex, IconButton, Text } from '@chakra-ui/react';
 import Sidebar from '../../components/Sidebar';
-const Dashboard = () => {
+const Home = () => {
   return (
     <Flex w="100%">
       <Sidebar />
@@ -10,10 +10,10 @@ const Dashboard = () => {
         left="50%"
         transform="translate(-50%, -50%)"
       >
-        <Text>Dashboard Page</Text>
+        <Text>Home Page</Text>
       </Flex>
     </Flex>
   );
 };
 
-export default Dashboard;
+export default Home;

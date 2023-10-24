@@ -9,6 +9,7 @@ import {
     FiSettings
 } from 'react-icons/fi'
 import NavItem from '../components/NavItem'
+import { Link } from 'react-router-dom';
 const Sidebar = () => {
     const [navSize, changeNavSize] = useState("large")
     return (
@@ -43,11 +44,21 @@ const Sidebar = () => {
                         changeNavSize("small")
                 }}
             />
-            <NavItem navSize={navSize} icon={FiHome} title="Dashboard" active description="This is the description for the dashboard."/>
-            <NavItem navSize={navSize} icon={FiCalendar} title="Calendar" active={undefined} description={undefined} />
-            <NavItem navSize={navSize} icon={FiDollarSign} title="Stocks" description={undefined} active={false} />
-            <NavItem navSize={navSize} icon={FiBriefcase} title="Reports" description={undefined} active={false} />
-            <NavItem navSize={navSize} icon={FiSettings} title="Settings" description active={false} />
+            <Link to="/dashboard">
+                <NavItem navSize={navSize} icon={FiHome} title="Dashboard" active={undefined}  description="This is the description for the dashboard."/>
+            </Link>
+            <Link to ="/calendar">
+                <NavItem navSize={navSize} icon={FiCalendar} title="Calendar" active={undefined} description={undefined} />
+            </Link>
+            <Link to="/stocks">
+                <NavItem navSize={navSize} icon={FiDollarSign} title="Stocks" description={undefined} active={false} />
+            </Link>
+            <Link to="/reports">
+                <NavItem navSize={navSize} icon={FiBriefcase} title="Reports" description={undefined} active={false} />
+            </Link>
+            <Link to ="/setting">
+                <NavItem navSize={navSize} icon={FiSettings} title="Settings" description active={false} />
+            </Link>
         </Flex>
 
         <Flex
