@@ -8,11 +8,9 @@ import {
   FormLabel,
   Switch,
   useColorMode,
-  extendTheme,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom'; 
-
 const Login = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const formBackground = useColorModeValue('blue.100', 'blue.700');
@@ -46,9 +44,11 @@ const Login = () => {
             mb={3}
           />
         </FormControl>
-        <Button bg={buttonColor} mb={8} >
-          Log In
-        </Button>
+        <Link to="/dashboard">
+          <Button bg={buttonColor} mb={8}>
+            Log In
+          </Button>
+        </Link>
         <FormControl display="flex" alignItems="center" mb="3">
           <FormLabel htmlFor="dark_mode" mb="0">
             Enable Dark Mode?
