@@ -8,10 +8,10 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install any needed packages specified in package.json
-RUN npm install
+RUN yarn install
 
 # Bundle app source
 COPY . .
 
 # Run the app when the container launches
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
