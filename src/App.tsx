@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard/Dashboard"
 import Report from "./pages/Report/Report"
 import Explore from "./pages/Explore/Explore"
 import PageNotFound from "./pages/PageNotFound/PageNotFound"
+import Sidebar from "./components/Sidebar/Sidebar"
 
 const ROLES = {
     User: 2001,
@@ -18,15 +19,17 @@ function App() {
     return (
         <ChakraProvider>
             <Router>
-                <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/" element={<Home />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/report" element={<Report />} />
-                    <Route path="/explore" element={<Explore />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
+                <Sidebar>
+                    <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/" element={<Home />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/report" element={<Report />} />
+                        <Route path="/explore" element={<Explore />} />
+                        <Route path="*" element={<PageNotFound />} />
+                    </Routes>
+                </Sidebar>
             </Router>
         </ChakraProvider>
     )
