@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect} from 'react';
+import { useRef, useState, useEffect } from "react"
 import {
   Flex,
   Heading,
@@ -15,18 +15,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import {setAuth} from "../../utils/auth";
 
-const LOGIN = '/api/login';
+const LOGIN = "/api/login"
 const Login = () => {
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errMsg, setErrMsg] = useState('');
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [errMsg, setErrMsg] = useState("")
 
-  const { colorMode, toggleColorMode } = useColorMode();
-  const formBackground = useColorModeValue('blue.100', 'blue.700');
-  const buttonColor = useColorModeValue('blue.400', 'blue.300');
-  const textColor = useColorModeValue('gray.700', 'gray.100');
-  const navigate = useNavigate()
+    const { colorMode, toggleColorMode } = useColorMode()
+    const formBackground = useColorModeValue("blue.100", "blue.700")
+    const buttonColor = useColorModeValue("blue.400", "blue.300")
+    const textColor = useColorModeValue("gray.700", "gray.100")
+    const navigate = useNavigate()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -47,9 +46,8 @@ const Login = () => {
           // TODO : bedain antara uni dan org
         }
       }
-      // navigate('/dashboard');
-    } catch {
-      setErrMsg('Invalid email or password');
+    } catch (err: any) {
+      console.log("uff")
     }
   }
 
@@ -122,6 +120,6 @@ const Login = () => {
       </Flex>
     </Flex>
   );
-};
+}
 
-export default Login;
+export default Login
