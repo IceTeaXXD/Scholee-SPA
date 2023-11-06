@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import axios from '../../api/axios';
-import {setAuthToken} from "../../utils/auth";
+import {setAuth} from "../../utils/auth";
 
 const LOGIN = '/api/login';
 const Login = () => {
@@ -32,14 +32,14 @@ const Login = () => {
     e.preventDefault();
     console.log(email, password);
     try {
+      console.log("1111")
       const res = await axios.post(LOGIN, {
         email,
         password,
       });
       if (res.status === 200) {
         console.log("Login Success")
-        // console.log(res.data);
-        setAuthToken(res.data.accessToken);
+        setAuth(res.data.accessToken);
         if (res.data.role ==="university") {
           navigate("/home");
         } else {
@@ -97,11 +97,11 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </FormControl>
-        <Link to="/dashboard">
+        {/* <Link> */}
           <Button bg={buttonColor} mb={8} onClick={handleSubmit}>
             Log In
           </Button>
-        </Link>
+        {/* </Link> */}
         <FormControl display="flex" alignItems="center" mb="3">
           <FormLabel htmlFor="dark_mode" mb="0">
             Enable Dark Mode?
