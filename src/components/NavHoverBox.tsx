@@ -1,17 +1,12 @@
-import React from 'react'
-import {
-    Flex,
-    Heading,
-    Text,
-    Icon
-} from '@chakra-ui/react'
+import React from "react"
+import { Flex, Heading, Text, Icon } from "@chakra-ui/react"
 interface Props {
-    title: any;
-    icon: any;
-    description: any;
+    title: any
+    icon: any
+    description: any
 }
 
-export default function NavHoverBox({ title, icon, description } : Props) {
+export default function NavHoverBox({ title, icon, description }: Props) {
     return (
         <>
             <Flex
@@ -36,7 +31,9 @@ export default function NavHoverBox({ title, icon, description } : Props) {
                 textAlign="center"
             >
                 <Icon as={icon} fontSize="3xl" mb={4} />
-                <Heading size="md" fontWeight="normal">{title}</Heading>
+                <Heading size="md" fontWeight="normal">
+                    {title}
+                </Heading>
                 <Text>{description}</Text>
             </Flex>
         </>

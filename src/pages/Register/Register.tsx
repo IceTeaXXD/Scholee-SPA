@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 import {
     Flex,
     Heading,
@@ -13,44 +13,44 @@ import {
     InputGroup,
     IconButton,
     Tooltip,
-    Box,
-} from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon, WarningIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
-import axios from "../../api/axios";
-import { redirect } from "react-router-dom";
+    Box
+} from "@chakra-ui/react"
+import { ViewIcon, ViewOffIcon, WarningIcon } from "@chakra-ui/icons"
+import { Link } from "react-router-dom"
+import axios from "../../api/axios"
+import { redirect } from "react-router-dom"
 
-const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-const PWD_REGEX = /^(?=.*\d).{8,}$/;
-const REGISTER_URL = "/api/organization";
+const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
+const PWD_REGEX = /^(?=.*\d).{8,}$/
+const REGISTER_URL = "/api/organization"
 // const navigate = useNavigate();
 const Register = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const { colorMode, toggleColorMode } = useColorMode();
-    const formBackground = useColorModeValue("blue.100", "blue.700");
-    const buttonColor = useColorModeValue("blue.400", "blue.300");
-    const textColor = useColorModeValue("gray.700", "gray.100");
+    const [showPassword, setShowPassword] = useState(false)
+    const { colorMode, toggleColorMode } = useColorMode()
+    const formBackground = useColorModeValue("blue.100", "blue.700")
+    const buttonColor = useColorModeValue("blue.400", "blue.300")
+    const textColor = useColorModeValue("gray.700", "gray.100")
 
     // NAMA
-    const [name, setName] = useState("");
+    const [name, setName] = useState("")
     // EMAIL
-    const [email, setEmail] = useState("");
-    const [validEmail, setValidEmail] = useState(true);
-    const [validPwd, setValidPwd] = useState(true);
+    const [email, setEmail] = useState("")
+    const [validEmail, setValidEmail] = useState(true)
+    const [validPwd, setValidPwd] = useState(true)
     // PASSWORD
-    const [password, setPassword] = useState("");
-    const [matchPwd, setMatchPwd] = useState("");
-    const [validMatch, setValidMatch] = useState(true);
+    const [password, setPassword] = useState("")
+    const [matchPwd, setMatchPwd] = useState("")
+    const [validMatch, setValidMatch] = useState(true)
     // ADDRESS
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState("")
 
     // ORGANIZATION DESC
-    const [organizationDescription, setOrganizationDescription] = useState("");
+    const [organizationDescription, setOrganizationDescription] = useState("")
 
-    const [errMsg, setErrMsg] = useState("");
+    const [errMsg, setErrMsg] = useState("")
 
     const handleSubmit = async (e: any) => {
-        e.preventDefault();
+        e.preventDefault()
         // check if there are some empty fields
         if (
             !name ||
@@ -60,25 +60,23 @@ const Register = () => {
             !address ||
             !organizationDescription
         ) {
-            setErrMsg("Please fill all fields");
-            return;
+            setErrMsg("Please fill all fields")
+            return
         }
         // check if email is valid
         if (!validEmail) {
-            setErrMsg("Invalid email address");
-            return;
+            setErrMsg("Invalid email address")
+            return
         }
         // check if password is valid
         if (!validPwd) {
-            setErrMsg(
-                "Password must contain at least 8 character and 1 number"
-            );
-            return;
+            setErrMsg("Password must contain at least 8 character and 1 number")
+            return
         }
         // check if password match
         if (!validMatch) {
-            setErrMsg("Password did not match");
-            return;
+            setErrMsg("Password did not match")
+            return
         }
         try {
             const response = await axios.post(
@@ -88,32 +86,32 @@ const Register = () => {
                     email,
                     password,
                     address,
-                    organizationDescription,
+                    organizationDescription
                 },
                 {
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json" }
                 }
-            );
-            redirect("/login");
-            setName("");
-            setEmail("");
-            setPassword("");
-            setMatchPwd("");
-            setAddress("");
-            setOrganizationDescription("");
+            )
+            redirect("/login")
+            setName("")
+            setEmail("")
+            setPassword("")
+            setMatchPwd("")
+            setAddress("")
+            setOrganizationDescription("")
         } catch (err: any) {
             if (!err.response) {
-                setErrMsg("No server response");
+                setErrMsg("No server response")
             } else if (err.request) {
-                setErrMsg("");
+                setErrMsg("")
             } else {
-                setErrMsg("");
+                setErrMsg("")
             }
         }
-    };
+    }
     const handlePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+        setShowPassword(!showPassword)
+    }
     return (
         <Flex h="100vh" alignItems="center" justifyContent="center">
             <Flex
@@ -340,7 +338,7 @@ const Register = () => {
                 </Box>
             </Flex>
         </Flex>
-    );
-};
+    )
+}
 
-export default Register;
+export default Register

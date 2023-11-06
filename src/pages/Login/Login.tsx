@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react"
 import {
     Flex,
     Heading,
@@ -9,48 +9,48 @@ import {
     Switch,
     useColorMode,
     useColorModeValue,
-    Box,
-} from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
-import { setAuthToken } from "../../utils/auth";
+    Box
+} from "@chakra-ui/react"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "../../api/axios"
+import { setAuthToken } from "../../utils/auth"
 
-const LOGIN2 = "/api/login";
+const LOGIN2 = "/api/login"
 const Login2 = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errMsg, setErrMsg] = useState("");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [errMsg, setErrMsg] = useState("")
 
-    const { colorMode, toggleColorMode } = useColorMode();
-    const formBackground = useColorModeValue("blue.100", "blue.700");
-    const buttonColor = useColorModeValue("blue.400", "blue.300");
-    const textColor = useColorModeValue("gray.700", "gray.100");
-    const navigate = useNavigate();
+    const { colorMode, toggleColorMode } = useColorMode()
+    const formBackground = useColorModeValue("blue.100", "blue.700")
+    const buttonColor = useColorModeValue("blue.400", "blue.300")
+    const textColor = useColorModeValue("gray.700", "gray.100")
+    const navigate = useNavigate()
 
     const handleSubmit = async (e: any) => {
-        e.preventDefault();
-        console.log(email, password);
+        e.preventDefault()
+        console.log(email, password)
         try {
             const res = await axios.post(LOGIN2, {
                 email,
-                password,
-            });
+                password
+            })
             if (res.status === 200) {
-                console.log("Login Success");
+                console.log("Login Success")
                 // console.log(res.data);
-                setAuthToken(res.data.accessToken);
+                setAuthToken(res.data.accessToken)
                 if (res.data.role === "university") {
-                    navigate("/home");
+                    navigate("/home")
                 } else {
-                    navigate("/home");
+                    navigate("/home")
                     // TODO : bedain antara uni dan org
                 }
             }
             // navigate('/dashboard');
         } catch {
-            setErrMsg("Invalid email or password");
+            setErrMsg("Invalid email or password")
         }
-    };
+    }
     return (
         <Flex h="100vh" alignItems="center" justifyContent="center">
             <Flex
@@ -147,7 +147,7 @@ const Login2 = () => {
                 </Box>
             </Flex>
         </Flex>
-    );
-};
+    )
+}
 
-export default Login2;
+export default Login2
