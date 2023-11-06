@@ -1,6 +1,5 @@
 import {
     IconButton,
-    Avatar,
     Box,
     Flex,
     HStack,
