@@ -19,9 +19,9 @@ function App() {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/reports" element={<Report />} />
+                    <Route path="/report" element={<Report />} />
                 </Routes>
             </Router>
         </ChakraProvider>

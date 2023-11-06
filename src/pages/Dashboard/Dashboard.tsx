@@ -1,8 +1,8 @@
-import { Button, Flex, IconButton, Text } from "@chakra-ui/react"
-import Sidebar from "../../components/Sidebar"
+import { Flex, Box, Text } from "@chakra-ui/react"
+import Sidebar from "../../components/Sidebar/Sidebar"
 const Dashboard = () => {
     return (
-        <Flex w="100%">
+        <Box w="100%">
             <Sidebar />
             <Flex
                 pos="absolute"
@@ -12,7 +12,7 @@ const Dashboard = () => {
             >
                 <Text>Dashboard Page</Text>
             </Flex>
-        </Flex>
+        </Box>
     )
 }
 
