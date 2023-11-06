@@ -17,6 +17,7 @@ import {
 import { FiMenu, FiChevronDown } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/logo-1.svg"
+import AvatarWithRipple from "../Avatar/Avatar"
 
 interface MobileProps extends FlexProps {
     onOpen: () => void
@@ -61,12 +62,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             _focus={{ boxShadow: "none" }}
                         >
                             <HStack>
-                                <Avatar
-                                    size={"sm"}
-                                    src={
-                                        "https://png.pngtree.com/png-clipart/20210915/ourmid/pngtree-user-avatar-placeholder-png-image_3918418.jpg"
-                                    }
-                                />
+                                <AvatarWithRipple />
                                 <VStack
                                     display={{ base: "none", md: "flex" }}
                                     alignItems="flex-start"
