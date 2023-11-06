@@ -19,17 +19,43 @@ function App() {
     return (
         <ChakraProvider>
             <Router>
-                <Sidebar>
-                    <Routes>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/" element={<Home />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/report" element={<Report />} />
-                        <Route path="/explore" element={<Explore />} />
-                        <Route path="*" element={<PageNotFound />} />
-                    </Routes>
-                </Sidebar>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/"
+                        element={
+                            <Sidebar>
+                                <Home />
+                            </Sidebar>
+                        }
+                    />
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <Sidebar>
+                                <Dashboard />
+                            </Sidebar>
+                        }
+                    />
+                    <Route
+                        path="/report"
+                        element={
+                            <Sidebar>
+                                <Report />
+                            </Sidebar>
+                        }
+                    />
+                    <Route
+                        path="/explore"
+                        element={
+                            <Sidebar>
+                                <Explore />
+                            </Sidebar>
+                        }
+                    />
+                    <Route path="*" element={<PageNotFound />} />
+                </Routes>
             </Router>
         </ChakraProvider>
     )
