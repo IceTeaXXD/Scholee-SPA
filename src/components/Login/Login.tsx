@@ -1,4 +1,6 @@
 import { useContext, useState } from "react"
+import Cookies from 'js-cookie';
+
 import {
     Flex,
     Heading,
@@ -13,10 +15,8 @@ import {
 } from "@chakra-ui/react"
 import { Link, useNavigate } from "react-router-dom"
 import { handleLogin } from "../../utils/auth"
-import useAuth from "../../hooks/useAuth"
 
 const Login = () => {
-    const { setAuth } : any = useAuth();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errMsg, setErrMsg] = useState("")
@@ -33,7 +33,7 @@ const Login = () => {
         try {
             const res = await handleLogin(email, password)
             console.log("handleSubmit", res?.email, res?.roles)
-            setAuth({email : res?.email, roles: res?.roles, accToken: res?.accToken})
+            Cookies.set('accToken', res?.accToken);
             console.log("set auth from login")
             if (res && res.status === "success") {
                 navigate("/dashboard")

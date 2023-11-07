@@ -10,16 +10,16 @@ import Report from "./components/Report/Report"
 import PageNotFound from "./components/Error/PageNotFound"
 import Scholarships from "./components/Scholarships/Scholarships"
 import Sidebar from "./components/Sidebar/Sidebar"
-import { useContext, useEffect } from "react"
-import AuthContext from "./context/AuthProvider"
 import RequireAuth from "./utils/RequireAuth"
 import Layout from "./components/layout"
+import useRefreshToken from "./hooks/useRefreshToken"
 
 const ROLES = {
     Organization: "organization",
     University: "university"
 }
 function App() {
+    const refresh = useRefreshToken();
     return (
         <ChakraProvider>
             <Router>
@@ -31,7 +31,7 @@ function App() {
                         <Route path="unauthorized" element={<Unauthorized />} />
                     
                         {/* Protected Routes */}
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]}/>}>
+                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]} refresh={refresh}/>}>
                             <Route path="/" element={
                             <Sidebar>
                                 <Home />
@@ -39,7 +39,7 @@ function App() {
                             }/>
                         </Route>
 
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]}/>}>
+                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]} refresh={refresh}/>}>
                             <Route path="dashboard" element={
                             <Sidebar>
                                     <Dashboard />
@@ -47,7 +47,7 @@ function App() {
                             }/>
                         </Route>
 
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]}/>}>
+                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]} refresh={refresh}/>}>
                             <Route path="report" element={
                             <Sidebar>
                                 <Report />
@@ -55,7 +55,7 @@ function App() {
                             }/>
                         </Route>
 
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University]}/>}>
+                        <Route element={ <RequireAuth allowedRoles={[ROLES.University]} refresh={refresh}/>}>
                             <Route path="scholarships" element={
                             <Sidebar>
                                 <Scholarships />
