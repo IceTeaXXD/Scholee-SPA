@@ -1,19 +1,17 @@
-import { Button, Flex, IconButton, Text } from '@chakra-ui/react';
-import Sidebar from '../../components/Sidebar';
+import { Flex, Box, Text } from "@chakra-ui/react"
 const Home = () => {
-  return (
-    <Flex w="100%">
-      <Sidebar />
-      <Flex
-        pos="absolute"
-        top="50%"
-        left="50%"
-        transform="translate(-50%, -50%)"
-      >
-        <Text>Home Page</Text>
-      </Flex>
-    </Flex>
-  );
-};
+    return (
+        <Box w="100%">
+            <Flex
+                pos="absolute"
+                top="50%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+            >
+                <Text>Home Page</Text>
+            </Flex>
+        </Box>
+    )
+}
 
-export default Home;
+export default Home
