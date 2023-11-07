@@ -16,7 +16,7 @@ import { handleLogin } from "../../utils/auth"
 import useAuth from "../../hooks/useAuth"
 
 const Login = () => {
-    const {setAuth} : any = useAuth();
+    const { setAuth } : any = useAuth();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errMsg, setErrMsg] = useState("")
@@ -30,7 +30,7 @@ const Login = () => {
         e.preventDefault()
         try {
             const res = await handleLogin(email, password)
-            setAuth(res?.email, res?.roles, res?.accToken)
+            setAuth({A: "fdsaf",a : "fdsaf"})
             if (res && res.status === "success") {
                 navigate("/dashboard")
             } else {
