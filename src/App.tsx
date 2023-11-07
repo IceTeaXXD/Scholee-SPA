@@ -19,52 +19,100 @@ const ROLES = {
     University: "university"
 }
 function App() {
-    const refresh = useRefreshToken();
+    const refresh = useRefreshToken()
     return (
         <ChakraProvider>
             <Router>
                 <Routes>
-                    <Route path = "/" element={<Layout/>}>
+                    <Route path="/" element={<Layout />}>
                         {/* Public Routes */}
                         <Route path="login" element={<Login />} />
                         <Route path="register" element={<Register />} />
                         <Route path="unauthorized" element={<Unauthorized />} />
-                    
+
                         {/* Protected Routes */}
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]} refresh={refresh}/>}>
-                            <Route path="/" element={
-                            <Sidebar>
-                                <Home />
-=                           </Sidebar>
-                            }/>
+                        <Route
+                            element={
+                                <RequireAuth
+                                    allowedRoles={[
+                                        ROLES.University,
+                                        ROLES.Organization
+                                    ]}
+                                    refresh={refresh}
+                                />
+                            }
+                        >
+                            <Route
+                                path="/"
+                                element={
+                                    <Sidebar>
+                                        <Home />
+                                    </Sidebar>
+                                }
+                            />
                         </Route>
 
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]} refresh={refresh}/>}>
-                            <Route path="dashboard" element={
-                            <Sidebar>
-                                    <Dashboard />
-=                            </Sidebar>
-                            }/>
+                        <Route
+                            element={
+                                <RequireAuth
+                                    allowedRoles={[
+                                        ROLES.University,
+                                        ROLES.Organization
+                                    ]}
+                                    refresh={refresh}
+                                />
+                            }
+                        >
+                            <Route
+                                path="dashboard"
+                                element={
+                                    <Sidebar>
+                                        <Dashboard />
+                                    </Sidebar>
+                                }
+                            />
                         </Route>
 
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University,ROLES.Organization]} refresh={refresh}/>}>
-                            <Route path="report" element={
-                            <Sidebar>
-                                <Report />
-=                           </Sidebar>
-                            }/>
+                        <Route
+                            element={
+                                <RequireAuth
+                                    allowedRoles={[
+                                        ROLES.University,
+                                        ROLES.Organization
+                                    ]}
+                                    refresh={refresh}
+                                />
+                            }
+                        >
+                            <Route
+                                path="report"
+                                element={
+                                    <Sidebar>
+                                        <Report />
+                                    </Sidebar>
+                                }
+                            />
                         </Route>
 
-                        <Route element={ <RequireAuth allowedRoles={[ROLES.University]} refresh={refresh}/>}>
-                            <Route path="scholarships" element={
-                            <Sidebar>
-                                <Scholarships />
-=                           </Sidebar>
-                            }/>
+                        <Route
+                            element={
+                                <RequireAuth
+                                    allowedRoles={[ROLES.University]}
+                                    refresh={refresh}
+                                />
+                            }
+                        >
+                            <Route
+                                path="scholarships"
+                                element={
+                                    <Sidebar>
+                                        <Scholarships />
+                                    </Sidebar>
+                                }
+                            />
                         </Route>
 
                         <Route path="*" element={<PageNotFound />} />
-
                     </Route>
                 </Routes>
             </Router>

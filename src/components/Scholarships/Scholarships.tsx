@@ -5,14 +5,28 @@ import {
     Flex,
     Heading,
     Icon,
-    Text
+    Text,
+    Stack,
+    MenuButton,
+    Menu,
+    MenuList,
+    MenuDivider,
+    MenuItemOption,
+    MenuOptionGroup,
+    Input,
+    InputGroup,
+    InputLeftElement
 } from "@chakra-ui/react"
+
+import { FaFilter } from "react-icons/fa"
 
 // Use Chakra Ui for create a custom component for display field data in table
 
 // Recommended for icons
 import { Table, createColumn } from "react-chakra-pagination"
-import { FiTrash2, FiUser } from "react-icons/fi"
+import { FiEdit, FiUser } from "react-icons/fi"
+import { CheckIcon, ChevronDownIcon, Search2Icon } from "@chakra-ui/icons"
+import { debounce } from "lodash"
 
 type User = {
     id: number
@@ -23,8 +37,6 @@ type User = {
     avatar_url: string
 }
 
-// Example list of users
-// Generated using https://www.mockaroo.com/
 const users: User[] = [
     {
         id: 1,
@@ -162,7 +174,7 @@ const users: User[] = [
     }
 ]
 
-const scholarships = () => {
+const Scholarships = () => {
     // Formatter for each user
     const tableData = users.map((user) => ({
         name: (
@@ -180,17 +192,27 @@ const scholarships = () => {
         phone: user.phone,
         birthday: user.birthday,
         action: (
-            <Button
-                colorScheme="gray"
-                onClick={() => console.log("remove user!")}
-                size="sm"
-            >
-                <Icon as={FiTrash2} fontSize="20" />
-            </Button>
+            <Stack direction="row" spacing={2}>
+                <Button
+                    variant="ghost"
+                    colorScheme="green"
+                    size="sm"
+                    leftIcon={<Icon as={CheckIcon} />}
+                >
+                    Acceptance
+                </Button>
+                <Button
+                    variant="ghost"
+                    colorScheme="blue"
+                    size="sm"
+                    leftIcon={<Icon as={FiEdit} />}
+                >
+                    Assignments
+                </Button>
+            </Stack>
         )
     }))
 
-    // Need pass type of `tableDate` for ts autocomplete
     const columnHelper = createColumn<(typeof tableData)[0]>()
 
     const columns = [
@@ -216,25 +238,80 @@ const scholarships = () => {
         })
     ]
 
+    const handleInputChange = debounce((event: any) => {
+        const inputValue = event.target.value
+        console.log(inputValue)
+    }, 1000)
+
+    const ScholarshipTypes = ["Undergraduate", "Postgraduate", "PhD"]
+
     return (
         <Box p="12">
-            {/* <Sidebar /> */}
-            <Heading size="sm" as="h3">
-                List of Users
+            <Heading size="sm" as="h3" mb="6">
+                List of Scholarships
             </Heading>
+
+            <Stack
+                spacing={4}
+                direction={{ base: "column", md: "row" }}
+                align="center"
+                m="1rem"
+            >
+                {/* Search Bar */}
+                <InputGroup borderRadius={10} size="sm">
+                    <InputLeftElement
+                        pointerEvents="none"
+                        children={<Search2Icon color="gray.600" />}
+                    />
+                    <Input
+                        type="text"
+                        borderRadius={10}
+                        placeholder="Search..."
+                        border="1px solid #949494"
+                        onChange={handleInputChange}
+                    />
+                </InputGroup>
+
+                {/* Filter Menu */}
+                <Menu closeOnSelect={false}>
+                    <MenuButton
+                        as={Button}
+                        leftIcon={<FaFilter />}
+                        rightIcon={<ChevronDownIcon />}
+                        size={"md"}
+                        minWidth={"150px"}
+                    >
+                        Filter
+                    </MenuButton>
+                    <MenuList minWidth="240px">
+                        <MenuOptionGroup title="Coverage Order" type="radio">
+                            <MenuItemOption value="asc">
+                                Ascending
+                            </MenuItemOption>
+                            <MenuItemOption value="desc">
+                                Descending
+                            </MenuItemOption>
+                        </MenuOptionGroup>
+                        <MenuDivider />
+                        <MenuOptionGroup title="Types" type="checkbox">
+                            {ScholarshipTypes.map((type) => (
+                                <MenuItemOption key={type} value={type}>
+                                    {type}
+                                </MenuItemOption>
+                            ))}
+                        </MenuOptionGroup>
+                    </MenuList>
+                </Menu>
+            </Stack>
 
             <Box mt="6">
                 <Table
                     colorScheme="blue"
-                    // Fallback component when list is empty
                     emptyData={{
                         icon: FiUser,
                         text: "Nobody is registered here."
                     }}
-                    // Control registers to show
-                    // Exemple: show 12 registers of 15
                     totalRegisters={12}
-                    // Listen change page event and control the current page using state
                     onPageChange={(page) => console.log(page)}
                     columns={columns}
                     data={tableData}
@@ -244,4 +321,4 @@ const scholarships = () => {
     )
 }
 
-export default scholarships
+export default Scholarships
