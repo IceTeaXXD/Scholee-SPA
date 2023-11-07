@@ -1,8 +1,7 @@
 import { Flex, Box, Text } from "@chakra-ui/react"
-import { getAuthData } from "../../utils/auth"
+
 const Dashboard = () => {
     // get auth data
-    getAuthData()
     return (
         <Box w="100%">
             <Flex

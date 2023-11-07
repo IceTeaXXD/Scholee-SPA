@@ -13,8 +13,10 @@ import {
 } from "@chakra-ui/react"
 import { Link, useNavigate } from "react-router-dom"
 import { handleLogin } from "../../utils/auth"
+import useAuth from "../../hooks/useAuth"
 
 const Login = () => {
+    const {setAuth} : any = useAuth();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errMsg, setErrMsg] = useState("")
@@ -22,16 +24,20 @@ const Login = () => {
     const { colorMode, toggleColorMode } = useColorMode()
     const formBackground = useColorModeValue("blue.100", "blue.700")
     const buttonColor = useColorModeValue("blue.400", "blue.300")
-    // const textColor = useColorModeValue("gray.700", "gray.100")
     const navigate = useNavigate()
 
     async function handleSubmit(e: any) {
         e.preventDefault()
-        const res = await handleLogin(email, password)
-        if (res && res.status === "success") {
-            navigate("/dashboard")
-        } else {
-            setErrMsg(res?.message || "Credentials not match")
+        try {
+            const res = await handleLogin(email, password)
+            setAuth(res?.email, res?.roles, res?.accToken)
+            if (res && res.status === "success") {
+                navigate("/dashboard")
+            } else {
+                setErrMsg(res?.message || "Credentials not match")
+            }
+        } catch(err : any){
+            console.log(err)
         }
     }
     return (
