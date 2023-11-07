@@ -27,10 +27,12 @@ const Login = () => {
     const navigate = useNavigate()
 
     async function handleSubmit(e: any) {
+        console.log("LOGINN")
         e.preventDefault()
         try {
             const res = await handleLogin(email, password)
-            setAuth({A: "fdsaf",a : "fdsaf"})
+            console.log("handleSubmit", res?.email, res?.roles)
+            setAuth({email : res?.email, roles: res?.roles, accToken: res?.accToken})
             if (res && res.status === "success") {
                 navigate("/dashboard")
             } else {
