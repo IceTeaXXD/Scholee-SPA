@@ -1,0 +1,7 @@
+services: 
+  client-webapp: ## React SPA
+    ports:
+      - 3002:3002
+    build:
+      context: ../client-webapp
+      dockerfile: Dockerfile
