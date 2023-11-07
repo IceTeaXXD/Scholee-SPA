@@ -28,11 +28,13 @@ const Login = () => {
 
     async function handleSubmit(e: any) {
         console.log("LOGINN")
+        console.log(email, password)
         e.preventDefault()
         try {
             const res = await handleLogin(email, password)
             console.log("handleSubmit", res?.email, res?.roles)
             setAuth({email : res?.email, roles: res?.roles, accToken: res?.accToken})
+            console.log("set auth from login")
             if (res && res.status === "success") {
                 navigate("/dashboard")
             } else {

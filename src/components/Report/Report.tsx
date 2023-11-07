@@ -1,6 +1,5 @@
 import { Flex, Box, Text } from "@chakra-ui/react"
-
-const OrganizationDashboard = () => {
+const Report = () => {
     return (
         <Box w="100%">
             <Flex
@@ -9,10 +8,10 @@ const OrganizationDashboard = () => {
                 left="50%"
                 transform="translate(-50%, -50%)"
             >
-                <Text>Organization Dashboard Page</Text>
+                <Text>Report Page</Text>
             </Flex>
         </Box>
     )
 }
 
-export default OrganizationDashboard
+export default Report
