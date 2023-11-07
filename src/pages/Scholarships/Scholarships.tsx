@@ -162,7 +162,7 @@ const users: User[] = [
     }
 ]
 
-const Explore = () => {
+const scholarships = () => {
     // Formatter for each user
     const tableData = users.map((user) => ({
         name: (
@@ -244,4 +244,4 @@ const Explore = () => {
     )
 }
 
-export default Explore
+export default scholarships

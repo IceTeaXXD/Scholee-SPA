@@ -1,7 +1,5 @@
 import { Flex, Box, Text } from "@chakra-ui/react"
-
-const Dashboard = () => {
-    // get auth data
+const OrganizationReport = () => {
     return (
         <Box w="100%">
             <Flex
@@ -10,10 +8,10 @@ const Dashboard = () => {
                 left="50%"
                 transform="translate(-50%, -50%)"
             >
-                <Text>Dashboard Page</Text>
+                <Text>Organization Report Page</Text>
             </Flex>
         </Box>
     )
 }
 
-export default Dashboard
+export default OrganizationReport

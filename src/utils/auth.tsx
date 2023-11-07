@@ -13,9 +13,9 @@ async function handleLogin(email: string, password: string) {
             return {
                 status: "success",
                 message: "Login Success",
-                email : email,
-                roles : response.data.userType,
-                accToken : response.data.accessToken
+                email: email,
+                roles: response.data.userType,
+                accToken: response.data.accessToken
             }
         } else {
             return {

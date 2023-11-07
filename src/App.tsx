@@ -4,57 +4,109 @@ import { ChakraProvider } from "@chakra-ui/react"
 import Login from "./pages/Login/Login"
 import Register from "./pages/Register/Register"
 import Home from "./pages/Home/Home"
-import Dashboard from "./pages/Dashboard/Dashboard"
-import Report from "./pages/Report/Report"
-import Explore from "./pages/Explore/Explore"
-import PageNotFound from "./pages/PageNotFound/PageNotFound"
+import Unauthorized from "./pages/Error/Unauthorized"
+import OrganizationDashboard from "./pages/Dashboard/OrganizationDashboard"
+import UniversityDashboard from "./pages/Dashboard/UniversityDashboard"
+import OrganizationReport from "./pages/Report/OrganizationReport"
+import UniversityReport from "./pages/Report/UniversityReport"
+import PageNotFound from "./pages/Error/PageNotFound"
+import Scholarships from "./pages/Scholarships/Scholarships"
 import Sidebar from "./components/Sidebar/Sidebar"
+import { useContext } from "react"
+import AuthContext from "./context/AuthProvider"
+import RequireAuth from "./utils/RequireAuth"
 
 const ROLES = {
-    User: 2001,
-    Editor: 1984,
-    Admin: 5150
+    Organization: 2021,
+    University: 2022
 }
 function App() {
+    const { auth }: any = useContext(AuthContext)
     return (
         <ChakraProvider>
             <Router>
                 <Routes>
+                    {/* PUBLIC ROUTES */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/unauthorized" element={<Unauthorized />} />
+                    <Route path="*" element={<PageNotFound />} />
+
+                    {/* PROTECTED ROUTES */}
+                    {/* Home Page */}
                     <Route
                         path="/"
                         element={
                             <Sidebar>
-                                <Home />
+                                <RequireAuth
+                                    allowedRoles={[
+                                        ROLES.Organization,
+                                        ROLES.University
+                                    ]}
+                                >
+                                    <Home />
+                                </RequireAuth>
                             </Sidebar>
                         }
                     />
+
+                    {/* Dashboard */}
                     <Route
                         path="/dashboard"
                         element={
                             <Sidebar>
-                                <Dashboard />
+                                {auth?.role === ROLES.Organization ? (
+                                    <RequireAuth
+                                        allowedRoles={[ROLES.Organization]}
+                                    >
+                                        <OrganizationDashboard />
+                                    </RequireAuth>
+                                ) : (
+                                    <RequireAuth
+                                        allowedRoles={[ROLES.University]}
+                                    >
+                                        <UniversityDashboard />
+                                    </RequireAuth>
+                                )}
                             </Sidebar>
                         }
                     />
+
+                    {/* Report */}
                     <Route
                         path="/report"
                         element={
                             <Sidebar>
-                                <Report />
+                                {auth?.role === ROLES.Organization ? (
+                                    <RequireAuth
+                                        allowedRoles={[ROLES.Organization]}
+                                    >
+                                        <OrganizationReport />
+                                    </RequireAuth>
+                                ) : (
+                                    <RequireAuth
+                                        allowedRoles={[ROLES.University]}
+                                    >
+                                        <UniversityReport />
+                                    </RequireAuth>
+                                )}
                             </Sidebar>
                         }
                     />
+
+                    {/* Scholarships */}
                     <Route
-                        path="/explore"
+                        path="/scholarships"
                         element={
                             <Sidebar>
-                                <Explore />
+                                <RequireAuth
+                                    allowedRoles={[ROLES.Organization]}
+                                >
+                                    <Scholarships />
+                                </RequireAuth>
                             </Sidebar>
                         }
                     />
-                    <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </Router>
         </ChakraProvider>
