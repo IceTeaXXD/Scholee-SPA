@@ -14,15 +14,18 @@ import {
     MenuList
 } from "@chakra-ui/react"
 import { FiMenu, FiChevronDown } from "react-icons/fi"
-import { Link } from "react-router-dom"
+import { Link, useNavigate} from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/logo-1.svg"
 import AvatarWithRipple from "../Avatar/Avatar"
+import {handleLogout} from '../../utils/auth'; 
+
 
 interface MobileProps extends FlexProps {
     onOpen: () => void
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+    const navigate = useNavigate();
     return (
         <Flex
             ml={{ base: 0, md: 60 }}
@@ -91,7 +94,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                             <MenuItem>Settings</MenuItem>
                             <MenuDivider />
                             <MenuItem>
-                                <Link to="/login">Sign out</Link>
+                                <Link to="/login" onClick={async (event) => {
+                                    event.preventDefault();
+                                    await handleLogout();
+                                    navigate('/login');
+                                }}>Sign out</Link>
                             </MenuItem>
                         </MenuList>
                     </Menu>

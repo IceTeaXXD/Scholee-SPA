@@ -27,4 +27,14 @@ async function handleLogin(email: string, password: string) {
         console.error(`Error fetching data: ${error}`)
     }
 }
-export { handleLogin }
+
+async function handleLogout() {
+    try {
+      const response = await axios.post('http://localhost:5001/api/logout');
+      return response.data;
+    } catch (error) {
+      console.error('Error during logout:', error);
+      throw error;
+    }
+};
+export { handleLogin, handleLogout }
