@@ -13,6 +13,7 @@ import Sidebar from "./components/Sidebar/Sidebar"
 import RequireAuth from "./utils/RequireAuth"
 import Layout from "./components/layout"
 import useRefreshToken from "./hooks/useRefreshToken"
+import { useEffect } from "react"
 
 const ROLES = {
     Organization: "organization",
@@ -20,6 +21,11 @@ const ROLES = {
 }
 function App() {
     const refresh = useRefreshToken()
+    useEffect(() => {
+        refresh().catch(error => {
+            console.error("An error occurred while refreshing the token:", error);
+        });
+    }, [refresh]);
     return (
         <ChakraProvider>
             <Router>
