@@ -18,6 +18,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/logo-1.svg"
 import AvatarWithRipple from "../Avatar/Avatar"
 import { handleLogout } from "../../utils/auth"
+import { useState, useEffect } from "react"
+import { handleGetInfo } from "../../utils/auth"
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
@@ -25,6 +27,24 @@ interface MobileProps extends FlexProps {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const navigate = useNavigate()
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    role: ""
+  })
+
+  const getInfo = async () => {
+    const response = await handleGetInfo()
+    const name = response?.data.name
+    const email = response?.data.email
+    const role = response?.data.roles
+    setUserInfo({ name, email, role })
+  }
+
+  useEffect(() => {
+    getInfo()
+  }, [])
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -71,10 +91,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   ml="2"
                 >
                   {/* NAME */}
-                  <Text fontSize="sm">Scholee</Text>
+                  <Text fontSize="sm">{userInfo.name}</Text>
                   {/* ROLE */}
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {userInfo.role.charAt(0).toUpperCase() +
+                      userInfo.role.slice(1)}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
