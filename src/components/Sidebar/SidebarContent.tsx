@@ -6,16 +6,12 @@ import {
   Text,
   BoxProps
 } from "@chakra-ui/react"
-import {
-  FiHome,
-  FiBarChart,
-  FiCompass,
-  FiSettings,
-  FiBriefcase
-} from "react-icons/fi"
+import { FiHome, FiBarChart, FiCompass, FiBriefcase } from "react-icons/fi"
 import { IconType } from "react-icons"
 import NavItem from "./NavItem"
 import { ReactComponent as Logo } from "../../assets/logo-1.svg"
+import { handleGetInfo } from "../../utils/auth"
+import { useEffect, useState } from "react"
 
 interface SidebarProps extends BoxProps {
   onClose: () => void
@@ -27,15 +23,42 @@ interface LinkItemProps {
   link: string
 }
 
-const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, link: "/" },
-  { name: "Dashboard", icon: FiBriefcase, link: "/dashboard" },
-  { name: "Report", icon: FiBarChart, link: "/report" },
-  { name: "Scholarships", icon: FiCompass, link: "/scholarships" },
-  { name: "Settings", icon: FiSettings, link: "/" }
-]
-
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    role: ""
+  })
+
+  const getInfo = async () => {
+    const response = await handleGetInfo()
+    const name = response?.data.name
+    const email = response?.data.email
+    const role = response?.data.roles
+    setUserInfo({ name, email, role })
+  }
+
+  useEffect(() => {
+    getInfo()
+  }, [])
+
+  const LinkItems: Array<LinkItemProps> = []
+
+  if (userInfo.role === "organization") {
+    LinkItems.push(
+      { name: "Home", icon: FiHome, link: "/" },
+      { name: "Dashboard", icon: FiBriefcase, link: "/dashboard" },
+      { name: "Report", icon: FiBarChart, link: "/report" },
+      { name: "Scholarships", icon: FiCompass, link: "/scholarships" }
+    )
+  } else {
+    LinkItems.push(
+      { name: "Home", icon: FiHome, link: "/" },
+      { name: "Dashboard", icon: FiBriefcase, link: "/dashboard" },
+      { name: "Report", icon: FiBarChart, link: "/report" }
+    )
+  }
+
   return (
     <Box
       transition="3s ease"
