@@ -82,7 +82,6 @@ const Scholarships: React.FC = () => {
       params.append("title", search)
       params.append("minCoverage", minCoverage)
       params.append("maxCoverage", maxCoverage)
-      params.append("page", currentPage.toString())
       params.append("itemsPerPage", itemsPerPage.toString())
       params.append("types", selectedTypes.join(","))
       params.append("currentPage", currentPage.toString())
