@@ -32,7 +32,6 @@ import { FiEdit } from "react-icons/fi"
 import { CheckIcon, ChevronDownIcon, Search2Icon } from "@chakra-ui/icons"
 import { debounce } from "lodash"
 import { DataTable } from "./DataTable"
-import Cookies from "js-cookie"
 import axios from "axios"
 
 const Scholarships: React.FC = () => {
@@ -89,12 +88,7 @@ const Scholarships: React.FC = () => {
       params.append("currentPage", currentPage.toString())
       api_url.search = params.toString()
 
-      const accToken = Cookies.get("accToken")
-      const response = await axios.get(api_url.toString(), {
-        headers: {
-          Authorization: `Bearer ${accToken}`
-        }
-      })
+      const response = await axios.get(api_url.toString())
 
       if (!response) {
         throw new Error("Error fetching scholarships.")
@@ -143,15 +137,8 @@ const Scholarships: React.FC = () => {
 
   const fetchScholarshipTypes = async () => {
     try {
-      const accToken = Cookies.get("accToken")
       const response = await axios.get(
-        process.env.REACT_APP_API_URL + "/api/scholarshiptype",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accToken}`
-          }
-        }
+        process.env.REACT_APP_API_URL + "/api/scholarshiptype"
       )
 
       if (!response) {
