@@ -1,5 +1,5 @@
-import { Flex, Box, SimpleGrid, Heading, Text } from "@chakra-ui/react";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { Flex, Box, SimpleGrid, Heading, Text } from "@chakra-ui/react"
+import { ArrowForwardIcon } from "@chakra-ui/icons"
 
 const Home = () => {
   return (
@@ -66,7 +66,7 @@ const Home = () => {
         </Box>
       </SimpleGrid>
     </Flex>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

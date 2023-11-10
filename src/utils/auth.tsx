@@ -49,11 +49,6 @@ async function handleGetRoles() {
     if (accToken) {
       const response = await axios.get(
         process.env.REACT_APP_API_URL + "/api/roles"
-        // {
-        //     headers: {
-        //         Authorization: `Bearer ${accToken}`
-        //     }
-        // }
       )
       return response
     }

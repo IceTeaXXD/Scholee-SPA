@@ -16,110 +16,95 @@ import useRefreshToken from "./hooks/useRefreshToken"
 import { useEffect } from "react"
 
 const ROLES = {
-    Organization: "organization",
-    University: "university"
+  Organization: "organization",
+  University: "university"
 }
 function App() {
-    const refresh = useRefreshToken()
-    useEffect(() => {
-        refresh().catch(error => {
-            console.error("An error occurred while refreshing the token:", error);
-        });
-    }, [refresh]);
-    return (
-        <ChakraProvider>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        {/* Public Routes */}
-                        <Route path="login" element={<Login />} />
-                        <Route path="register" element={<Register />} />
-                        <Route path="unauthorized" element={<Unauthorized />} />
+  const refresh = useRefreshToken()
+  useEffect(() => {
+    refresh().catch((error) => {
+      console.error("An error occurred while refreshing the token:", error)
+    })
+  }, [refresh])
+  return (
+    <ChakraProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            {/* Public Routes */}
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="unauthorized" element={<Unauthorized />} />
 
-                        {/* Protected Routes */}
-                        <Route
-                            element={
-                                <RequireAuth
-                                    allowedRoles={[
-                                        ROLES.University,
-                                        ROLES.Organization
-                                    ]}
-                                />
-                            }
-                        >
-                            <Route
-                                path="/"
-                                element={
-                                    <Sidebar>
-                                        <Home />
-                                    </Sidebar>
-                                }
-                            />
-                        </Route>
+            {/* Protected Routes */}
+            <Route
+              element={
+                <RequireAuth
+                  allowedRoles={[ROLES.University, ROLES.Organization]}
+                />
+              }
+            >
+              <Route
+                path="/"
+                element={
+                  <Sidebar>
+                    <Home />
+                  </Sidebar>
+                }
+              />
+            </Route>
 
-                        <Route
-                            element={
-                                <RequireAuth
-                                    allowedRoles={[
-                                        ROLES.University,
-                                        ROLES.Organization
-                                    ]}
-                                />
-                            }
-                        >
-                            <Route
-                                path="dashboard"
-                                element={
-                                    <Sidebar>
-                                        <Dashboard />
-                                    </Sidebar>
-                                }
-                            />
-                        </Route>
+            <Route
+              element={
+                <RequireAuth
+                  allowedRoles={[ROLES.University, ROLES.Organization]}
+                />
+              }
+            >
+              <Route
+                path="dashboard"
+                element={
+                  <Sidebar>
+                    <Dashboard />
+                  </Sidebar>
+                }
+              />
+            </Route>
 
-                        <Route
-                            element={
-                                <RequireAuth
-                                    allowedRoles={[
-                                        ROLES.University,
-                                        ROLES.Organization
-                                    ]}
-                                />
-                            }
-                        >
-                            <Route
-                                path="report"
-                                element={
-                                    <Sidebar>
-                                        <Report />
-                                    </Sidebar>
-                                }
-                            />
-                        </Route>
+            <Route
+              element={
+                <RequireAuth
+                  allowedRoles={[ROLES.University, ROLES.Organization]}
+                />
+              }
+            >
+              <Route
+                path="report"
+                element={
+                  <Sidebar>
+                    <Report />
+                  </Sidebar>
+                }
+              />
+            </Route>
 
-                        <Route
-                            element={
-                                <RequireAuth
-                                    allowedRoles={[ROLES.University]}
-                                />
-                            }
-                        >
-                            <Route
-                                path="scholarships"
-                                element={
-                                    <Sidebar>
-                                        <Scholarships />
-                                    </Sidebar>
-                                }
-                            />
-                        </Route>
+            <Route element={<RequireAuth allowedRoles={[ROLES.University]} />}>
+              <Route
+                path="scholarships"
+                element={
+                  <Sidebar>
+                    <Scholarships />
+                  </Sidebar>
+                }
+              />
+            </Route>
 
-                        <Route path="*" element={<PageNotFound />} />
-                    </Route>
-                </Routes>
-            </Router>
-        </ChakraProvider>
-    )
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </Router>
+    </ChakraProvider>
+  )
 }
 
 export default App
