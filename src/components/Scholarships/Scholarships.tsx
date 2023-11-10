@@ -311,7 +311,7 @@ const Scholarships: React.FC = () => {
       </Box>
 
       {scholarships.length > 0 && (
-        <HStack spacing="24px" justifyContent="center">
+        <HStack spacing="24px" justifyContent="center" mt={"20px"}>
           {/* Prev Button */}
           <Button
             onClick={() => setCurrentPage(currentPage - 1)}
