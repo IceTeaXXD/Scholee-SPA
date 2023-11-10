@@ -44,7 +44,6 @@ function App() {
                                         ROLES.University,
                                         ROLES.Organization
                                     ]}
-                                    refresh={refresh}
                                 />
                             }
                         >
@@ -65,7 +64,6 @@ function App() {
                                         ROLES.University,
                                         ROLES.Organization
                                     ]}
-                                    refresh={refresh}
                                 />
                             }
                         >
@@ -86,7 +84,6 @@ function App() {
                                         ROLES.University,
                                         ROLES.Organization
                                     ]}
-                                    refresh={refresh}
                                 />
                             }
                         >
@@ -104,7 +101,6 @@ function App() {
                             element={
                                 <RequireAuth
                                     allowedRoles={[ROLES.University]}
-                                    refresh={refresh}
                                 />
                             }
                         >

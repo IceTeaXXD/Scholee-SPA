@@ -1,11 +1,15 @@
 import axios from '../api/axios';
-import Cookies from 'js-cookie';
+
 const useRefreshToken = () => {
     const refresh = async () => {
-        const response = await axios.get('http://localhost:5001/api/refresh', {
-        });
-        return response.data;
-    }
+        try {
+            const response = await axios.get('http://localhost:5001/api/refresh');
+            return response.data;
+        } catch (error) {
+            console.error("An error occurred while refreshing the token:", error);
+            throw error;
+        }
+    };
     return refresh;
 };
 
