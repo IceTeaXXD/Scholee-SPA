@@ -32,6 +32,8 @@ import { FiEdit } from "react-icons/fi"
 import { CheckIcon, ChevronDownIcon, Search2Icon } from "@chakra-ui/icons"
 import { debounce } from "lodash"
 import { DataTable } from "./DataTable"
+import Cookies from "js-cookie"
+import axios from "axios";
 
 const Scholarships: React.FC = () => {
     type Scholarship = {
@@ -89,19 +91,18 @@ const Scholarships: React.FC = () => {
             params.append("types", selectedTypes.join(","))
             params.append("currentPage", currentPage.toString())
             api_url.search = params.toString()
-
-            const response = await fetch(api_url.toString(), {
-                method: "GET",
+            
+            const accToken = Cookies.get("accToken")
+            const response = await axios.get(api_url.toString(), {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                    Authorization: `Bearer ${accToken}`
                 }
             })
-            if (!response.ok) {
-                throw new Error(response.statusText)
-            }
+            // if (!response.ok) {
+            //     throw new Error(response.statusText)
+            // }
 
-            const jsonData = await response.json()
+            const jsonData = await response.data
             const data = jsonData.data
             setNumberOfPages(jsonData.numberOfPages)
             const scholarships_data = data.map((scholarship: any) => ({
@@ -144,21 +145,21 @@ const Scholarships: React.FC = () => {
 
     const fetchScholarshipTypes = async () => {
         try {
-            const response = await fetch(
+            const accToken = Cookies.get("accToken")
+            const response = await axios.get(
                 process.env.REACT_APP_API_URL + "/api/scholarshiptype",
                 {
-                    method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                        Authorization: `Bearer ${accToken}`
                     }
                 }
             )
-            if (!response.ok) {
-                throw new Error(response.statusText)
-            }
+            // if (!response.ok) {
+            //     throw new Error(response.statusText)
+            // }
 
-            const jsonData = await response.json()
+            const jsonData = await response.data
             const types = jsonData.data
             setScholarshipTypes(types)
         } catch (err: any) {
