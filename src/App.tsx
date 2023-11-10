@@ -88,7 +88,9 @@ function App() {
               />
             </Route>
 
-            <Route element={<RequireAuth allowedRoles={[ROLES.University]} />}>
+            <Route
+              element={<RequireAuth allowedRoles={[ROLES.Organization]} />}
+            >
               <Route
                 path="scholarships"
                 element={
