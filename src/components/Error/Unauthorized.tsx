@@ -21,14 +21,14 @@ const Page404 = () => {
           You don&apos;t have permission to access this page
         </Text>
 
-        <Link to="/">
+        <Link to="/login">
           <Button
             colorScheme="teal"
             bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
             color="white"
             variant="solid"
           >
-            Go to Home
+            Back to Login
           </Button>
         </Link>
       </Box>
