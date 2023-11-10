@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true
 
 async function handleLogin(email: string, password: string) {
     try {
-        const response = await axios.post("http://localhost:5001/api/login", {
+        const response = await axios.post(process.env.REACT_APP_API_URL + "/api/login", {
             email,
             password,
             withCredentials: true
@@ -31,28 +31,31 @@ async function handleLogin(email: string, password: string) {
 
 async function handleLogout() {
     try {
-      const response = await axios.post('http://localhost:5001/api/logout');
-      return response.data;
+        const response = await axios.post(process.env.REACT_APP_API_URL + "/api/logout")
+        return response.data
     } catch (error) {
-      console.error('Error during logout:', error);
-      throw error;
+        console.error("Error during logout:", error)
+        throw error
     }
-};
+}
 
 async function handleGetRoles() {
     try {
-        const accToken = Cookies.get('accToken');
-        if (accToken){
-            const response = await axios.get("http://localhost:5001/api/roles", {
-                headers: {
-                    Authorization: `Bearer ${accToken}`
+        const accToken = Cookies.get("accToken")
+        if (accToken) {
+            const response = await axios.get(
+                process.env.REACT_APP_API_URL + "/api/roles",
+                {
+                    headers: {
+                        Authorization: `Bearer ${accToken}`
+                    }
                 }
-            });
-            return response;
+            )
+            return response
         }
     } catch (error) {
-        console.error('Error during getting roles:', error);
-        throw error;
+        console.error("Error during getting roles:", error)
+        throw error
     }
 }
 export { handleLogin, handleLogout, handleGetRoles }
