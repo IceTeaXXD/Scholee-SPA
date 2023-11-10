@@ -1,11 +1,11 @@
-import { useLocation, Navigate, Outlet, useNavigate } from "react-router-dom"
+import { useLocation, Outlet, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { handleGetRoles } from "../utils/auth"
 import useRefreshToken from "../hooks/useRefreshToken"
 
 const RequireAuth = ({ allowedRoles }: any) => {
   const location = useLocation()
-  const [userRoles, setUserRoles] = useState([])
+  const [, setUserRoles] = useState([])
   const navigate = useNavigate()
   const refresh = useRefreshToken()
 
