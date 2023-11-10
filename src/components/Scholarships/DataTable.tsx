@@ -50,6 +50,10 @@ export function DataTable<Data extends object>({
         lg: false,
     })
 
+    if (data.length === 0) {
+        return <div> No data </div>
+    }
+
     return (
         <Table
             width="full"
