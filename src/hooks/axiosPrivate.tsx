@@ -1,44 +1,46 @@
-import { axiosPrivate } from "../api/axios";
-import { useEffect } from "react";
-import useRefreshToken from "./useRefreshToken";
-import Cookies from 'js-cookie';
+import { axiosPrivate } from "../api/axios"
+import { useEffect } from "react"
+import useRefreshToken from "./useRefreshToken"
+import Cookies from "js-cookie"
 
 const useAxiosPrivate = () => {
-    const refresh = useRefreshToken();
-    const accToken = Cookies.get('accToken')
-    useEffect(() => {
-
-        const requestIntercept = axiosPrivate.interceptors.request.use(
-            config => {
-                if (!config.headers['Authorization']) {
-                    config.headers['Authorization'] = `Bearer ${accToken}`;
-                }
-                return config;
-            }, (error) => Promise.reject(error)
-        );
-
-        const responseIntercept = axiosPrivate.interceptors.response.use(
-            response => response,
-            async (error) => {
-                const prevRequest = error?.config;
-                if (error?.response?.status === 403 && !prevRequest?.sent) {
-                    prevRequest.sent = true;
-                    const refResponse = await refresh();
-                    Cookies.set('accToken', refResponse.data.accessToken);
-                    prevRequest.headers['Authorization'] = `Bearer ${refResponse.data.accessToken}`;
-                    return axiosPrivate(prevRequest);
-                }
-                return Promise.reject(error);
-            }
-        );
-
-        return () => {
-            axiosPrivate.interceptors.request.eject(requestIntercept);
-            axiosPrivate.interceptors.response.eject(responseIntercept);
+  const refresh = useRefreshToken()
+  const accToken = Cookies.get("accToken")
+  useEffect(() => {
+    const requestIntercept = axiosPrivate.interceptors.request.use(
+      (config) => {
+        if (!config.headers["Authorization"]) {
+          config.headers["Authorization"] = `Bearer ${accToken}`
         }
-    }, [refresh])
+        return config
+      },
+      (error) => Promise.reject(error)
+    )
 
-    return axiosPrivate;
+    const responseIntercept = axiosPrivate.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const prevRequest = error?.config
+        if (error?.response?.status === 403 && !prevRequest?.sent) {
+          prevRequest.sent = true
+          const refResponse = await refresh()
+          Cookies.set("accToken", refResponse.data.accessToken)
+          prevRequest.headers[
+            "Authorization"
+          ] = `Bearer ${refResponse.data.accessToken}`
+          return axiosPrivate(prevRequest)
+        }
+        return Promise.reject(error)
+      }
+    )
+
+    return () => {
+      axiosPrivate.interceptors.request.eject(requestIntercept)
+      axiosPrivate.interceptors.response.eject(responseIntercept)
+    }
+  }, [refresh])
+
+  return axiosPrivate
 }
 
-export default useAxiosPrivate;
+export default useAxiosPrivate
