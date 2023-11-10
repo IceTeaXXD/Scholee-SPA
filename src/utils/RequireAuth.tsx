@@ -1,23 +1,23 @@
 import { useLocation, Outlet, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { handleGetRoles } from "../utils/auth"
+import { handleGetInfo } from "../utils/auth"
 import useRefreshToken from "../hooks/useRefreshToken"
 
 const RequireAuth = ({ allowedRoles }: any) => {
   const location = useLocation()
   const [, setUserRoles] = useState([])
+
   const navigate = useNavigate()
   const refresh = useRefreshToken()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await handleGetRoles()
+        const response = await handleGetInfo()
         const roles = response?.data.roles
         setUserRoles(roles)
 
         const isAuthorized = allowedRoles.includes(roles)
-        console.log(isAuthorized)
 
         if (!isAuthorized) {
           console.log("Unauthorized")
@@ -28,12 +28,11 @@ const RequireAuth = ({ allowedRoles }: any) => {
 
         try {
           await refresh()
-          const refreshedResponse = await handleGetRoles()
+          const refreshedResponse = await handleGetInfo()
           const roles = refreshedResponse?.data.roles
           setUserRoles(roles)
 
           const isAuthorized = allowedRoles.includes(roles)
-          console.log(isAuthorized)
 
           if (!isAuthorized) {
             console.log("Unauthorized after refresh")

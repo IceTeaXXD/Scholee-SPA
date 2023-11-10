@@ -43,18 +43,19 @@ async function handleLogout() {
   }
 }
 
-async function handleGetRoles() {
+async function handleGetInfo() {
   try {
     const accToken = Cookies.get("accToken")
     if (accToken) {
       const response = await axios.get(
-        process.env.REACT_APP_API_URL + "/api/roles"
+        process.env.REACT_APP_API_URL + "/api/info"
       )
       return response
     }
   } catch (error) {
-    console.error("Error during getting roles:", error)
+    console.error("Error during getting info:", error)
     throw error
   }
 }
-export { handleLogin, handleLogout, handleGetRoles }
+
+export { handleLogin, handleLogout, handleGetInfo }
