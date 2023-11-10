@@ -1,5 +1,6 @@
 import axios from "axios"
-
+import Cookies from "js-cookie"
+import useRefreshToken from "../hooks/useRefreshToken"
 axios.defaults.withCredentials = true
 
 async function handleLogin(email: string, password: string) {
@@ -37,4 +38,21 @@ async function handleLogout() {
       throw error;
     }
 };
-export { handleLogin, handleLogout }
+
+async function handleGetRoles() {
+    try {
+        const accToken = Cookies.get('accToken');
+        if (accToken){
+            const response = await axios.get("http://localhost:5001/api/roles", {
+                headers: {
+                    Authorization: `Bearer ${accToken}`
+                }
+            });
+            return response;
+        }
+    } catch (error) {
+        console.error('Error during getting roles:', error);
+        throw error;
+    }
+}
+export { handleLogin, handleLogout, handleGetRoles }

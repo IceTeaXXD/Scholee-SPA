@@ -1,19 +1,55 @@
-import { useLocation, Navigate, Outlet } from "react-router-dom";
-import { useEffect } from "react";
+import { useLocation, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { handleGetRoles } from '../utils/auth';
+import useRefreshToken from '../hooks/useRefreshToken';
 
-const RequireAuth = ({ allowedRoles, refresh }: any) => {
-    const location = useLocation();
+const RequireAuth = ({ allowedRoles }: any) => {
+  const location = useLocation();
+  const [userRoles, setUserRoles] = useState([]);
+  const navigate = useNavigate();
+  const refresh = useRefreshToken();
 
-    useEffect(() => {
-        const isAuthorized = refresh.roles === allowedRoles[0]; 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await handleGetRoles();
+        const roles = response?.data.roles;
+        setUserRoles(roles);
+
+        const isAuthorized = allowedRoles.includes(roles);
         console.log(isAuthorized);
 
         if (!isAuthorized) {
-            <Navigate to="/unauthorized" state={{ from: location }} replace />;
+          console.log("Unauthorized");
+          navigate('/unauthorized', { state: { from: location } });
         }
-    }, [allowedRoles, location, refresh]);
+      } catch (error) {
+        console.error('Error fetching roles:', error);
 
-    return <Outlet />;
+        try {
+          await refresh();
+          const refreshedResponse = await handleGetRoles();
+          const roles = refreshedResponse?.data.roles;
+          setUserRoles(roles);
+
+          const isAuthorized = allowedRoles.includes(roles);
+          console.log(isAuthorized);
+
+          if (!isAuthorized) {
+            console.log("Unauthorized after refresh");
+            navigate('/unauthorized', { state: { from: location } });
+          }
+        } catch (refreshError) {
+          console.error('Error refreshing token:', refreshError);
+          navigate('/login', { state: { from: location } });
+        }
+      }
+    };
+
+    fetchData();
+  }, [allowedRoles, location, navigate, refresh]);
+
+  return <Outlet />;
 };
 
 export default RequireAuth;
