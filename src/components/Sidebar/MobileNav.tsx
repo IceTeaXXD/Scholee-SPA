@@ -89,18 +89,16 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <MenuItem>Profile</MenuItem>
               <MenuItem>Settings</MenuItem>
               <MenuDivider />
-              <MenuItem>
-                <Link
-                  to="/login"
-                  onClick={async (event) => {
-                    event.preventDefault()
-                    await handleLogout()
-                    navigate("/login")
-                  }}
-                >
-                  Sign out
-                </Link>
-              </MenuItem>
+              <Link
+                to="/login"
+                onClick={async (event) => {
+                  event.preventDefault()
+                  await handleLogout()
+                  navigate("/login")
+                }}
+              >
+                <MenuItem>Sign out</MenuItem>
+              </Link>
             </MenuList>
           </Menu>
         </Flex>
