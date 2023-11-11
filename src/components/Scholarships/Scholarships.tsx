@@ -21,7 +21,8 @@ import {
   NumberInputField,
   NumberInputStepper,
   MenuGroup,
-  HStack
+  HStack,
+  Tooltip
 } from "@chakra-ui/react"
 
 import { Link } from "react-router-dom"
@@ -105,26 +106,34 @@ const Scholarships: React.FC = () => {
         coverage: `$${scholarship.coverage}`,
         action: (
           <Stack direction="row" spacing={2}>
-            <Link to={`/${scholarship.scholarship_id}/acceptance`}>
-              <Button
-                variant="ghost"
-                colorScheme="green"
-                size="sm"
-                leftIcon={<Icon as={CheckIcon} />}
+            <Tooltip label="See students who applied">
+              <Link
+                to={`/scholarships/${scholarship.scholarship_id}/acceptance`}
               >
-                Acceptance
-              </Button>
-            </Link>
-            <Link to={`/${scholarship.scholarship_id}/assignments`}>
-              <Button
-                variant="ghost"
-                colorScheme="blue"
-                size="sm"
-                leftIcon={<Icon as={FiEdit} />}
+                <Button
+                  variant="ghost"
+                  colorScheme="green"
+                  size="sm"
+                  leftIcon={<Icon as={CheckIcon} />}
+                >
+                  Acceptance
+                </Button>
+              </Link>
+            </Tooltip>
+            <Tooltip label="See assignments details">
+              <Link
+                to={`/scholarships/${scholarship.scholarship_id}/assignments`}
               >
-                Assignments
-              </Button>
-            </Link>
+                <Button
+                  variant="ghost"
+                  colorScheme="blue"
+                  size="sm"
+                  leftIcon={<Icon as={FiEdit} />}
+                >
+                  Assignments
+                </Button>
+              </Link>
+            </Tooltip>
           </Stack>
         )
       }))
@@ -199,7 +208,7 @@ const Scholarships: React.FC = () => {
 
   return (
     <Box p="12">
-      <Heading size="sm" as="h3" mb="6">
+      <Heading size="sm" as="h1" mb="6" fontSize={48}>
         List of Scholarships
       </Heading>
 
