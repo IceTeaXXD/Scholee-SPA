@@ -12,6 +12,7 @@ import Scholarships from "./components/Scholarships/Scholarships"
 import Sidebar from "./components/Sidebar/Sidebar"
 import RequireAuth from "./utils/RequireAuth"
 import Layout from "./components/layout"
+import AssignmentDetails from "./components/Assignment/AssignmentDetails"
 import useRefreshToken from "./hooks/useRefreshToken"
 import { useEffect } from "react"
 
@@ -23,7 +24,7 @@ function App() {
   const refresh = useRefreshToken()
   useEffect(() => {
     refresh().catch((error) => {
-      console.error("An error occurred while refreshing the token:", error)
+      // console.error("An error occurred while refreshing the token:", error)
     })
   }, [refresh])
   return (
@@ -93,6 +94,32 @@ function App() {
             >
               <Route
                 path="scholarships"
+                element={
+                  <Sidebar>
+                    <Scholarships />
+                  </Sidebar>
+                }
+              />
+            </Route>
+
+            <Route
+              element={<RequireAuth allowedRoles={[ROLES.Organization]} />}
+            >
+              <Route
+                path="scholarships/:assignmentid/assignments"
+                element={
+                  <Sidebar>
+                    <AssignmentDetails />
+                  </Sidebar>
+                }
+              />
+            </Route>
+
+            <Route
+              element={<RequireAuth allowedRoles={[ROLES.Organization]} />}
+            >
+              <Route
+                path="scholarships/:acceptanceid/acceptance"
                 element={
                   <Sidebar>
                     <Scholarships />
