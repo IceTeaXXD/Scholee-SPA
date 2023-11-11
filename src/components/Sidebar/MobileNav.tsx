@@ -28,6 +28,7 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState({
+    user_id: 0,
     name: "",
     email: "",
     role: ""
@@ -35,10 +36,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
   const getInfo = async () => {
     const response = await handleGetInfo()
-    const name = response?.data.name
-    const email = response?.data.email
-    const role = response?.data.roles
-    setUserInfo({ name, email, role })
+    setUserInfo({
+      user_id: response?.data.user_id,
+      name: response?.data.name,
+      email: response?.data.email,
+      role: response?.data.roles
+    })
   }
 
   useEffect(() => {

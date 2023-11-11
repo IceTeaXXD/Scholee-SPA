@@ -8,7 +8,7 @@ const useRefreshToken = () => {
       )
       return response.data
     } catch (error) {
-      console.error("An error occurred while refreshing the token:", error)
+      // console.error("An error occurred while refreshing the token:", error)
       throw error
     }
   }
