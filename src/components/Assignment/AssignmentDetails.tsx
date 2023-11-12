@@ -28,7 +28,7 @@ import { FiEdit } from "react-icons/fi"
 import { useParams } from "react-router-dom"
 import axios from "../../api/axios"
 import { Field, Form, Formik } from "formik"
-import { AssignmentCards } from "./AssignmentCards"
+import { AssignmentCards, AssignmentCardsProps } from "./AssignmentCards"
 
 const useFetchAssignments = () => {
   const [assignments, setAssignments] = useState([])
@@ -194,7 +194,7 @@ const AssignmentDetails = () => {
       <SimpleGrid columns={1} spacing={"5"} mt={16} mb={10} mx={"auto"}>
         <CreateAssignmentModal />
         {assignments.length > 0 ? (
-          assignments.map((assignment: any, index: any) => (
+          assignments.map((assignment: AssignmentCardsProps, index: any) => (
             <AssignmentCards
               key={index}
               index={index}

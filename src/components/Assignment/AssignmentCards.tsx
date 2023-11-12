@@ -11,7 +11,7 @@ import React from "react"
 import { FiEdit } from "react-icons/fi"
 import { Link } from "react-router-dom"
 
-interface AssignmentCardsProps {
+export interface AssignmentCardsProps {
   index: Number
   scholarship_id: Number
   assignment_id: Number
