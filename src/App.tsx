@@ -106,7 +106,7 @@ function App() {
               element={<RequireAuth allowedRoles={[ROLES.Organization]} />}
             >
               <Route
-                path="scholarships/:assignmentid/assignments"
+                path="scholarships/:scholarshipid/assignments"
                 element={
                   <Sidebar>
                     <AssignmentDetails />
@@ -119,7 +119,7 @@ function App() {
               element={<RequireAuth allowedRoles={[ROLES.Organization]} />}
             >
               <Route
-                path="scholarships/:acceptanceid/acceptance"
+                path="scholarships/:scholarshipid/acceptance"
                 element={
                   <Sidebar>
                     <Scholarships />
