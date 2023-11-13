@@ -11,6 +11,7 @@ import {
   StatGroup,
   StatLabel
 } from "@chakra-ui/react"
+import { Link } from "react-router-dom"
 
 const Dashboard = () => {
   return (
@@ -28,9 +29,13 @@ const Dashboard = () => {
                 <Heading size={"lg"}>10</Heading> Scholarships
               </CardHeader>
               <CardBody>
-                <Button colorScheme="blue" size={["sm", "lg"]}>
-                  View Here
-                </Button>
+                <Link
+                to = {`/scholarships`}
+                >
+                  <Button colorScheme="blue" size={["sm", "lg"]}>
+                    View Here
+                  </Button>
+                </Link>
               </CardBody>
             </Card>
           </GridItem>
