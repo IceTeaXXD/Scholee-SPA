@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react"
 
 import { Link } from "react-router-dom"
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons"
+import { ArrowBackIcon, ArrowForwardIcon, ViewIcon } from "@chakra-ui/icons"
 import { FaFilter } from "react-icons/fa"
 import { createColumnHelper } from "@tanstack/react-table"
 import { FiEdit } from "react-icons/fi"
@@ -133,6 +133,16 @@ const Scholarships: React.FC = () => {
                   Assignments
                 </Button>
               </Link>
+            </Tooltip>
+            <Tooltip label={`${scholarship.count} views`}>
+                <Button
+                  variant="ghost"
+                  colorScheme="grey"
+                  size="sm"
+                  leftIcon={<Icon as={ViewIcon} />}
+                >
+                  {`${scholarship.count} views`}
+                </Button>
             </Tooltip>
           </Stack>
         )
