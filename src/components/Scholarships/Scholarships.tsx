@@ -347,7 +347,10 @@ const Scholarships: React.FC = () => {
           ))}
 
           {/* Next Button */}
-          <Button onClick={() => setCurrentPage(currentPage + 1)}>
+          <Button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            isDisabled={currentPage === numberOfPages}
+          >
             <Icon as={ArrowForwardIcon} />
           </Button>
         </HStack>
