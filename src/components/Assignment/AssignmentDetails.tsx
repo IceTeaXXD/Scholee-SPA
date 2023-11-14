@@ -30,7 +30,12 @@ import axios from "../../api/axios"
 import { Field, Form, Formik } from "formik"
 import { AssignmentCards, AssignmentCardsProps } from "./AssignmentCards"
 
+interface CreateAssignmentModalProps {
+  afterCreate: () => void;
+}
+
 const useFetchAssignments = () => {
+  console.log("useFetchAssignments")
   const [assignments, setAssignments] = useState([])
   const { scholarshipid } = useParams()
 
@@ -48,11 +53,10 @@ const useFetchAssignments = () => {
   return { assignments, fetchAssignments }
 }
 
-function CreateAssignmentModal() {
+function CreateAssignmentModal({ afterCreate }: CreateAssignmentModalProps) {
   const { scholarshipid } = useParams()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [overlay, setOverlay] = React.useState(<ModalOverlay />)
-  const { fetchAssignments } = useFetchAssignments()
   function validateField(value: any) {
     if (!value) {
       return "Field is required"
@@ -70,7 +74,7 @@ function CreateAssignmentModal() {
         desc: assignmentdescription
       })
       actions.setSubmitting(false)
-      fetchAssignments()
+      afterCreate()
       onClose()
     } catch (error) {
       console.error("Error creating assignment:", error)
@@ -172,10 +176,14 @@ function CreateAssignmentModal() {
 
 const AssignmentDetails = () => {
   const { assignments, fetchAssignments } = useFetchAssignments()
+  const [shouldFetchAssignments, setShouldFetchAssignments] = useState(true);
 
   useEffect(() => {
-    fetchAssignments()
-  }, [fetchAssignments])
+    if (shouldFetchAssignments) {
+      fetchAssignments();
+      setShouldFetchAssignments(false);
+    }
+  }, [fetchAssignments, shouldFetchAssignments]);
 
   return (
     <Flex
@@ -192,7 +200,9 @@ const AssignmentDetails = () => {
         </Heading>
       </Box>
       <SimpleGrid columns={1} spacing={"5"} mt={16} mb={10} mx={"auto"}>
-        <CreateAssignmentModal />
+        <CreateAssignmentModal 
+          afterCreate={() => setShouldFetchAssignments(true)}
+        />
         {assignments.length > 0 ? (
           assignments.map((assignment: AssignmentCardsProps, index: any) => (
             <AssignmentCards
