@@ -17,6 +17,7 @@ import { useEffect, useState } from "react"
 import { OrganizationDashboard } from "./components/Dashboard/OrganizationDashboard"
 import { UniversityDashboard } from "./components/Dashboard/UniversityDashboard"
 import { handleGetInfo } from "./utils/auth"
+import UniversityHome from "./components/Home/UniversityHome"
 
 const ROLES = {
   Organization: "organization",
@@ -73,7 +74,11 @@ function App() {
                 path="/"
                 element={
                   <Sidebar>
-                    <Home />
+                    {userInfo.role === "organization" ? (
+                      <Home />
+                    ) : (
+                      <UniversityHome />
+                    )}
                   </Sidebar>
                 }
               />

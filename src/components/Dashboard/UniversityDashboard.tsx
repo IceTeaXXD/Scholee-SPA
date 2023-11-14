@@ -1,4 +1,4 @@
-import { EmailIcon } from "@chakra-ui/icons"
+import { InfoIcon } from "@chakra-ui/icons"
 import {
   Heading,
   Grid,
@@ -59,11 +59,11 @@ export const UniversityDashboard = () => {
           <GridItem w={["80%", "50%"]}>
             <Card>
               <CardHeader>
-                <EmailIcon w="8" h="8" />
+                <InfoIcon w="8" h="8" />
                 <Heading size={"lg"}>{studentCount}</Heading> Students
               </CardHeader>
               <CardBody>
-                <Link to={`/scholarships`}>
+                <Link to={`/report`}>
                   <Button colorScheme="blue" size={["sm", "lg"]}>
                     View Here
                   </Button>
