@@ -31,11 +31,10 @@ import { Field, Form, Formik } from "formik"
 import { AssignmentCards, AssignmentCardsProps } from "./AssignmentCards"
 
 interface CreateAssignmentModalProps {
-  afterCreate: () => void;
+  afterCreate: () => void
 }
 
 const useFetchAssignments = () => {
-  console.log("useFetchAssignments")
   const [assignments, setAssignments] = useState([])
   const { scholarshipid } = useParams()
 
@@ -47,6 +46,7 @@ const useFetchAssignments = () => {
       setAssignments(response.data.data)
     } catch (error) {
       console.error("Error fetching assignments:", error)
+      setAssignments([])
     }
   }
 
@@ -176,20 +176,20 @@ function CreateAssignmentModal({ afterCreate }: CreateAssignmentModalProps) {
 
 const AssignmentDetails = () => {
   const { assignments, fetchAssignments } = useFetchAssignments()
-  const [shouldFetchAssignments, setShouldFetchAssignments] = useState(true);
+  const [shouldFetchAssignments, setShouldFetchAssignments] = useState(true)
 
   useEffect(() => {
     if (shouldFetchAssignments) {
-      fetchAssignments();
-      setShouldFetchAssignments(false);
+      fetchAssignments()
+      setShouldFetchAssignments(false)
     }
-  }, [fetchAssignments, shouldFetchAssignments]);
+  }, [fetchAssignments, shouldFetchAssignments])
 
   return (
     <Flex
       textAlign={"center"}
-      pt={10}
       justifyContent={"center"}
+      pt={10}
       direction={"column"}
       width={"full"}
       overflow={"hidden"}
@@ -200,7 +200,7 @@ const AssignmentDetails = () => {
         </Heading>
       </Box>
       <SimpleGrid columns={1} spacing={"5"} mt={16} mb={10} mx={"auto"}>
-        <CreateAssignmentModal 
+        <CreateAssignmentModal
           afterCreate={() => setShouldFetchAssignments(true)}
         />
         {assignments.length > 0 ? (
@@ -212,6 +212,9 @@ const AssignmentDetails = () => {
               scholarship_id={assignment.scholarship_id}
               assignment_name={assignment.assignment_name}
               assignment_description={assignment.assignment_description}
+              onDeleteSuccess={() => {
+                setShouldFetchAssignments(true)
+              }}
             />
           ))
         ) : (
