@@ -14,7 +14,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Textarea
+  Textarea,
+  useToast
 } from "@chakra-ui/react"
 import axios from "axios"
 import { Form, Formik, Field } from "formik"
@@ -34,6 +35,7 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
   assignment_id,
   onEditSuccess
 }) => {
+  const toast = useToast()
   const [assignmentName, setAssignmentName] = React.useState("")
   const [assignmentDescription, setAssignmentDescription] = React.useState("")
 
@@ -70,6 +72,13 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
       setAssignmentDescription(response.data.data.assignment_description)
       onClose()
       onEditSuccess()
+      toast({
+        title: "Assignment updated.",
+        description: "Assignment has been successfully updated.",
+        status: "success",
+        duration: 9000,
+        isClosable: true
+      })
     } catch (error) {
       console.error("Error deleting assignment:", error)
     }

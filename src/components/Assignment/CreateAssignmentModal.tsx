@@ -16,7 +16,8 @@ import {
   Spacer,
   Textarea,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from "@chakra-ui/react"
 import React from "react"
 import { FiEdit } from "react-icons/fi"
@@ -39,6 +40,7 @@ export const CreateAssignmentModal = ({
       return "Field is required"
     }
   }
+  const toast = useToast()
   const createAssignment = async (values: any, actions: any) => {
     try {
       const assignmentname = values.name
@@ -53,6 +55,13 @@ export const CreateAssignmentModal = ({
       actions.setSubmitting(false)
       afterCreate()
       onClose()
+      toast({
+        title: "Assignment created.",
+        description: "New assignment has been successfully created.",
+        status: "success",
+        duration: 9000,
+        isClosable: true
+      })
     } catch (error) {
       console.error("Error creating assignment:", error)
       actions.setSubmitting(false)

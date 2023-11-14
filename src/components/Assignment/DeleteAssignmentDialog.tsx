@@ -6,7 +6,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  Button
+  Button,
+  useToast
 } from "@chakra-ui/react"
 import axios from "axios"
 
@@ -25,6 +26,7 @@ export const DeleteAssignmentDialog: React.FC<DeleteAlertDialogProps> = ({
   assignment_id,
   onDeleteSuccess
 }) => {
+  const toast = useToast()
   async function DeleteAssignment() {
     try {
       const URL =
@@ -37,6 +39,13 @@ export const DeleteAssignmentDialog: React.FC<DeleteAlertDialogProps> = ({
       console.log(response)
       onClose()
       onDeleteSuccess()
+      toast({
+        title: "Assignment deleted.",
+        description: "Assignment has been successfully deleted.",
+        status: "success",
+        duration: 9000,
+        isClosable: true
+      })
     } catch (error) {
       console.error("Error deleting assignment:", error)
     }
