@@ -66,7 +66,8 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
         name: assignmentName,
         desc: assignmentDescription
       })
-      console.log(response)
+      setAssignmentName(response.data.data.assignment_name)
+      setAssignmentDescription(response.data.data.assignment_description)
       onClose()
       onEditSuccess()
     } catch (error) {
@@ -75,8 +76,11 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
   }
 
   function validateField(value: any) {
-    if (!value) {
-      return "Field is required"
+    if (assignmentName === "") {
+      return "Assignment name cannot be empty"
+    }
+    if (assignmentDescription === "") {
+      return "Assignment description cannot be empty"
     }
   }
 
