@@ -65,6 +65,9 @@ const AssignmentDetails = () => {
               onDeleteSuccess={() => {
                 setShouldFetchAssignments(true)
               }}
+              onEditSuccess={() => {
+                setShouldFetchAssignments(true)
+              }}
             />
           ))
         ) : (

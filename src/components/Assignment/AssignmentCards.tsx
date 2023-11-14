@@ -13,7 +13,8 @@ import {
 import React from "react"
 import { FiEdit } from "react-icons/fi"
 import { Link } from "react-router-dom"
-import { DeleteAssignmentDialog } from "./DeletAssignmentDialog"
+import { DeleteAssignmentDialog } from "./DeleteAssignmentDialog"
+import { EditAssignmentModal } from "./EditAssignmentModal"
 
 export interface AssignmentCardsProps {
   index: Number
@@ -22,6 +23,7 @@ export interface AssignmentCardsProps {
   assignment_name: string
   assignment_description: string
   onDeleteSuccess: () => void
+  onEditSuccess: () => void
 }
 
 export const AssignmentCards = ({
@@ -30,15 +32,22 @@ export const AssignmentCards = ({
   assignment_id,
   assignment_name,
   assignment_description,
-  onDeleteSuccess
+  onDeleteSuccess,
+  onEditSuccess
 }: AssignmentCardsProps) => {
   // TODO: SET THE APPLICANTS AND SUBMSISSIONS @MATTHEW MAHENDRA
   const [applicants, setApplicants] = React.useState(0)
   const [submissions, setSubmissions] = React.useState(0)
-  const [isOpen, setIsOpen] = React.useState(false)
-  const onClose = () => setIsOpen(false)
-  const onDelete = () => {
-    setIsOpen(true)
+  const [isOpenEditAssignment, setIsOpenEditAssignment] = React.useState(false)
+  const [isOpenDeleteAssignment, setIsOpenDeleteAssignment] =
+    React.useState(false)
+  const onCloseEditAssignment = () => setIsOpenEditAssignment(false)
+  const onCloseDeleteAssignment = () => setIsOpenDeleteAssignment(false)
+  const onEditAssignment = () => {
+    setIsOpenEditAssignment(true)
+  }
+  const onDeleteAssignment = () => {
+    setIsOpenDeleteAssignment(true)
   }
 
   return (
@@ -98,31 +107,36 @@ export const AssignmentCards = ({
               />
             </Tooltip>
           </Link>
-          <Link
-            to={`/scholarships/${scholarship_id}/assignments/${assignment_id}/edit`}
-          >
-            <Tooltip label="Edit Assignment" aria-label="A tooltip">
-              <IconButton
-                aria-label="Edit Assignment"
-                icon={<Icon as={FiEdit} />}
-                colorScheme="blue"
-                size="sm"
-              />
-            </Tooltip>
-          </Link>
+          <Tooltip label="Edit Assignment" aria-label="A tooltip">
+            <IconButton
+              aria-label="Edit Assignment"
+              icon={<Icon as={FiEdit} />}
+              colorScheme="blue"
+              size="sm"
+              onClick={onEditAssignment}
+            />
+          </Tooltip>
           <Tooltip label="Delete Assignment" aria-label="A tooltip">
             <IconButton
               aria-label="Delete Assignment"
               icon={<DeleteIcon />}
               colorScheme="red"
               size="sm"
-              onClick={onDelete}
+              onClick={onDeleteAssignment}
             />
           </Tooltip>
 
+          <EditAssignmentModal
+            isOpen={isOpenEditAssignment}
+            onClose={onCloseEditAssignment}
+            scholarship_id={scholarship_id}
+            assignment_id={assignment_id}
+            onEditSuccess={onEditSuccess}
+          />
+
           <DeleteAssignmentDialog
-            isOpen={isOpen}
-            onClose={onClose}
+            isOpen={isOpenDeleteAssignment}
+            onClose={onCloseDeleteAssignment}
             scholarship_id={scholarship_id}
             assignment_id={assignment_id}
             onDeleteSuccess={onDeleteSuccess}
