@@ -2,6 +2,7 @@ import { useLocation, Outlet, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { handleGetInfo } from "../utils/auth"
 import useRefreshToken from "../hooks/useRefreshToken"
+import { isatty } from "tty"
 
 const RequireAuth = ({ allowedRoles }: any) => {
   const location = useLocation()
@@ -9,23 +10,33 @@ const RequireAuth = ({ allowedRoles }: any) => {
 
   const navigate = useNavigate()
   const refresh = useRefreshToken()
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await handleGetInfo()
         const roles = response?.data.roles
         setUserRoles(roles)
-
-        const isAuthorized = allowedRoles.includes(roles)
-
-        if (!isAuthorized) {
-          console.log("Unauthorized")
-          navigate("/unauthorized", { state: { from: location } })
+        if (roles) {
+          const isAuthorized = allowedRoles.includes(roles)
+          if (!isAuthorized) {
+            navigate("/unauthorized", { state: { from: location } })
+          }
+        } else {
+          try {
+            await refresh()
+            const refreshedResponse = await handleGetInfo()
+            const roles = refreshedResponse?.data.roles
+            setUserRoles(roles)
+            const isAuthorized = allowedRoles.includes(roles)
+            if (!isAuthorized) {
+              navigate("/unauthorized", { state: { from: location } })
+            }
+          } catch (refreshError) {
+            console.error("Error refreshing token:", refreshError)
+            navigate("/login", { state: { from: location } })
+          }
         }
       } catch (error) {
         console.error("Error fetching roles:", error)
-
         try {
           await refresh()
           const refreshedResponse = await handleGetInfo()
@@ -46,7 +57,6 @@ const RequireAuth = ({ allowedRoles }: any) => {
     }
 
     fetchData()
-  }, [allowedRoles, location, navigate, refresh])
 
   return <Outlet />
 }
