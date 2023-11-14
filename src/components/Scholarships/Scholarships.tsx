@@ -99,7 +99,7 @@ const Scholarships: React.FC = () => {
       setNumberOfPages(jsonData.numberOfPages)
       const scholarships_data = data.map((scholarship: any) => ({
         title: scholarship.title,
-        description: scholarship.description,
+        description: scholarship.short_description,
         scholarshiptype: scholarship.type
           .map((type: any) => type.type)
           .join(", "),

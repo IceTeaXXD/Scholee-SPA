@@ -1,15 +1,19 @@
-import { ViewIcon } from "@chakra-ui/icons"
+import { DeleteIcon, ViewIcon } from "@chakra-ui/icons"
 import {
   useColorModeValue,
   chakra,
   Stack,
-  Button,
   Icon,
-  Box
+  Box,
+  IconButton,
+  Tooltip,
+  Heading,
+  Text
 } from "@chakra-ui/react"
 import React from "react"
 import { FiEdit } from "react-icons/fi"
 import { Link } from "react-router-dom"
+import { DeleteAssignmentDialog } from "./DeletAssignmentDialog"
 
 export interface AssignmentCardsProps {
   index: Number
@@ -17,80 +21,113 @@ export interface AssignmentCardsProps {
   assignment_id: Number
   assignment_name: string
   assignment_description: string
+  onDeleteSuccess: () => void
 }
 
-export const AssignmentCards: React.FC<AssignmentCardsProps> = (props) => {
+export const AssignmentCards = ({
+  index,
+  scholarship_id,
+  assignment_id,
+  assignment_name,
+  assignment_description,
+  onDeleteSuccess
+}: AssignmentCardsProps) => {
+  // TODO: SET THE APPLICANTS AND SUBMSISSIONS @MATTHEW MAHENDRA
   const [applicants, setApplicants] = React.useState(0)
   const [submissions, setSubmissions] = React.useState(0)
-  const {
-    scholarship_id,
-    assignment_id,
-    assignment_name,
-    assignment_description
-  } = props
-
-  // TODO: SET THE APPLICANTS AND SUBMSISSIONS @MATTHEW MAHENDRA
+  const [isOpen, setIsOpen] = React.useState(false)
+  const onClose = () => setIsOpen(false)
+  const onDelete = () => {
+    setIsOpen(true)
+  }
 
   return (
     <Box
       boxShadow={"lg"}
       width={"full"}
-      maxW={"1048px"}
       rounded={"xl"}
+      justifyContent={"center"}
+      alignContent={"center"}
+      minW={{ base: "90%", md: "450px" }}
+      maxW={{ base: "90%", md: "900px" }}
+      mx={"auto"}
       p={10}
       position={"relative"}
       bg={useColorModeValue("white", "gray.800")}
       textAlign={"left"}
     >
-      <chakra.h1
+      <Heading
         fontSize={"2xl"}
         fontWeight={"bold"}
         color={useColorModeValue("gray.800", "white")}
         mt={2}
       >
         {assignment_name}
-      </chakra.h1>
-      <chakra.p fontWeight={"medium"} fontSize={"15px"} pb={4}>
+      </Heading>
+      <Text
+        color={useColorModeValue("gray.800", "white")}
+        fontSize={"sm"}
+        pt={4}
+        textAlign={"justify"}
+      >
         {assignment_description}
-      </chakra.p>
+      </Text>
       <Stack
-        direction={{ base: "column", md: "row" }}
-        align="center"
-        m="1rem"
-        justifyContent={"center"}
+        direction={"row"}
+        align="start"
+        mt="1rem"
+        justifyContent={"space-between"}
         spacing={"5"}
       >
-        <chakra.p fontWeight={"bold"} fontSize={14}>
-          Submissions:
-          <chakra.span fontWeight={"medium"} color={"gray.500"}>
-            {" "}
+        <Text fontWeight="bold" fontSize={14}>
+          Submissions:{" "}
+          <chakra.span fontWeight="medium" color="gray.500">
             {submissions} / {applicants}
           </chakra.span>
-        </chakra.p>
-        <Link
-          to={`/scholarships/${scholarship_id}/assignments/${assignment_id}/submissions`}
-        >
-          <Button
-            variant="ghost"
-            colorScheme="green"
-            size="sm"
-            leftIcon={<Icon as={ViewIcon} />}
+        </Text>
+        <Stack direction="row" spacing="2">
+          <Link
+            to={`/scholarships/${scholarship_id}/assignments/${assignment_id}/submissions`}
           >
-            View Submissions
-          </Button>
-        </Link>
-        <Link
-          to={`/scholarships/${scholarship_id}/assignments/${assignment_id}/edit`}
-        >
-          <Button
-            variant="ghost"
-            colorScheme="blue"
-            size="sm"
-            leftIcon={<Icon as={FiEdit} />}
+            <Tooltip label="View Submissions" aria-label="A tooltip">
+              <IconButton
+                aria-label="View Submissions"
+                colorScheme="green"
+                size="sm"
+                icon={<Icon as={ViewIcon} />}
+              />
+            </Tooltip>
+          </Link>
+          <Link
+            to={`/scholarships/${scholarship_id}/assignments/${assignment_id}/edit`}
           >
-            Edit Assignment
-          </Button>
-        </Link>
+            <Tooltip label="Edit Assignment" aria-label="A tooltip">
+              <IconButton
+                aria-label="Edit Assignment"
+                icon={<Icon as={FiEdit} />}
+                colorScheme="blue"
+                size="sm"
+              />
+            </Tooltip>
+          </Link>
+          <Tooltip label="Delete Assignment" aria-label="A tooltip">
+            <IconButton
+              aria-label="Delete Assignment"
+              icon={<DeleteIcon />}
+              colorScheme="red"
+              size="sm"
+              onClick={onDelete}
+            />
+          </Tooltip>
+
+          <DeleteAssignmentDialog
+            isOpen={isOpen}
+            onClose={onClose}
+            scholarship_id={scholarship_id}
+            assignment_id={assignment_id}
+            onDeleteSuccess={onDeleteSuccess}
+          />
+        </Stack>
       </Stack>
     </Box>
   )
