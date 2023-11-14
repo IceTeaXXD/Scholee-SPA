@@ -5,7 +5,6 @@ import Login from "./components/Login/Login"
 import Register from "./components/Register/Register"
 import Home from "./components/Home/Home"
 import Unauthorized from "./components/Error/Unauthorized"
-import Dashboard from "./components/Dashboard/Dashboard"
 import Report from "./components/Report/Report"
 import PageNotFound from "./components/Error/PageNotFound"
 import Scholarships from "./components/Scholarships/Scholarships"
@@ -14,7 +13,10 @@ import RequireAuth from "./utils/RequireAuth"
 import Layout from "./components/layout"
 import AssignmentDetails from "./components/Assignment/AssignmentDetails"
 import useRefreshToken from "./hooks/useRefreshToken"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { OrganizationDashboard } from "./components/Dashboard/OrganizationDashboard"
+import { UniversityDashboard } from "./components/Dashboard/UniversityDashboard"
+import { handleGetInfo } from "./utils/auth"
 
 const ROLES = {
   Organization: "organization",
@@ -27,6 +29,28 @@ function App() {
       // console.error("An error occurred while refreshing the token:", error)
     })
   }, [refresh])
+
+  const [userInfo, setUserInfo] = useState({
+    user_id: 0,
+    name: "",
+    email: "",
+    role: ""
+  })
+
+  const getInfo = async () => {
+    const response = await handleGetInfo()
+    setUserInfo({
+      user_id: response?.data.user_id,
+      name: response?.data.name,
+      email: response?.data.email,
+      role: response?.data.roles
+    })
+  }
+
+  useEffect(() => {
+    getInfo()
+  }, [])
+
   return (
     <ChakraProvider>
       <Router>
@@ -66,7 +90,11 @@ function App() {
                 path="dashboard"
                 element={
                   <Sidebar>
-                    <Dashboard />
+                    {userInfo.role === "organization" ? (
+                      <OrganizationDashboard />
+                    ) : (
+                      <UniversityDashboard />
+                    )}
                   </Sidebar>
                 }
               />
