@@ -42,7 +42,7 @@ export const DeleteAssignmentDialog: React.FC<DeleteAlertDialogProps> = ({
       toast({
         title: "Assignment deleted.",
         description: "Assignment has been successfully deleted.",
-        status: "success",
+        status: "warning",
         duration: 9000,
         isClosable: true
       })
