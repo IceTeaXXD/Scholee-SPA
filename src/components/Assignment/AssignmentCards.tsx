@@ -8,19 +8,12 @@ import {
   IconButton,
   Tooltip,
   Heading,
-  Text,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button
+  Text
 } from "@chakra-ui/react"
-import axios from "axios"
 import React from "react"
 import { FiEdit } from "react-icons/fi"
 import { Link } from "react-router-dom"
+import { DeleteAssignmentDialog } from "./DeletAssignmentDialog"
 
 export interface AssignmentCardsProps {
   index: Number
@@ -46,56 +39,6 @@ export const AssignmentCards = ({
   const onClose = () => setIsOpen(false)
   const onDelete = () => {
     setIsOpen(true)
-  }
-  const cancelRef = React.useRef<any>()
-
-  function DeleteAlertDialog({ isOpen, onClose }: any) {
-    return (
-      <AlertDialog
-        isOpen={isOpen}
-        onClose={onClose}
-        leastDestructiveRef={cancelRef}
-        isCentered
-        motionPreset="slideInBottom"
-      >
-        <AlertDialogOverlay sx={{ backdropFilter: "blur(10px)" }}>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Assignment
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button onClick={onClose}>Cancel</Button>
-              <Button colorScheme="red" ml={3} onClick={DeleteAssignment}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    )
-  }
-
-  async function DeleteAssignment() {
-    // send delete request to backend
-    try {
-      const URL =
-        process.env.REACT_APP_API_URL +
-        "/api/assignment/" +
-        scholarship_id +
-        "/" +
-        assignment_id
-      const response = await axios.delete(URL)
-      console.log(response)
-      onClose()
-      onDeleteSuccess()
-    } catch (error) {
-      console.error("Error deleting assignment:", error)
-    }
   }
 
   return (
@@ -177,7 +120,13 @@ export const AssignmentCards = ({
             />
           </Tooltip>
 
-          <DeleteAlertDialog isOpen={isOpen} onClose={onClose} />
+          <DeleteAssignmentDialog
+            isOpen={isOpen}
+            onClose={onClose}
+            scholarship_id={scholarship_id}
+            assignment_id={assignment_id}
+            onDeleteSuccess={onDeleteSuccess}
+          />
         </Stack>
       </Stack>
     </Box>
