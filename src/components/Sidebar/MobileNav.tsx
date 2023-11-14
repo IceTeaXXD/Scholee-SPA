@@ -94,11 +94,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   ml="2"
                 >
                   {/* NAME */}
-                  <Text fontSize="sm">{userInfo.name}</Text>
+                  <Text fontSize="sm">{userInfo?.name}</Text>
                   {/* ROLE */}
                   <Text fontSize="xs" color="gray.600">
-                    {userInfo.role.charAt(0).toUpperCase() +
-                      userInfo.role.slice(1)}
+                    {userInfo.role?.charAt(0).toUpperCase() +
+                      userInfo.role?.slice(1)}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
