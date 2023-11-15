@@ -40,13 +40,17 @@ function App() {
   })
 
   const getInfo = async () => {
-    const response = await handleGetInfo()
-    setUserInfo({
-      user_id: response?.data.user_id,
-      name: response?.data.name,
-      email: response?.data.email,
-      role: response?.data.roles
-    })
+    try { 
+      const response = await handleGetInfo()
+      setUserInfo({
+        user_id: response?.data.user_id,
+        name: response?.data.name,
+        email: response?.data.email,
+        role: response?.data.roles
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
