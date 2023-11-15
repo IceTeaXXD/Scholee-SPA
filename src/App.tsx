@@ -20,6 +20,7 @@ import { UniversityDashboard } from "./components/Dashboard/UniversityDashboard"
 import { handleGetInfo } from "./utils/auth"
 import UniversityHome from "./components/Home/UniversityHome"
 import Acceptance from "./components/Acceptance/Acceptance"
+import { Submissions } from "./components/Assignment/Submission"
 
 const ROLES = {
   Organization: "organization",
@@ -201,7 +202,19 @@ function App() {
                 }
               />
             </Route>
-
+            
+            <Route
+              element={<RequireAuth allowedRoles={[ROLES.Organization]} />}
+            >
+              <Route
+                path="scholarships/:scholarshipid/assignments/:assignmentid/submissions"
+                element={
+                  <Sidebar>
+                    <Submissions />
+                  </Sidebar>
+                }
+              />
+            </Route>
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
