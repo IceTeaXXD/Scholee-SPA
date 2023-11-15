@@ -1,5 +1,6 @@
-import { useState } from "react"
-import Cookies from "js-cookie"
+import { useState } from "react";
+import Cookies from "js-cookie";
+import { motion } from "framer-motion";
 
 import {
   Flex,
@@ -11,131 +12,130 @@ import {
   Switch,
   useColorMode,
   useColorModeValue,
-  Box
-} from "@chakra-ui/react"
-import { Link, useNavigate } from "react-router-dom"
-import { handleLogin } from "../../utils/auth"
+  Box,
+  Image,
+  IconButton
+} from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaSun, FaMoon } from "react-icons/fa";
+import { handleLogin } from "../../utils/auth";
 
 const Login = () => {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [errMsg, setErrMsg] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
-  const { colorMode, toggleColorMode } = useColorMode()
-  const formBackground = useColorModeValue("blue.100", "blue.700")
-  const buttonColor = useColorModeValue("blue.400", "blue.300")
-  const navigate = useNavigate()
+  const { colorMode, toggleColorMode } = useColorMode();
+  const formBackground = useColorModeValue("white", "gray.800");
+  const buttonColor = useColorModeValue("gray.800", "white");
+  const navigate = useNavigate();
 
   async function handleSubmit(e: any) {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const res = await handleLogin(email, password)
-      Cookies.set("accToken", res?.accToken)
+      const res = await handleLogin(email, password);
+      Cookies.set("accToken", res?.accToken);
       if (res && res.status === "success") {
-        navigate("/dashboard")
+        navigate("/dashboard");
       } else {
-        setErrMsg(res?.message || "Credentials not match")
+        setErrMsg(res?.message || "Credentials not match");
       }
     } catch (err: any) {
-      console.log(err)
+      console.log(err);
     }
   }
-  return (
-    <Flex h="100vh" alignItems="center" justifyContent="center">
-      <Flex
-        flexDirection="row"
-        w="100%"
-        maxW="1000px"
-        boxShadow="dark-lg"
-        rounded={6}
-        bg={formBackground}
-      >
-        {/* FORM */}
-        <Flex
-          flexDirection="column"
-          bg={formBackground}
-          p={12}
-          borderRadius={8}
-          boxShadow="lg"
-          w="100%"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Heading mb={6}>Log In</Heading>
-          <Box
-            color="red.500"
-            display={errMsg ? "block" : "none"}
-            mb={3}
-            fontWeight="bold"
-            fontSize="sm"
-            aria-live="assertive"
-          >
-            {errMsg}
-          </Box>
-          <FormControl id="email" isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input
-              placeholder="Email"
-              type="text"
-              variant="filled"
-              mb={3}
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormControl>
-          <FormControl id="password" isRequired>
-            <FormLabel>Password</FormLabel>
-            <Input
-              placeholder="Password"
-              type="password"
-              variant="filled"
-              mb={3}
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </FormControl>
-          <Link to="/dashboard">
-            <Button bg={buttonColor} mb={8} onClick={handleSubmit}>
-              Log In
-            </Button>
-          </Link>
-          <FormControl display="flex" alignItems="center" mb="3">
-            <FormLabel htmlFor="dark_mode" mb="0">
-              Enable Dark Mode?
-            </FormLabel>
-            <Switch
-              id="dark_mode"
-              color={buttonColor}
-              size="lg"
-              isChecked={colorMode === "dark"}
-              onChange={toggleColorMode}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>
-              Don't have an account? <Link to="/register">Register</Link>
-            </FormLabel>
-          </FormControl>
-        </Flex>
 
+  return (
+    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <Flex h="100vh">
         {/* IMAGE */}
         <Box
           display={{ base: "none", md: "block" }}
-          w="100%"
-          maxW="500px"
-          rounded={6}
+          w={{ base: "0%", md: "50%" }} // Set width for different screen sizes
           overflow="hidden"
         >
-          <img
+          <Image
             alt="login-prop"
-            src="https://images.unsplash.com/photo-1616606103915-dea7be788566?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80"
+            src="https://imageio.forbes.com/specials-images/imageserve/64e6668d9ed8aec53b4af6bf/The-University-of-California--Los-Angeles-campus-/0x0.jpg?format=jpg&height=1080&width=1080"
+            h="100%"
           />
         </Box>
-      </Flex>
-    </Flex>
-  )
-}
 
-export default Login
+        {/* FORM */}
+        <Flex
+          flexDirection="column"
+          w={{ base: "100%", md: "50%" }}
+          maxW="1000px"
+          rounded={6}
+          bg={formBackground}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box p={12} borderRadius={8} w="100%">
+            <Heading mb={6}>Log In</Heading>
+            <Box
+              color="red.500"
+              display={errMsg ? "block" : "none"}
+              mb={3}
+              fontWeight="bold"
+              fontSize="sm"
+              aria-live="assertive"
+            >
+              {errMsg}
+            </Box>
+            <FormControl variant="floating" id="email" isRequired>
+              <Input
+                placeholder=" "
+                type="text"
+                mb={5}
+                required
+                borderWidth={1}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <FormLabel bg={formBackground}>Email</FormLabel>
+            </FormControl>
+            <FormControl variant="floating" id="password" isRequired>
+              <Input
+                placeholder=" "
+                type="password"
+                mb={5}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <FormLabel bg={formBackground}>Password</FormLabel>
+            </FormControl>
+            <Link to="/dashboard">
+              <Button
+                bg={buttonColor}
+                color={formBackground}
+                _hover={{ bg: "gray.600", color: "gray.200" }}
+                mb={8}
+                w="100%"
+                onClick={handleSubmit}
+              >
+                Log In
+              </Button>
+            </Link>
+            <Box position="absolute" top="2" right="2">
+              <IconButton
+                aria-label="Toggle Dark Mode"
+                icon={colorMode === "dark" ? <FaSun /> : <FaMoon />}
+                color={buttonColor}
+                onClick={toggleColorMode}
+              />
+            </Box>
+            <FormControl>
+              <FormLabel>
+                Don't have an account? <Link to="/register">Register</Link>
+              </FormLabel>
+            </FormControl>
+          </Box>
+        </Flex>
+      </Flex>
+    </motion.div>
+  );
+};
+
+export default Login;
