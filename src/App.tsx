@@ -19,6 +19,7 @@ import { OrganizationDashboard } from "./components/Dashboard/OrganizationDashbo
 import { UniversityDashboard } from "./components/Dashboard/UniversityDashboard"
 import { handleGetInfo } from "./utils/auth"
 import UniversityHome from "./components/Home/UniversityHome"
+import Acceptance from "./components/Acceptance/Acceptance"
 
 const ROLES = {
   Organization: "organization",
@@ -40,13 +41,17 @@ function App() {
   })
 
   const getInfo = async () => {
-    const response = await handleGetInfo()
-    setUserInfo({
-      user_id: response?.data.user_id,
-      name: response?.data.name,
-      email: response?.data.email,
-      role: response?.data.roles
-    })
+    try { 
+      const response = await handleGetInfo()
+      setUserInfo({
+        user_id: response?.data.user_id,
+        name: response?.data.name,
+        email: response?.data.email,
+        role: response?.data.roles
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -191,7 +196,7 @@ function App() {
                 path="scholarships/:scholarshipid/acceptance"
                 element={
                   <Sidebar>
-                    <Scholarships />
+                    <Acceptance />
                   </Sidebar>
                 }
               />

@@ -39,7 +39,7 @@ export const UniversityDashboard = () => {
           process.env.REACT_APP_API_URL + "/api/university/stats/" + response?.data.user_id
         );
 
-        setStudentCount(students.data.data[0].applicant_count)  
+        setStudentCount(students.data.data.data[0].applicant_count)  
       } catch (error) {
         console.error("Error in useEffect:", error);
       }
