@@ -2,7 +2,8 @@ import "./App.css"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import Login from "./components/Login/Login"
-import Register from "./components/Register/Register"
+import RegisterOrg from "./components/Register/RegisterOrg" 
+import RegisterUni from "./components/Register/RegisterUniversity"
 import Home from "./components/Home/Home"
 import Unauthorized from "./components/Error/Unauthorized"
 import Report from "./components/Report/Report"
@@ -93,7 +94,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             {/* Public Routes */}
             <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
+            <Route path="register-org" element={<RegisterOrg />} />
+            <Route path="register-uni" element={<RegisterUni/>} />
             <Route path="unauthorized" element={<Unauthorized />} />
 
             {/* Protected Routes */}

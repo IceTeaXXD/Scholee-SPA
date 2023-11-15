@@ -28,7 +28,7 @@ const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
 const PWD_REGEX = /^(?=.*\d).{8,}$/
 const REGISTER_URL = "/api/organization"
 // const navigate = useNavigate();
-const Register = () => {
+const RegisterOrg = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { colorMode, toggleColorMode } = useColorMode()
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -289,4 +289,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterOrg

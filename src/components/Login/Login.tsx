@@ -145,7 +145,7 @@ const Login = () => {
             </Box>
             <FormControl>
               <FormLabel>
-                Don't have an account? <Link to="/register">Register</Link>
+                Don't have an account? <Link to="/register-org"> <u>Register Organization</u></Link> or <Link to="/register-uni"><u>Register University</u></Link>
               </FormLabel>
             </FormControl>
           </Box>
