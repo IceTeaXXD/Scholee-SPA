@@ -14,16 +14,20 @@ import {
   useColorModeValue,
   Box,
   Image,
-  IconButton
+  IconButton,
+  InputGroup,
+  InputRightElement
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { handleLogin } from "../../utils/auth";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [showPassword, setShowPassword] = useState(false)
 
   const { colorMode, toggleColorMode } = useColorMode();
   const formBackground = useColorModeValue("white", "gray.800");
@@ -45,13 +49,16 @@ const Login = () => {
     }
   }
 
+  const handlePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
   return (
     <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <Flex h="100vh">
         {/* IMAGE */}
         <Box
           display={{ base: "none", md: "block" }}
-          w={{ base: "0%", md: "50%" }} // Set width for different screen sizes
+          w={{ base: "0%", md: "50%" }} 
           overflow="hidden"
         >
           <Image
@@ -96,15 +103,25 @@ const Login = () => {
               <FormLabel bg={formBackground}>Email</FormLabel>
             </FormControl>
             <FormControl variant="floating" id="password" isRequired>
+              <InputGroup>
               <Input
                 placeholder=" "
-                type="password"
+                type={showPassword ? "text" : "password"}
                 mb={5}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <FormLabel bg={formBackground}>Password</FormLabel>
+                <InputRightElement>
+                  <IconButton
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    onClick={handlePasswordVisibility}
+                    variant="ghost"
+                    />
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
             <Link to="/dashboard">
               <Button
