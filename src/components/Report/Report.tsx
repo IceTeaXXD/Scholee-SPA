@@ -81,13 +81,16 @@ const Report: React.FC = () => {
       if (userId === 0 && response?.data.user_id !== 0) {
         setUserId(response?.data.user_id);
       }
-  
-      setCurrentPage(1);
+
       debounceFetch();
     };
   
     getInfoAndFetchStudents();
   }, [search, itemsPerPage, currentPage, userId]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage])
   
     const startPage =
     currentPage <= Math.floor(MAX_PAGE_BUTTONS / 2)
