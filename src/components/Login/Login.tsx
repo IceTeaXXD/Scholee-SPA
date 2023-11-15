@@ -40,7 +40,7 @@ const Login = () => {
       const res = await handleLogin(email, password);
       Cookies.set("accToken", res?.accToken);
       if (res && res.status === "success") {
-        navigate("/dashboard");
+        navigate("/");
       } else {
         setErrMsg(res?.message || "Credentials not match");
       }
