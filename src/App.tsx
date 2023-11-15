@@ -19,6 +19,7 @@ import { OrganizationDashboard } from "./components/Dashboard/OrganizationDashbo
 import { UniversityDashboard } from "./components/Dashboard/UniversityDashboard"
 import { handleGetInfo } from "./utils/auth"
 import UniversityHome from "./components/Home/UniversityHome"
+import Acceptance from "./components/Acceptance/Acceptance"
 
 const ROLES = {
   Organization: "organization",
@@ -195,7 +196,7 @@ function App() {
                 path="scholarships/:scholarshipid/acceptance"
                 element={
                   <Sidebar>
-                    <Scholarships />
+                    <Acceptance />
                   </Sidebar>
                 }
               />
