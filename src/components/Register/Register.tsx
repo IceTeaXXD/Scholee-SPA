@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { motion } from "framer-motion";
 import {
   Flex,
   Heading,
@@ -6,19 +7,22 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Switch,
   useColorMode,
   useColorModeValue,
   InputRightElement,
   InputGroup,
   IconButton,
-  Tooltip,
-  Box
+  Box,
+  Image,
+  FormErrorMessage,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react"
 import { ViewIcon, ViewOffIcon, WarningIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
 import axios from "../../api/axios"
 import { redirect } from "react-router-dom"
+import { FaSun, FaMoon } from "react-icons/fa";
 
 const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
 const PWD_REGEX = /^(?=.*\d).{8,}$/
@@ -27,9 +31,10 @@ const REGISTER_URL = "/api/organization"
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { colorMode, toggleColorMode } = useColorMode()
-  const formBackground = useColorModeValue("blue.100", "blue.700")
-  const buttonColor = useColorModeValue("blue.400", "blue.300")
-  const textColor = useColorModeValue("gray.700", "gray.100")
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const formBackground = useColorModeValue("white", "gray.800")
+  const buttonColor = useColorModeValue("gray.800", "white")
+  const textColor = useColorModeValue("gray.800", "white")
 
   // NAMA
   const [name, setName] = useState("")
@@ -47,9 +52,13 @@ const Register = () => {
   // ORGANIZATION DESC
   const [organizationDescription, setOrganizationDescription] = useState("")
 
+  // REFFERAL CODE
+  const [referralCode, setReferralCode] = useState("")
+
   const [errMsg, setErrMsg] = useState("")
 
   const handleSubmit = async (e: any) => {
+    console.log("SUBMIT")
     e.preventDefault()
     // check if there are some empty fields
     if (
@@ -58,7 +67,8 @@ const Register = () => {
       !password ||
       !matchPwd ||
       !address ||
-      !organizationDescription
+      !organizationDescription ||
+      !referralCode
     ) {
       setErrMsg("Please fill all fields")
       return
@@ -78,27 +88,29 @@ const Register = () => {
       setErrMsg("Password did not match")
       return
     }
-    try {
+    try { 
       const response = await axios.post(
         REGISTER_URL,
         {
-          name,
-          email,
-          password,
-          address,
-          organizationDescription
+          name : name,
+          email : email,
+          password : password,
+          address : address,
+          organizationDescription : organizationDescription,
+          referral_code : referralCode
         },
         {
-          headers: { "Content-Type": "application/json" }
+          headers: {"X-API-KEY" : "kunciT", "Content-Type" : "application/json"} 
         }
       )
-      redirect("/login")
+      setShowSuccessMessage(true);
       setName("")
       setEmail("")
       setPassword("")
       setMatchPwd("")
       setAddress("")
       setOrganizationDescription("")
+      setReferralCode("")
     } catch (err: any) {
       if (!err.response) {
         setErrMsg("No server response")
@@ -113,173 +125,146 @@ const Register = () => {
     setShowPassword(!showPassword)
   }
   return (
-    <Flex h="100vh" alignItems="center" justifyContent="center">
-      <Flex
-        flexDirection="row"
-        w="100%"
-        maxW="1000px"
-        boxShadow="dark-lg"
-        rounded={6}
-        bg={formBackground}
-      >
-        {/* FORM */}
-        <Flex
-          flexDirection="column"
-          bg={formBackground}
-          p={12}
-          borderRadius={8}
-          boxShadow="lg"
-          w="100%"
-        >
-          <Heading mb={6}>Register</Heading>
+    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <Flex h="100vh">
+    {/* FORM */}
+    <Flex
+      flexDirection="column"
+      w={{ base: "100%", md: "50%" }}
+      maxW="1000px"
+      rounded={6}
+      bg={formBackground}
+      p={12}
+    >
+      <Heading mb={6}>Register Organization</Heading>
           <Box
             color="red.500"
             display={errMsg ? "block" : "none"}
-            mb={3}
             fontWeight="bold"
             fontSize="sm"
             aria-live="assertive"
           >
             {errMsg}
           </Box>
-          <FormControl id="name" isRequired>
-            <FormLabel>Name </FormLabel>
+          {showSuccessMessage && (
+            <Alert status="success" mb={6}>
+              <AlertIcon />
+              Registration successful! You can now log in.
+            </Alert>
+          )}
+          <FormControl variant="floating" id="name" isRequired mb={6}>
             <Input
-              type="text"
-              variant="filled"
-              mb={3}
+             placeholder=" "
+             type="text"
+             required
+             value={name}
+             onChange={(e) => setName(e.target.value)}
+             />
+             <FormLabel bg={formBackground}>Name </FormLabel>
+          </FormControl>
+          <FormControl variant="floating" id="email" isRequired isInvalid={!validEmail} mb={6}>
+            <Input
+              placeholder=" "
+              type="email"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => setValidEmail(EMAIL_REGEX.test(email))}
             />
+            <FormLabel bg={formBackground}>Email</FormLabel>
+            <FormErrorMessage>
+              {!validEmail && "Invalid Email"}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl id="email" isRequired>
-            <FormLabel>Email</FormLabel>
+          <FormControl variant="floating" id="password" isRequired isInvalid={!validPwd} mb={6}>
             <InputGroup>
               <Input
-                type="email"
-                variant="filled"
-                mb={3}
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onBlur={() => setValidEmail(EMAIL_REGEX.test(email))}
-              />
-              <InputRightElement>
-                {!validEmail && (
-                  <Tooltip label="Invalid email address" placement="top">
-                    <IconButton
-                      aria-label="Email error"
-                      icon={<WarningIcon />}
-                      color="red.500"
-                    />
-                  </Tooltip>
-                )}
-              </InputRightElement>
-            </InputGroup>
-          </FormControl>
-          <FormControl id="password" isRequired>
-            <FormLabel>Password</FormLabel>
-            <InputGroup>
-              <Input
+                placeholder=" "
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onBlur={() => setValidPwd(PWD_REGEX.test(password))}
-                variant="filled"
-                mb={6}
                 required
-              />
+                />
+              <FormLabel bg={formBackground}>Password</FormLabel>
               <InputRightElement>
                 <IconButton
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                   onClick={handlePasswordVisibility}
                   variant="ghost"
-                />
-                {!validPwd && (
-                  <Tooltip
-                    label="Password must contain at least 8 character and 1 number"
-                    placement="top"
-                  >
-                    <IconButton
-                      aria-label="Email error"
-                      icon={<WarningIcon />}
-                      color="red.500"
-                    />
-                  </Tooltip>
-                )}
+                  />
               </InputRightElement>
             </InputGroup>
+            <FormErrorMessage>
+              Password must contain at least one digit and be a minimum of 8 characters long
+            </FormErrorMessage>
           </FormControl>
-          <FormControl id="passwordConfirmation" isRequired>
-            <FormLabel>Password Confirmation</FormLabel>
+          <FormControl variant="floating" id="passwordConfirmation" isRequired isInvalid={!validMatch} mb={6}>
             <InputGroup>
               <Input
+                placeholder=" "
                 type={showPassword ? "text" : "password"}
                 value={matchPwd}
                 onChange={(e) => setMatchPwd(e.target.value)}
                 onBlur={() => setValidMatch(password === matchPwd)}
-                variant="filled"
-                mb={6}
                 required
-              />
+                />
+              <FormLabel bg={formBackground}>Password Confirmation</FormLabel>
               <InputRightElement>
                 <IconButton
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                   onClick={handlePasswordVisibility}
                   variant="ghost"
-                />
-                {!validMatch && (
-                  <Tooltip label="Password did not match" placement="top">
-                    <IconButton
-                      aria-label="Error match"
-                      icon={<WarningIcon />}
-                      color="red.500"
-                    />
-                  </Tooltip>
-                )}
+                  />
               </InputRightElement>
             </InputGroup>
+            <FormErrorMessage>
+              Password do not match
+            </FormErrorMessage>
           </FormControl>
-          <FormControl id="name" isRequired>
-            <FormLabel>Address </FormLabel>
+          <FormControl variant="floating" id="name" isRequired mb={6}>
             <Input
+              placeholder=" "
               type="text"
-              variant="filled"
-              mb={3}
               required
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-            />
+              />
+            <FormLabel bg={formBackground}>Address </FormLabel>
           </FormControl>
-          <FormControl id="name" isRequired>
-            <FormLabel>Description </FormLabel>
+          <FormControl variant="floating" id="organizationDescription" isRequired mb={6}>
             <Input
+              placeholder=" "
               type="text"
-              variant="filled"
-              mb={3}
               required
               value={organizationDescription}
               onChange={(e) => setOrganizationDescription(e.target.value)}
-            />
+              />
+            <FormLabel bg={formBackground}>Description </FormLabel>
           </FormControl>
-          <Button bg={buttonColor} mb={8} onClick={handleSubmit}>
+          <FormControl variant="floating" id="organizationDescription" isRequired mb={6}>
+            <Input
+              placeholder=" "
+              type="text"
+              required
+              value={referralCode}
+              onChange={(e) => setReferralCode(e.target.value)}
+              />
+            <FormLabel bg={formBackground}>Refferal Code </FormLabel>
+          </FormControl>
+          <Button bg={buttonColor} color={formBackground}_hover={{ bg: "gray.600", color: "gray.200" }} mb={8} onClick={handleSubmit}>
             Register
           </Button>
-          <FormControl display="flex" alignItems="center" mb="3">
-            <FormLabel htmlFor="dark_mode" mb="0">
-              Enable Dark Mode?
-            </FormLabel>
-            <Switch
-              id="dark_mode"
-              color={buttonColor}
-              size="lg"
-              isChecked={colorMode === "dark"}
-              onChange={toggleColorMode}
-            />
-          </FormControl>
+          <Box position="absolute" top="2" left="2">
+              <IconButton
+                aria-label="Toggle Dark Mode"
+                icon={colorMode === "dark" ? <FaSun /> : <FaMoon />}
+                color={buttonColor}
+                onClick={toggleColorMode}
+              />
+          </Box>
           <FormControl>
             <FormLabel>
               Already have an account? <Link to="/login">Log In</Link>
@@ -288,21 +273,19 @@ const Register = () => {
         </Flex>
         {/* IMAGE */}
         <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          w="100%"
-          rounded={6}
-          overflow="hidden"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1616606103915-dea7be788566?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80"
-            alt="Register"
-            className="object-cover"
-          />
-        </Box>
-      </Flex>
+        display={{ base: "none", md: "block" }}
+        alignItems="center"
+        w={{ base: "0%", md: "50%" }}
+        overflow="hidden"
+      >
+        <Image
+          src="https://imageio.forbes.com/specials-images/imageserve/64e6668d9ed8aec53b4af6bf/The-University-of-California--Los-Angeles-campus-/0x0.jpg?format=jpg&height=1080&width=1080"
+          h="100%"
+          alt="Register"
+        />
+      </Box>
     </Flex>
+    </motion.div>
   )
 }
 
