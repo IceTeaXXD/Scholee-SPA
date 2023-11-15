@@ -48,7 +48,6 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
         "/" +
         assignment_id
       const response = await axios.get(URL)
-      console.log(response)
       setAssignmentName(response.data.data.assignment_name)
       setAssignmentDescription(response.data.data.assignment_description)
     } catch (error) {
@@ -101,7 +100,12 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
   }, [isOpen])
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      motionPreset="slideInBottom"
+    >
       <Formik
         initialValues={{
           name: assignmentName,
@@ -114,7 +118,7 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
       >
         {(props) => (
           <Form>
-            <ModalOverlay />
+            <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
             <ModalContent>
               <ModalHeader>Edit Assignment</ModalHeader>
               <ModalCloseButton />

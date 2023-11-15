@@ -86,7 +86,12 @@ export const CreateAssignmentModal = ({
       >
         Create a new assignment
       </Button>
-      <Modal isCentered isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isCentered
+        isOpen={isOpen}
+        onClose={onClose}
+        motionPreset="slideInBottom"
+      >
         {overlay}
         <ModalContent>
           <ModalHeader>Create a new assignment</ModalHeader>

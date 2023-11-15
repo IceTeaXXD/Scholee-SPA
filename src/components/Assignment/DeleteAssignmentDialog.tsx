@@ -69,9 +69,11 @@ export const DeleteAssignmentDialog: React.FC<DeleteAlertDialogProps> = ({
           </AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button colorScheme="red" ml={3} onClick={DeleteAssignment}>
+            <Button colorScheme="red" onClick={DeleteAssignment}>
               Delete
+            </Button>
+            <Button onClick={onClose} ml={3}>
+              Cancel
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
