@@ -199,8 +199,10 @@ const Acceptance = () => {
   }, [sid, search])
 
   return (
-    <Box>
-      <Heading>Scholarship Acceptance</Heading>
+    <Box p="12">
+      <Heading size="sm" as="h1" mb="6" fontSize={{base:30, md:36, lg:48}}>
+        Scholarship Acceptance
+      </Heading>
       <Stack>
         {/* Search Bar */}
         <InputGroup borderRadius={10} size="sm">

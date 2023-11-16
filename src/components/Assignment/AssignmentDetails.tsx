@@ -1,14 +1,12 @@
 import { Box, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import axios from "../../api/axios"
 import { AssignmentCards, AssignmentCardsProps } from "./AssignmentCards"
 import { CreateAssignmentModal } from "./CreateAssignmentModal"
 import useAxiosPrivate from "../../hooks/axiosPrivate"
 
-
 const AssignmentDetails = () => {
-  const axiosInstance = useAxiosPrivate();
+  const axiosInstance = useAxiosPrivate()
 
   const useFetchAssignments = () => {
     const [assignments, setAssignments] = useState([])
@@ -48,11 +46,16 @@ const AssignmentDetails = () => {
       overflow={"hidden"}
     >
       <Box width={{ base: "full", sm: "lg", lg: "xl" }} margin={"auto"}>
-        <Heading size="sm" as="h1" fontSize={48}>
+        <Heading
+          size="sm"
+          as="h1"
+          mb="6"
+          fontSize={{ base: 30, md: 36, lg: 48 }}
+        >
           List of Assignments
         </Heading>
       </Box>
-      <SimpleGrid columns={1} spacing={"5"} mt={16} mb={10} mx={"auto"}>
+      <SimpleGrid columns={1} spacing={"5"} mb={10} mx={"auto"}>
         <CreateAssignmentModal
           afterCreate={() => setShouldFetchAssignments(true)}
         />
