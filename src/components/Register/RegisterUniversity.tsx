@@ -21,14 +21,13 @@ import {
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
 import { FaSun, FaMoon } from "react-icons/fa"
-import useAxiosPrivate from "../../hooks/axiosPrivate"
+import axios from "axios"
 
 const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
 const PWD_REGEX = /^(?=.*\d).{8,}$/
-const REGISTER_URL = "/api/university"
-// const navigate = useNavigate();
+const REGISTER_URL = process.env.REACT_APP_API_URL + "/api/university"
+
 const RegisterUni = () => {
-  const axiosInstance = useAxiosPrivate()
   const [showPassword, setShowPassword] = useState(false)
   const { colorMode, toggleColorMode } = useColorMode()
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
@@ -83,7 +82,7 @@ const RegisterUni = () => {
       return
     }
     try {
-      await axiosInstance.post(
+      await axios.post(
         REGISTER_URL,
         {
           name: name,
