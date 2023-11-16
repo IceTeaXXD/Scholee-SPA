@@ -31,7 +31,6 @@ export const Submissions = () => {
     const fetchFile = async () => {
       try {
         const response = await axiosInstance.get(FILE_URL)
-        console.log(response.data.data.files)
         setSubmissionFile(response.data.data.files)
 
         const userDetailsPromises = response.data.data.files.map(

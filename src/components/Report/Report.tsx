@@ -59,7 +59,6 @@ const Report: React.FC = () => {
     params.append("name", search)
     params.append("itemsperpage", String(itemsPerPage))
     params.append("currentPage", String(currentPage))
-    console.log(params.toString())
     url.search = params.toString()
     const response = await axiosInstance.get(url.toString())
     const students = await response.data

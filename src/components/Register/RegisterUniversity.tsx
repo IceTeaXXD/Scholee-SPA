@@ -18,7 +18,7 @@ import {
   Alert,
   AlertIcon
 } from "@chakra-ui/react"
-import { ViewIcon, ViewOffIcon, WarningIcon } from "@chakra-ui/icons"
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
 import { FaSun, FaMoon } from "react-icons/fa"
 import useAxiosPrivate from "../../hooks/axiosPrivate"
@@ -54,7 +54,6 @@ const RegisterUni = () => {
   const [errMsg, setErrMsg] = useState("")
 
   const handleSubmit = async (e: any) => {
-    console.log("SUBMIT")
     e.preventDefault()
     // check if there are some empty fields
     if (
@@ -84,7 +83,7 @@ const RegisterUni = () => {
       return
     }
     try {
-      const response = await axiosInstance.post(
+      await axiosInstance.post(
         REGISTER_URL,
         {
           name: name,

@@ -57,7 +57,6 @@ const RegisterOrg = () => {
   const [errMsg, setErrMsg] = useState("")
 
   const handleSubmit = async (e: any) => {
-    console.log("SUBMIT")
     e.preventDefault()
     // check if there are some empty fields
     if (

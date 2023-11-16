@@ -143,18 +143,13 @@ const Acceptance = () => {
     const url = new URL(
       process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${sid}`
     )
-    console.log(url.toString())
     axiosInstance
       .post(url.toString(), {
         status: "accepted",
         user_id: Number(selectedID)
       })
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+      .then(function (response) {})
+      .catch(function (error) {})
 
     toast({
       title: "Acceptance set",
@@ -171,17 +166,10 @@ const Acceptance = () => {
     const url = new URL(
       process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${sid}`
     )
-    axiosInstance
-      .post(url.toString(), {
-        status: "rejected",
-        user_id: Number(selectedID)
-      })
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    axiosInstance.post(url.toString(), {
+      status: "rejected",
+      user_id: Number(selectedID)
+    })
 
     toast({
       title: "Rejection set",

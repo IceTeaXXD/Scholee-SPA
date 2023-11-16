@@ -36,8 +36,7 @@ export const DeleteAssignmentDialog: React.FC<DeleteAlertDialogProps> = ({
         scholarship_id +
         "/" +
         assignment_id
-      const response = await axiosInstance.delete(URL)
-      console.log(response)
+      await axiosInstance.delete(URL)
       onClose()
       onDeleteSuccess()
       toast({
