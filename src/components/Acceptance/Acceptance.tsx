@@ -15,6 +15,7 @@ import {
   Th,
   Tbody,
   Td,
+  Text,
   useToast,
   useDisclosure,
   Modal,
@@ -31,15 +32,16 @@ import axios from "axios";
 
 const Acceptance = () => {
     const { scholarshipid } = useParams()
-    const [applicants, setApplicants] = useState([])
+    const [sid, setSID] = useState(Number(scholarshipid))
     const [students, setStudents] = useState<JSX.Element[]>([])
     const [selectedID, setSelectedID] = useState(0)
+    const [search, setSearch] = useState("")
 
     /* Get all applicant */
-    const urlApplicant = new URL(process.env.REACT_APP_API_URL + "/api/scholarship/user/" + scholarshipid)    
     const fetchApplicant = async () => {
+        const urlApplicant = new URL(process.env.REACT_APP_API_URL + "/api/scholarship/user/" + sid)    
         const applicantsResponse = await axios.get(urlApplicant.toString())
-        setApplicants(applicantsResponse.data.data.scholarships)
+        const applicants = await applicantsResponse.data.data.scholarships
 
         /* Fetch the names of the students */
         const studentPromises = applicants.map(async (applicant: any) => {
@@ -55,7 +57,12 @@ const Acceptance = () => {
 
         const studentNames = await Promise.all(studentPromises)
 
-        const studentProp = studentNames.map((student) => (
+        const filteredStudentNames = studentNames.filter((student) =>
+            student.name.toLowerCase().includes(search.toLowerCase()) ||
+            String(student.status).toLowerCase().includes(search.toLowerCase())
+        );
+
+        const studentProp = filteredStudentNames.map((student) => (
             <Tr key={student.user_id}>
                 <Td>{student.name}</Td>
                 <Td>{student.email}</Td>
@@ -80,7 +87,10 @@ const Acceptance = () => {
                             </Button>
                         </>
                     ) : (
-                        student.status
+                        <Text color = {String(student.status) === "accepted" ? "green": "red"}>
+                            {String(student.status) === "accepted" ? "Accepted" : "Rejected"}
+                        </Text>
+                        
                     )}
                 </Td>
             </Tr>
@@ -88,10 +98,6 @@ const Acceptance = () => {
 
         setStudents(studentProp)
     }
-
-    useEffect(() => {
-        fetchApplicant()
-    }, [scholarshipid]);
 
     const toast = useToast();
     const { isOpen: acceptModalIsOpen, onOpen: onAcceptModalOpen, onClose: onAcceptModalClose } = useDisclosure();
@@ -108,7 +114,7 @@ const Acceptance = () => {
     };
 
     const handleAcceptConfirm = () => {
-        const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${scholarshipid}`)
+        const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${sid}`)
         console.log(url.toString())
         axios.post(url.toString(), {
             "status": "accepted",
@@ -118,21 +124,21 @@ const Acceptance = () => {
             console.log(response);
         })
         .catch(function (error) {
-        console.log(error);
+            console.log(error);
         });
-
+        
         toast({
-        title: "Acceptance set",
-        description: "This applicant has been accepted",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
+            title: "Acceptance set",
+            description: "This applicant has been accepted",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
         });
         onAcceptModalClose();
     };
-
+    
     const handleRejectConfirm = () => {
-        const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${scholarshipid}`)
+        const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${sid}`)
         axios.post(url.toString(), {
             "status": "rejected",
             "user_id": Number(selectedID)
@@ -141,17 +147,22 @@ const Acceptance = () => {
             console.log(response);
         })
         .catch(function (error) {
-        console.log(error);
+            console.log(error);
         });
+
         toast({
-        title: "Rejection set",
-        description: "This applicant has been rejected",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
+            title: "Rejection set",
+            description: "This applicant has been rejected",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
         });
         onRejectModalClose();
     };
+    
+    useEffect(() => {
+        fetchApplicant()
+    }, [sid, search]);
 
     return (
         <Box>
@@ -160,7 +171,9 @@ const Acceptance = () => {
             {/* Search Bar */}
             <InputGroup borderRadius={10} size="sm">
             <InputLeftElement pointerEvents="none" children={<Search2Icon color="gray.600" />} />
-            <Input type="text" borderRadius={10} placeholder="Search Name..." border="1px solid #949494" />
+            <Input type="text" borderRadius={10} placeholder="Search Name or Status..." border="1px solid #949494" 
+                onChange={(e) => {setSearch(e.target.value)}}
+            />
             </InputGroup>
         </Stack>
         <Box>
