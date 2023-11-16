@@ -5,61 +5,24 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import Login from "./components/Login/Login"
 import RegisterOrg from "./components/Register/RegisterOrg"
 import RegisterUni from "./components/Register/RegisterUniversity"
-import Home from "./components/Home/Home"
 import Unauthorized from "./components/Error/Unauthorized"
-import Report from "./components/Report/Report"
+import Report from "./components/Report/OrganizationReport"
 import PageNotFound from "./components/Error/PageNotFound"
 import Scholarships from "./components/Scholarships/Scholarships"
 import Sidebar from "./components/Sidebar/Sidebar"
 import RequireAuth from "./utils/RequireAuth"
 import Layout from "./components/layout"
 import AssignmentDetails from "./components/Assignment/AssignmentDetails"
-import useRefreshToken from "./hooks/useRefreshToken"
-import { useEffect, useState } from "react"
-import { OrganizationDashboard } from "./components/Dashboard/OrganizationDashboard"
-import { UniversityDashboard } from "./components/Dashboard/UniversityDashboard"
-import UniversityHome from "./components/Home/UniversityHome"
 import Acceptance from "./components/Acceptance/Acceptance"
 import { Submissions } from "./components/Assignment/Submission"
-import { handleGetInfo } from "./utils/auth"
+import Dashboard from "./components/Dashboard/Dashboard"
+import Home from "./components/Home/Home"
 
 const ROLES = {
   Organization: "organization",
   University: "university"
 }
 function App() {
-  const refresh = useRefreshToken()
-  useEffect(() => {
-    refresh().catch((error) => {
-      // console.error("An error occurred while refreshing the token:", error)
-    })
-  }, [refresh])
-
-  const [userInfo, setUserInfo] = useState({
-    user_id: 0,
-    name: "",
-    email: "",
-    role: ""
-  })
-
-  const getInfo = async () => {
-    try {
-      refresh()
-      const response = await handleGetInfo()
-      setUserInfo({
-        user_id: response?.data.user_id,
-        name: response?.data.name,
-        email: response?.data.email,
-        role: response?.data.roles
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {})
-  useEffect(() => {
-    getInfo()
-  }, [userInfo.role])
   const activeLabelStyles = {
     transform: "scale(0.85) translateY(-24px)"
   }
@@ -83,7 +46,6 @@ function App() {
                 left: 0,
                 zIndex: 2,
                 position: "absolute",
-                // backgroundColor: "white",
                 pointerEvents: "none",
                 mx: 3,
                 px: 1,
@@ -119,11 +81,7 @@ function App() {
                 path="/"
                 element={
                   <Sidebar>
-                    {userInfo.role === "organization" ? (
-                      <Home />
-                    ) : (
-                      <UniversityHome />
-                    )}
+                    <Home />
                   </Sidebar>
                 }
               />
@@ -140,11 +98,7 @@ function App() {
                 path="dashboard"
                 element={
                   <Sidebar>
-                    {userInfo.role === "organization" ? (
-                      <OrganizationDashboard />
-                    ) : (
-                      <UniversityDashboard />
-                    )}
+                    <Dashboard />
                   </Sidebar>
                 }
               />
