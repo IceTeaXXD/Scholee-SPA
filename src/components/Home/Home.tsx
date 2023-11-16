@@ -34,7 +34,7 @@ const Home = () => {
           justifyContent="center"
         >
           <Link
-            to = {`/scholarships`}
+            to={`/scholarships`}
           >
             <ArrowForwardIcon w={6} h={6} mr={2} /> View Scholarships
           </Link>
@@ -71,7 +71,7 @@ const Home = () => {
           justifyContent="center"
         >
           <Link
-            to = {`/dashboard`}
+            to={`/dashboard`}
           >
             <ArrowForwardIcon w={6} h={6} mr={2} /> View Dashboard
           </Link>

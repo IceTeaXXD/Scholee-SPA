@@ -9,7 +9,7 @@ import {
   Button,
   useToast
 } from "@chakra-ui/react"
-import axios from "axios"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 interface DeleteAlertDialogProps {
   isOpen: boolean
@@ -26,6 +26,7 @@ export const DeleteAssignmentDialog: React.FC<DeleteAlertDialogProps> = ({
   assignment_id,
   onDeleteSuccess
 }) => {
+  const axiosInstance = useAxiosPrivate();
   const toast = useToast()
   async function DeleteAssignment() {
     try {
@@ -35,7 +36,7 @@ export const DeleteAssignmentDialog: React.FC<DeleteAlertDialogProps> = ({
         scholarship_id +
         "/" +
         assignment_id
-      const response = await axios.delete(URL)
+      const response = await axiosInstance.delete(URL)
       console.log(response)
       onClose()
       onDeleteSuccess()

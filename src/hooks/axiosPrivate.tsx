@@ -1,47 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { axiosPrivate } from "../api/axios"
-import { useEffect } from "react"
-import useRefreshToken from "./useRefreshToken"
-import Cookies from "js-cookie"
+import { axiosPrivate } from "../api/axios";
+import { useEffect } from "react";
+import useRefreshToken from "./useRefreshToken";
+import Cookies from "js-cookie";
 
 const useAxiosPrivate = () => {
-  const refresh = useRefreshToken()
-  const accToken = Cookies.get("accToken")
+  const refresh = useRefreshToken();
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
-      (config) => {
-        if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${accToken}`
+      async (config) => {
+        try {
+          // Ensure that the access token is up-to-date before making the request
+          await refresh();
+
+          // Set the new access token in the request headers
+          // config.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return config;
+        } catch (error) {
+          return Promise.reject(error);
         }
-        return config
       },
       (error) => Promise.reject(error)
-    )
-
-    const responseIntercept = axiosPrivate.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const prevRequest = error?.config
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
-          prevRequest.sent = true
-          const refResponse = await refresh()
-          Cookies.set("accToken", refResponse.data.accessToken)
-          prevRequest.headers[
-            "Authorization"
-          ] = `Bearer ${refResponse.data.accessToken}`
-          return axiosPrivate(prevRequest)
-        }
-        return Promise.reject(error)
-      }
-    )
+    );
 
     return () => {
-      axiosPrivate.interceptors.request.eject(requestIntercept)
-      axiosPrivate.interceptors.response.eject(responseIntercept)
-    }
-  }, [refresh])
+      axiosPrivate.interceptors.request.eject(requestIntercept);
+    };
+  }, [refresh]);
 
-  return axiosPrivate
-}
+  return axiosPrivate;
+};
 
-export default useAxiosPrivate
+export default useAxiosPrivate;

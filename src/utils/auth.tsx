@@ -57,5 +57,5 @@ async function handleGetInfo() {
     throw error
   }
 }
-
 export { handleLogin, handleLogout, handleGetInfo }
+

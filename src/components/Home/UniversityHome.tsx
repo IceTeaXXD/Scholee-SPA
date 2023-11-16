@@ -34,9 +34,9 @@ const UniversityHome = () => {
           justifyContent="center"
         >
           <Link
-            to = {`/report`}
+            to={`/report`}
           >
-          <ArrowForwardIcon w={6} h={6} mr={2} /> View Students
+            <ArrowForwardIcon w={6} h={6} mr={2} /> View Students
           </Link>
         </Box>
         <Box
@@ -49,7 +49,7 @@ const UniversityHome = () => {
           justifyContent="center"
         >
           <Link
-            to = {`/dashboard`}
+            to={`/dashboard`}
           >
             <ArrowForwardIcon w={6} h={6} mr={2} /> View Dashboard
           </Link>

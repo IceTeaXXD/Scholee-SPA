@@ -20,6 +20,7 @@ import {
 import axios from "axios"
 import { Form, Formik, Field } from "formik"
 import { FiEdit } from "react-icons/fi"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 interface EditAssignmentModalProps {
   isOpen: boolean
   onClose: () => void
@@ -35,6 +36,7 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
   assignment_id,
   onEditSuccess
 }) => {
+  const axiosInstance = useAxiosPrivate();
   const toast = useToast()
   const [assignmentName, setAssignmentName] = React.useState("")
   const [assignmentDescription, setAssignmentDescription] = React.useState("")
@@ -47,7 +49,7 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
         scholarship_id +
         "/" +
         assignment_id
-      const response = await axios.get(URL)
+      const response = await axiosInstance.get(URL)
       setAssignmentName(response.data.data.assignment_name)
       setAssignmentDescription(response.data.data.assignment_description)
     } catch (error) {
@@ -63,7 +65,7 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
         scholarship_id +
         "/" +
         assignment_id
-      const response = await axios.patch(URL, {
+      const response = await axiosInstance.patch(URL, {
         name: assignmentName,
         desc: assignmentDescription
       })

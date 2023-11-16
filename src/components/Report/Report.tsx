@@ -24,7 +24,6 @@ import {
 } from "@chakra-ui/react"
 import axios from "axios"
 import React, { useState, useEffect } from "react"
-import { handleGetInfo } from "../../utils/auth"
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -33,6 +32,8 @@ import {
 } from "@chakra-ui/icons"
 import { FaFilter } from "react-icons/fa"
 import { debounce, get } from "lodash"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
+import { handleGetInfo } from "../../utils/auth"
 
 const Report: React.FC = () => {
   const [userInfo, setUserInfo] = useState({
@@ -41,7 +42,8 @@ const Report: React.FC = () => {
     email: "",
     role: ""
   });
-  
+  const axiosInstance = useAxiosPrivate()
+
   const [userId, setUserId] = useState(0);
   const [students, setStudents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +51,7 @@ const Report: React.FC = () => {
   const [search, setSearch] = useState("");
   const [numberOfPages, setNumberOfPages] = useState(0);
   const MAX_PAGE_BUTTONS = 3;
-  
+
   const fetchStudents = async () => {
     const url = new URL(
       process.env.REACT_APP_API_URL + "/api/university/stats/" + userId
@@ -60,14 +62,14 @@ const Report: React.FC = () => {
     params.append("currentPage", String(currentPage));
     console.log(params.toString());
     url.search = params.toString();
-    const response = await axios.get(url.toString());
+    const response = await axiosInstance.get(url.toString());
     const students = await response.data;
     setNumberOfPages(Math.ceil(students.data.total / itemsPerPage || 100));
     setStudents(students.data.data);
   };
-  
+
   const debounceFetch = debounce(fetchStudents, 500);
-  
+
   useEffect(() => {
     const getInfoAndFetchStudents = async () => {
       const response = await handleGetInfo();
@@ -77,22 +79,22 @@ const Report: React.FC = () => {
         email: response?.data.email,
         role: response?.data.roles
       });
-  
+
       if (userId === 0 && response?.data.user_id !== 0) {
         setUserId(response?.data.user_id);
       }
 
       debounceFetch();
     };
-  
+
     getInfoAndFetchStudents();
   }, [search, itemsPerPage, currentPage, userId]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [itemsPerPage])
-  
-    const startPage =
+
+  const startPage =
     currentPage <= Math.floor(MAX_PAGE_BUTTONS / 2)
       ? 1
       : Math.max(1, currentPage - Math.floor(MAX_PAGE_BUTTONS / 2))

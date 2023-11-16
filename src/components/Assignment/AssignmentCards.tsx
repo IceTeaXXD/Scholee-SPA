@@ -16,6 +16,7 @@ import { Link } from "react-router-dom"
 import { DeleteAssignmentDialog } from "./DeleteAssignmentDialog"
 import { EditAssignmentModal } from "./EditAssignmentModal"
 import axios from "axios"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 export interface AssignmentCardsProps {
   index: Number
@@ -27,34 +28,6 @@ export interface AssignmentCardsProps {
   onEditSuccess: () => void
 }
 
-const useFetchFile = (sid : any, aid : any) => {
-  const [submissionFile, setSubmissionFile] = useState([])
-  const FILE_URL = process.env.REACT_APP_API_URL + "/api/files/scholarship/" + sid + "/assignment/" + aid
-  
-  const fetchFile = async () => {
-    try {
-      const response = await axios.get(FILE_URL)
-      setSubmissionFile(response.data.data.files)
-    } catch (error) {
-      setSubmissionFile([])
-    }
-  }
-
-  return { submissionFile, fetchFile }
-}
-const useFetchStudent = (sid : any) => {
-  const [students, setStudents] = useState([])
-  const STUDENT_URL = process.env.REACT_APP_API_URL + '/api/scholarship/user/' + sid
-  const fetchStudent = async () => {
-    try {
-      const response = await axios.get(STUDENT_URL);
-      setStudents(response.data.data.scholarships);
-    } catch (err : any) {
-      console.log(err)
-    }
-  }
-  return {students, fetchStudent}
-}
 export const AssignmentCards = ({
   index,
   scholarship_id,
@@ -64,8 +37,39 @@ export const AssignmentCards = ({
   onDeleteSuccess,
   onEditSuccess
 }: AssignmentCardsProps) => {
+  // use fetch student
+  const useFetchStudent = (sid: any) => {
+    const [students, setStudents] = useState([])
+    const STUDENT_URL = process.env.REACT_APP_API_URL + '/api/scholarship/user/' + sid
+    const fetchStudent = async () => {
+      try {
+        const response = await axiosInstance.get(STUDENT_URL);
+        setStudents(response.data.data.scholarships);
+      } catch (err: any) {
+        console.log(err)
+      }
+    }
+    return { students, fetchStudent }
+  }
+  //use fetch file
+  const useFetchFile = (sid: any, aid: any) => {
+    const [submissionFile, setSubmissionFile] = useState([])
+    const FILE_URL = process.env.REACT_APP_API_URL + "/api/files/scholarship/" + sid + "/assignment/" + aid
+
+    const fetchFile = async () => {
+      try {
+        const response = await axiosInstance.get(FILE_URL)
+        setSubmissionFile(response.data.data.files)
+      } catch (error) {
+        setSubmissionFile([])
+      }
+    }
+
+    return { submissionFile, fetchFile }
+  }
+  const axiosInstance = useAxiosPrivate()
   const { submissionFile, fetchFile } = useFetchFile(scholarship_id, assignment_id);
-  const { students, fetchStudent} = useFetchStudent(scholarship_id);
+  const { students, fetchStudent } = useFetchStudent(scholarship_id);
   const [applicants, setApplicants] = useState(students.length)
   const [submissions, setSubmissions] = useState(submissionFile.length)
   useEffect(() => {
@@ -74,7 +78,7 @@ export const AssignmentCards = ({
       setSubmissions(submissionFile.length)
     }
     fetchData();
-  }, [ submissionFile.length]);
+  }, [submissionFile.length]);
   useEffect(() => {
     const fetchData = async () => {
       await fetchStudent();
@@ -85,7 +89,7 @@ export const AssignmentCards = ({
   // TODO: SET THE APPLICANTS AND SUBMSISSIONS @MATTHEW MAHENDRA
   const [isOpenEditAssignment, setIsOpenEditAssignment] = useState(false)
   const [isOpenDeleteAssignment, setIsOpenDeleteAssignment] =
-  React.useState(false)
+    React.useState(false)
   const onCloseEditAssignment = () => setIsOpenEditAssignment(false)
   const onCloseDeleteAssignment = () => setIsOpenDeleteAssignment(false)
   const onEditAssignment = () => {

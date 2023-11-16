@@ -10,9 +10,8 @@ import { FiHome, FiBarChart, FiCompass, FiBriefcase } from "react-icons/fi"
 import { IconType } from "react-icons"
 import NavItem from "./NavItem"
 import { ReactComponent as Logo } from "../../assets/logo-1.svg"
-import { handleGetInfo } from "../../utils/auth"
 import { useEffect, useState } from "react"
-
+import { handleGetInfo } from "../../utils/auth"
 interface SidebarProps extends BoxProps {
   onClose: () => void
 }
@@ -29,7 +28,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     email: "",
     role: ""
   })
-
   const getInfo = async () => {
     const response = await handleGetInfo()
     const name = response?.data.name

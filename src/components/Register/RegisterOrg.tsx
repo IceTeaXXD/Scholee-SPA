@@ -23,12 +23,14 @@ import { Link } from "react-router-dom"
 import axios from "../../api/axios"
 import { redirect } from "react-router-dom"
 import { FaSun, FaMoon } from "react-icons/fa";
+import useAxiosPrivate from "../../hooks/axiosPrivate";
 
 const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
 const PWD_REGEX = /^(?=.*\d).{8,}$/
 const REGISTER_URL = "/api/organization"
 // const navigate = useNavigate();
 const RegisterOrg = () => {
+  const axiosInstance = useAxiosPrivate();
   const [showPassword, setShowPassword] = useState(false)
   const { colorMode, toggleColorMode } = useColorMode()
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -88,19 +90,19 @@ const RegisterOrg = () => {
       setErrMsg("Password did not match")
       return
     }
-    try { 
-      const response = await axios.post(
+    try {
+      const response = await axiosInstance.post(
         REGISTER_URL,
         {
-          name : name,
-          email : email,
-          password : password,
-          address : address,
-          organizationDescription : organizationDescription,
-          referral_code : referralCode
+          name: name,
+          email: email,
+          password: password,
+          address: address,
+          organizationDescription: organizationDescription,
+          referral_code: referralCode
         },
         {
-          headers: {"X-API-KEY" : "kunciT", "Content-Type" : "application/json"} 
+          headers: { "X-API-KEY": "kunciT", "Content-Type": "application/json" }
         }
       )
       setShowSuccessMessage(true);
@@ -126,17 +128,17 @@ const RegisterOrg = () => {
   }
   return (
     <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-    <Flex h="100vh">
-    {/* FORM */}
-    <Flex
-      flexDirection="column"
-      w={{ base: "100%", md: "50%" }}
-      maxW="1000px"
-      rounded={6}
-      bg={formBackground}
-      p={12}
-    >
-      <Heading mb={6}>Register Organization</Heading>
+      <Flex h="100vh">
+        {/* FORM */}
+        <Flex
+          flexDirection="column"
+          w={{ base: "100%", md: "50%" }}
+          maxW="1000px"
+          rounded={6}
+          bg={formBackground}
+          p={12}
+        >
+          <Heading mb={6}>Register Organization</Heading>
           <Box
             color="red.500"
             display={errMsg ? "block" : "none"}
@@ -154,13 +156,13 @@ const RegisterOrg = () => {
           )}
           <FormControl variant="floating" id="name" isRequired mb={6}>
             <Input
-             placeholder=" "
-             type="text"
-             required
-             value={name}
-             onChange={(e) => setName(e.target.value)}
-             />
-             <FormLabel bg={formBackground}>Name </FormLabel>
+              placeholder=" "
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <FormLabel bg={formBackground}>Name </FormLabel>
           </FormControl>
           <FormControl variant="floating" id="email" isRequired isInvalid={!validEmail} mb={6}>
             <Input
@@ -185,7 +187,7 @@ const RegisterOrg = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 onBlur={() => setValidPwd(PWD_REGEX.test(password))}
                 required
-                />
+              />
               <FormLabel bg={formBackground}>Password</FormLabel>
               <InputRightElement>
                 <IconButton
@@ -193,7 +195,7 @@ const RegisterOrg = () => {
                   icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                   onClick={handlePasswordVisibility}
                   variant="ghost"
-                  />
+                />
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
@@ -209,7 +211,7 @@ const RegisterOrg = () => {
                 onChange={(e) => setMatchPwd(e.target.value)}
                 onBlur={() => setValidMatch(password === matchPwd)}
                 required
-                />
+              />
               <FormLabel bg={formBackground}>Password Confirmation</FormLabel>
               <InputRightElement>
                 <IconButton
@@ -217,7 +219,7 @@ const RegisterOrg = () => {
                   icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                   onClick={handlePasswordVisibility}
                   variant="ghost"
-                  />
+                />
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
@@ -231,7 +233,7 @@ const RegisterOrg = () => {
               required
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              />
+            />
             <FormLabel bg={formBackground}>Address </FormLabel>
           </FormControl>
           <FormControl variant="floating" id="organizationDescription" isRequired mb={6}>
@@ -241,7 +243,7 @@ const RegisterOrg = () => {
               required
               value={organizationDescription}
               onChange={(e) => setOrganizationDescription(e.target.value)}
-              />
+            />
             <FormLabel bg={formBackground}>Description </FormLabel>
           </FormControl>
           <FormControl variant="floating" id="organizationDescription" isRequired mb={6}>
@@ -251,19 +253,19 @@ const RegisterOrg = () => {
               required
               value={referralCode}
               onChange={(e) => setReferralCode(e.target.value)}
-              />
+            />
             <FormLabel bg={formBackground}>Refferal Code </FormLabel>
           </FormControl>
-          <Button bg={buttonColor} color={formBackground}_hover={{ bg: "gray.600", color: "gray.200" }} mb={8} onClick={handleSubmit}>
+          <Button bg={buttonColor} color={formBackground} _hover={{ bg: "gray.600", color: "gray.200" }} mb={8} onClick={handleSubmit}>
             Register
           </Button>
           <Box position="absolute" top="2" left="2">
-              <IconButton
-                aria-label="Toggle Dark Mode"
-                icon={colorMode === "dark" ? <FaSun /> : <FaMoon />}
-                color={buttonColor}
-                onClick={toggleColorMode}
-              />
+            <IconButton
+              aria-label="Toggle Dark Mode"
+              icon={colorMode === "dark" ? <FaSun /> : <FaMoon />}
+              color={buttonColor}
+              onClick={toggleColorMode}
+            />
           </Box>
           <FormControl>
             <FormLabel>
@@ -273,18 +275,18 @@ const RegisterOrg = () => {
         </Flex>
         {/* IMAGE */}
         <Box
-        display={{ base: "none", md: "block" }}
-        alignItems="center"
-        w={{ base: "0%", md: "50%" }}
-        overflow="hidden"
-      >
-        <Image
-          src="https://imageio.forbes.com/specials-images/imageserve/64e6668d9ed8aec53b4af6bf/The-University-of-California--Los-Angeles-campus-/0x0.jpg?format=jpg&height=1080&width=1080"
-          h="100%"
-          alt="Register"
-        />
-      </Box>
-    </Flex>
+          display={{ base: "none", md: "block" }}
+          alignItems="center"
+          w={{ base: "0%", md: "50%" }}
+          overflow="hidden"
+        >
+          <Image
+            src="https://imageio.forbes.com/specials-images/imageserve/64e6668d9ed8aec53b4af6bf/The-University-of-California--Los-Angeles-campus-/0x0.jpg?format=jpg&height=1080&width=1080"
+            h="100%"
+            alt="Register"
+          />
+        </Box>
+      </Flex>
     </motion.div>
   )
 }

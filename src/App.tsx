@@ -2,7 +2,7 @@ import "./App.css"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import Login from "./components/Login/Login"
-import RegisterOrg from "./components/Register/RegisterOrg" 
+import RegisterOrg from "./components/Register/RegisterOrg"
 import RegisterUni from "./components/Register/RegisterUniversity"
 import Home from "./components/Home/Home"
 import Unauthorized from "./components/Error/Unauthorized"
@@ -17,10 +17,10 @@ import useRefreshToken from "./hooks/useRefreshToken"
 import { useEffect, useState } from "react"
 import { OrganizationDashboard } from "./components/Dashboard/OrganizationDashboard"
 import { UniversityDashboard } from "./components/Dashboard/UniversityDashboard"
-import { handleGetInfo } from "./utils/auth"
 import UniversityHome from "./components/Home/UniversityHome"
 import Acceptance from "./components/Acceptance/Acceptance"
 import { Submissions } from "./components/Assignment/Submission"
+import { handleGetInfo } from "./utils/auth"
 
 const ROLES = {
   Organization: "organization",
@@ -42,7 +42,8 @@ function App() {
   })
 
   const getInfo = async () => {
-    try { 
+    try {
+      refresh();
       const response = await handleGetInfo()
       setUserInfo({
         user_id: response?.data.user_id,
@@ -54,10 +55,12 @@ function App() {
       console.log(error)
     }
   }
+  useEffect(() => {
 
+  })
   useEffect(() => {
     getInfo()
-  }, [])
+  }, [userInfo.role])
   const activeLabelStyles = {
     transform: "scale(0.85) translateY(-24px)"
   };
@@ -92,7 +95,7 @@ function App() {
         }
       }
     }
-  });  
+  });
   return (
     <ChakraProvider theme={theme}>
       <Router>
@@ -101,7 +104,7 @@ function App() {
             {/* Public Routes */}
             <Route path="login" element={<Login />} />
             <Route path="register-org" element={<RegisterOrg />} />
-            <Route path="register-uni" element={<RegisterUni/>} />
+            <Route path="register-uni" element={<RegisterUni />} />
             <Route path="unauthorized" element={<Unauthorized />} />
 
             {/* Protected Routes */}
@@ -202,7 +205,7 @@ function App() {
                 }
               />
             </Route>
-            
+
             <Route
               element={<RequireAuth allowedRoles={[ROLES.Organization]} />}
             >

@@ -20,10 +20,10 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
-import { handleLogin } from "../../utils/auth";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-
+import { handleLogin } from "../../utils/auth";
 const Login = () => {
+  // const {handleLogin} = useAuth()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -58,7 +58,7 @@ const Login = () => {
         {/* IMAGE */}
         <Box
           display={{ base: "none", md: "block" }}
-          w={{ base: "0%", md: "50%" }} 
+          w={{ base: "0%", md: "50%" }}
           overflow="hidden"
         >
           <Image
@@ -104,22 +104,22 @@ const Login = () => {
             </FormControl>
             <FormControl variant="floating" id="password" isRequired>
               <InputGroup>
-              <Input
-                placeholder=" "
-                type={showPassword ? "text" : "password"}
-                mb={5}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <FormLabel bg={formBackground}>Password</FormLabel>
+                <Input
+                  placeholder=" "
+                  type={showPassword ? "text" : "password"}
+                  mb={5}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <FormLabel bg={formBackground}>Password</FormLabel>
                 <InputRightElement>
                   <IconButton
                     aria-label={showPassword ? "Hide password" : "Show password"}
                     icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                     onClick={handlePasswordVisibility}
                     variant="ghost"
-                    />
+                  />
                 </InputRightElement>
               </InputGroup>
             </FormControl>

@@ -4,27 +4,30 @@ import { useParams } from "react-router-dom"
 import axios from "../../api/axios"
 import { AssignmentCards, AssignmentCardsProps } from "./AssignmentCards"
 import { CreateAssignmentModal } from "./CreateAssignmentModal"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 
-const useFetchAssignments = () => {
-  const [assignments, setAssignments] = useState([])
-  const { scholarshipid } = useParams()
-
-  const fetchAssignments = async () => {
-    try {
-      const URL =
-        process.env.REACT_APP_API_URL + "/api/assignment/" + scholarshipid
-      const response = await axios.get(URL)
-      setAssignments(response.data.data)
-    } catch (error) {
-      console.error("Error fetching assignments:", error)
-      setAssignments([])
-    }
-  }
-
-  return { assignments, fetchAssignments }
-}
 
 const AssignmentDetails = () => {
+  const axiosInstance = useAxiosPrivate();
+
+  const useFetchAssignments = () => {
+    const [assignments, setAssignments] = useState([])
+    const { scholarshipid } = useParams()
+
+    const fetchAssignments = async () => {
+      try {
+        const URL =
+          process.env.REACT_APP_API_URL + "/api/assignment/" + scholarshipid
+        const response = await axiosInstance.get(URL)
+        setAssignments(response.data.data)
+      } catch (error) {
+        console.error("Error fetching assignments:", error)
+        setAssignments([])
+      }
+    }
+
+    return { assignments, fetchAssignments }
+  }
   const { assignments, fetchAssignments } = useFetchAssignments()
   const [shouldFetchAssignments, setShouldFetchAssignments] = useState(true)
 

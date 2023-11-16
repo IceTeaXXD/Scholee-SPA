@@ -17,10 +17,8 @@ import { FiMenu, FiChevronDown } from "react-icons/fi"
 import { Link, useNavigate } from "react-router-dom"
 import { ReactComponent as Logo } from "../../assets/logo-1.svg"
 import AvatarWithRipple from "../Avatar/Avatar"
-import { handleLogout } from "../../utils/auth"
 import { useState, useEffect } from "react"
-import { handleGetInfo } from "../../utils/auth"
-
+import { handleGetInfo, handleLogout } from "../../utils/auth"
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }

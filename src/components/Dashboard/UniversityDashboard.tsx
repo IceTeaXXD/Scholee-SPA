@@ -10,11 +10,12 @@ import {
   Button
 } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
-import axios from "axios"
 import { useEffect, useState } from "react"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 import { handleGetInfo } from "../../utils/auth"
 
 export const UniversityDashboard = () => {
+  const axiosInstance = useAxiosPrivate()
   const [userInfo, setUserInfo] = useState({
     user_id: 0,
     name: "",
@@ -35,11 +36,11 @@ export const UniversityDashboard = () => {
           role: response?.data.roles
         });
 
-        const students = await axios.get(
+        const students = await axiosInstance.get(
           process.env.REACT_APP_API_URL + "/api/university/stats/" + response?.data.user_id
         );
 
-        setStudentCount(students.data.data.data[0].applicant_count)  
+        setStudentCount(students.data.data.data[0].applicant_count)
       } catch (error) {
         console.error("Error in useEffect:", error);
       }

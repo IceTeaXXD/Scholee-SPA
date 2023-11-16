@@ -1,36 +1,37 @@
 import { useEffect, useState } from "react";
 import {
-  Button,
-  Icon,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  Box,
-  Heading,
-  Stack,
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  Text,
-  useToast,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+    Button,
+    Icon,
+    InputGroup,
+    InputLeftElement,
+    Input,
+    Box,
+    Heading,
+    Stack,
+    TableContainer,
+    Table,
+    Thead,
+    Tr,
+    Th,
+    Tbody,
+    Td,
+    Text,
+    useToast,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalFooter,
 } from "@chakra-ui/react";
 import { Search2Icon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import useAxiosPrivate from "../../hooks/axiosPrivate";
 
 const Acceptance = () => {
+    const axiosInstance = useAxiosPrivate();
     const { scholarshipid } = useParams()
     const [sid, setSID] = useState(Number(scholarshipid))
     const [students, setStudents] = useState<JSX.Element[]>([])
@@ -39,14 +40,14 @@ const Acceptance = () => {
 
     /* Get all applicant */
     const fetchApplicant = async () => {
-        const urlApplicant = new URL(process.env.REACT_APP_API_URL + "/api/scholarship/user/" + sid)    
-        const applicantsResponse = await axios.get(urlApplicant.toString())
+        const urlApplicant = new URL(process.env.REACT_APP_API_URL + "/api/scholarship/user/" + sid)
+        const applicantsResponse = await axiosInstance.get(urlApplicant.toString())
         const applicants = await applicantsResponse.data.data.scholarships
 
         /* Fetch the names of the students */
         const studentPromises = applicants.map(async (applicant: any) => {
             const studentURL = new URL(process.env.REACT_APP_API_URL + "/api/user/" + applicant.user_id_student)
-            const studentResponse = await axios.get(studentURL.toString())
+            const studentResponse = await axiosInstance.get(studentURL.toString())
             return {
                 user_id: applicant.user_id_student,
                 name: studentResponse.data.data.user.name,
@@ -87,10 +88,10 @@ const Acceptance = () => {
                             </Button>
                         </>
                     ) : (
-                        <Text color = {String(student.status) === "accepted" ? "green": "red"}>
+                        <Text color={String(student.status) === "accepted" ? "green" : "red"}>
                             {String(student.status) === "accepted" ? "Accepted" : "Rejected"}
                         </Text>
-                        
+
                     )}
                 </Td>
             </Tr>
@@ -116,17 +117,17 @@ const Acceptance = () => {
     const handleAcceptConfirm = () => {
         const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${sid}`)
         console.log(url.toString())
-        axios.post(url.toString(), {
+        axiosInstance.post(url.toString(), {
             "status": "accepted",
             "user_id": Number(selectedID)
         })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-        
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
         toast({
             title: "Acceptance set",
             description: "This applicant has been accepted",
@@ -136,19 +137,19 @@ const Acceptance = () => {
         });
         onAcceptModalClose();
     };
-    
+
     const handleRejectConfirm = () => {
         const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${sid}`)
-        axios.post(url.toString(), {
+        axiosInstance.post(url.toString(), {
             "status": "rejected",
             "user_id": Number(selectedID)
         })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
 
         toast({
             title: "Rejection set",
@@ -159,81 +160,81 @@ const Acceptance = () => {
         });
         onRejectModalClose();
     };
-    
+
     useEffect(() => {
         fetchApplicant()
     }, [sid, search]);
 
     return (
         <Box>
-        <Heading>Scholarship Acceptance</Heading>
-        <Stack>
-            {/* Search Bar */}
-            <InputGroup borderRadius={10} size="sm">
-            <InputLeftElement pointerEvents="none" children={<Search2Icon color="gray.600" />} />
-            <Input type="text" borderRadius={10} placeholder="Search Name or Status..." border="1px solid #949494" 
-                onChange={(e) => {setSearch(e.target.value)}}
-            />
-            </InputGroup>
-        </Stack>
-        <Box>
-            <TableContainer>
-                <Table variant="simple">
-                    <Thead>
-                    <Tr>
-                        <Th>Student Name</Th>
-                        <Th>Email</Th>
-                        <Th>Status</Th>
-                    </Tr>
-                    </Thead>
-                    <Tbody>
-                        {students}
-                    </Tbody>
-                </Table>
-            </TableContainer>
-        </Box>
+            <Heading>Scholarship Acceptance</Heading>
+            <Stack>
+                {/* Search Bar */}
+                <InputGroup borderRadius={10} size="sm">
+                    <InputLeftElement pointerEvents="none" children={<Search2Icon color="gray.600" />} />
+                    <Input type="text" borderRadius={10} placeholder="Search Name or Status..." border="1px solid #949494"
+                        onChange={(e) => { setSearch(e.target.value) }}
+                    />
+                </InputGroup>
+            </Stack>
+            <Box>
+                <TableContainer>
+                    <Table variant="simple">
+                        <Thead>
+                            <Tr>
+                                <Th>Student Name</Th>
+                                <Th>Email</Th>
+                                <Th>Status</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            {students}
+                        </Tbody>
+                    </Table>
+                </TableContainer>
+            </Box>
 
-        {/* Accept Confirmation Modal */}
-        <Modal isOpen={acceptModalIsOpen} onClose={onAcceptModalClose}>
-            <ModalOverlay />
-            <ModalContent>
-            <ModalHeader>Confirm Acceptance</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-                Are you sure you want to accept this applicant?
-            </ModalBody>
-            <ModalFooter>
-                <Button colorScheme="green" mr={3} onClick={handleAcceptConfirm}>
-                Confirm
-                </Button>
-                <Button variant="ghost" onClick={onAcceptModalClose}>
-                Cancel
-                </Button>
-            </ModalFooter>
-            </ModalContent>
-        </Modal>
+            {/* Accept Confirmation Modal */}
+            <Modal isOpen={acceptModalIsOpen} onClose={onAcceptModalClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Confirm Acceptance</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        Are you sure you want to accept this applicant?
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="green" mr={3} onClick={handleAcceptConfirm}>
+                            Confirm
+                        </Button>
+                        <Button variant="ghost" onClick={onAcceptModalClose}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
 
-        {/* Reject Confirmation Modal */}
-        <Modal isOpen={rejectModalIsOpen} onClose={onRejectModalClose}>
-            <ModalOverlay />
-            <ModalContent>
-            <ModalHeader>Confirm Rejection</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-                Are you sure you want to reject this applicant?
-            </ModalBody>
-            <ModalFooter>
-                <Button colorScheme="red" mr={3} onClick={handleRejectConfirm}>
-                Confirm
-                </Button>
-                <Button variant="ghost" onClick={onRejectModalClose}>
-                Cancel
-                </Button>
-            </ModalFooter>
-            </ModalContent>
-        </Modal>
+            {/* Reject Confirmation Modal */}
+            <Modal isOpen={rejectModalIsOpen} onClose={onRejectModalClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Confirm Rejection</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        Are you sure you want to reject this applicant?
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="red" mr={3} onClick={handleRejectConfirm}>
+                            Confirm
+                        </Button>
+                        <Button variant="ghost" onClick={onRejectModalClose}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Box>
     );
-    };
+};
 
-    export default Acceptance;
+export default Acceptance;
