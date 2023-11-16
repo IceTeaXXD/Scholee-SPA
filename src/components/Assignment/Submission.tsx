@@ -1,8 +1,9 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Center, Flex, ButtonGroup, IconButton, useEditableControls, Editable, EditableInput, EditablePreview, Input, Tooltip, useColorModeValue } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/axiosPrivate";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 
 interface FileDetails {
   file_id: number;
@@ -69,24 +70,80 @@ export const Submissions = () => {
     fetchFile();
   }, [scholarshipid, assignmentid]);
 
+  function EditableControls() {
+    const {
+      isEditing,
+      getSubmitButtonProps,
+      getCancelButtonProps,
+      getEditButtonProps
+    } = useEditableControls();
+
+    return isEditing ? (
+      <ButtonGroup justifyContent="end" size="sm" w="full">
+        <IconButton
+          icon={<CheckIcon />}
+          aria-label="Submit"
+          {...getSubmitButtonProps()}
+        />
+        <IconButton
+          icon={<CloseIcon boxSize={3} />}
+          aria-label="Cancel"
+          {...getCancelButtonProps()}
+        />
+      </ButtonGroup>
+    ) : null;
+  }
   return (
-    <div>
+    <Accordion allowMultiple>
       {submissionFile.map((file, index) => (
-        <Box key={index} marginBottom="4" width="100%" borderWidth="1px" borderRadius="lg" overflow="hidden">
-          <iframe
-            title={`Google Drive Viewer ${index}`}
-            src={file.file_path}
-            width="100%"
-            height="700px"
-          ></iframe>
-          {userDetailsArray[index] && (
-            <Box p="4">
-              <Text fontWeight="bold" marginBottom="2">Name: {userDetailsArray[index].name}</Text>
-              <Text>Email: {userDetailsArray[index].email}</Text>
+        <AccordionItem key={index}>
+          <Box>
+            <AccordionButton>
+              <Flex justify="space-between" align="center" w="100%">
+                {/* Editable Component */}
+                {userDetailsArray[index] && (
+                  <Box p="4">
+                    <Text fontWeight="bold" marginBottom="2">
+                      Name: {userDetailsArray[index].name}
+                    </Text>
+                  </Box>
+                )}
+                {/* Accordion Icon */}
+                <AccordionIcon />
+              </Flex>
+            </AccordionButton>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Editable
+                defaultValue="Rasengan ⚡️"
+                isPreviewFocusable={true}
+                selectAllOnFocus={false}
+                maxWidth="300px"
+              >
+                <Tooltip label="Click to edit" shouldWrapChildren={true}>
+                  <EditablePreview
+                    _hover={{
+                      background: "gray.100",
+                    }}
+                  />
+                </Tooltip>
+                <Flex>
+                  <Input as={EditableInput} />
+                  <EditableControls />
+                </Flex>
+              </Editable>
             </Box>
-          )}
-        </Box>
+          </Box>
+
+          <AccordionPanel>
+            <iframe
+              title={`Google Drive Viewer ${index}`}
+              src={file.file_path}
+              width="100%"
+              height="700px"
+            ></iframe>
+          </AccordionPanel>
+        </AccordionItem>
       ))}
-    </div>
+    </Accordion>
   );
 };
