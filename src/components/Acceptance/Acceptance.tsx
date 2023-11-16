@@ -200,7 +200,7 @@ const Acceptance = () => {
 
   return (
     <Box p="12">
-      <Heading size="sm" as="h1" mb="6" fontSize={{base:30, md:36, lg:48}}>
+      <Heading size="sm" as="h1" mb="6" fontSize={{ base: 30, md: 36, lg: 48 }}>
         Scholarship Acceptance
       </Heading>
       <Stack>

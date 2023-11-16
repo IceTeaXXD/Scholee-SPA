@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"
 import {
   Flex,
   Heading,
@@ -16,14 +16,12 @@ import {
   Image,
   FormErrorMessage,
   Alert,
-  AlertIcon,
+  AlertIcon
 } from "@chakra-ui/react"
 import { ViewIcon, ViewOffIcon, WarningIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
-import axios from "../../api/axios"
-import { redirect } from "react-router-dom"
-import { FaSun, FaMoon } from "react-icons/fa";
-import useAxiosPrivate from "../../hooks/axiosPrivate";
+import { FaSun, FaMoon } from "react-icons/fa"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/
 const PWD_REGEX = /^(?=.*\d).{8,}$/
@@ -33,10 +31,9 @@ const RegisterUni = () => {
   const axiosInstance = useAxiosPrivate()
   const [showPassword, setShowPassword] = useState(false)
   const { colorMode, toggleColorMode } = useColorMode()
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const formBackground = useColorModeValue("white", "gray.800")
   const buttonColor = useColorModeValue("gray.800", "white")
-  const textColor = useColorModeValue("gray.800", "white")
 
   // NAMA
   const [name, setName] = useState("")
@@ -94,13 +91,13 @@ const RegisterUni = () => {
           email: email,
           password: password,
           address: address,
-          universityDescription: universityDescription,
+          universityDescription: universityDescription
         },
         {
           headers: { "X-API-KEY": "kunciT", "Content-Type": "application/json" }
         }
       )
-      setShowSuccessMessage(true);
+      setShowSuccessMessage(true)
       setName("")
       setEmail("")
       setPassword("")
@@ -121,7 +118,11 @@ const RegisterUni = () => {
     setShowPassword(!showPassword)
   }
   return (
-    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <motion.div
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Flex h="100vh">
         {/* FORM */}
         <Flex
@@ -158,7 +159,13 @@ const RegisterUni = () => {
             />
             <FormLabel bg={formBackground}>Name </FormLabel>
           </FormControl>
-          <FormControl variant="floating" id="email" isRequired isInvalid={!validEmail} mb={6}>
+          <FormControl
+            variant="floating"
+            id="email"
+            isRequired
+            isInvalid={!validEmail}
+            mb={6}
+          >
             <Input
               placeholder=" "
               type="email"
@@ -172,7 +179,13 @@ const RegisterUni = () => {
               {!validEmail && "Invalid Email"}
             </FormErrorMessage>
           </FormControl>
-          <FormControl variant="floating" id="password" isRequired isInvalid={!validPwd} mb={6}>
+          <FormControl
+            variant="floating"
+            id="password"
+            isRequired
+            isInvalid={!validPwd}
+            mb={6}
+          >
             <InputGroup>
               <Input
                 placeholder=" "
@@ -193,10 +206,17 @@ const RegisterUni = () => {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
-              Password must contain at least one digit and be a minimum of 8 characters long
+              Password must contain at least one digit and be a minimum of 8
+              characters long
             </FormErrorMessage>
           </FormControl>
-          <FormControl variant="floating" id="passwordConfirmation" isRequired isInvalid={!validMatch} mb={6}>
+          <FormControl
+            variant="floating"
+            id="passwordConfirmation"
+            isRequired
+            isInvalid={!validMatch}
+            mb={6}
+          >
             <InputGroup>
               <Input
                 placeholder=" "
@@ -216,9 +236,7 @@ const RegisterUni = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            <FormErrorMessage>
-              Password do not match
-            </FormErrorMessage>
+            <FormErrorMessage>Password do not match</FormErrorMessage>
           </FormControl>
           <FormControl variant="floating" id="name" isRequired mb={6}>
             <Input
@@ -230,7 +248,12 @@ const RegisterUni = () => {
             />
             <FormLabel bg={formBackground}>Address </FormLabel>
           </FormControl>
-          <FormControl variant="floating" id="universityDescription" isRequired mb={6}>
+          <FormControl
+            variant="floating"
+            id="universityDescription"
+            isRequired
+            mb={6}
+          >
             <Input
               placeholder=" "
               type="text"
@@ -240,7 +263,13 @@ const RegisterUni = () => {
             />
             <FormLabel bg={formBackground}>Description </FormLabel>
           </FormControl>
-          <Button bg={buttonColor} color={formBackground} _hover={{ bg: "gray.600", color: "gray.200" }} mb={8} onClick={handleSubmit}>
+          <Button
+            bg={buttonColor}
+            color={formBackground}
+            _hover={{ bg: "gray.600", color: "gray.200" }}
+            mb={8}
+            onClick={handleSubmit}
+          >
             Register
           </Button>
           <Box position="absolute" top="2" left="2">

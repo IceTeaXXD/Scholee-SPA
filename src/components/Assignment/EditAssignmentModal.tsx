@@ -17,7 +17,6 @@ import {
   Textarea,
   useToast
 } from "@chakra-ui/react"
-import axios from "axios"
 import { Form, Formik, Field } from "formik"
 import { FiEdit } from "react-icons/fi"
 import useAxiosPrivate from "../../hooks/axiosPrivate"
@@ -36,7 +35,7 @@ export const EditAssignmentModal: React.FC<EditAssignmentModalProps> = ({
   assignment_id,
   onEditSuccess
 }) => {
-  const axiosInstance = useAxiosPrivate();
+  const axiosInstance = useAxiosPrivate()
   const toast = useToast()
   const [assignmentName, setAssignmentName] = React.useState("")
   const [assignmentDescription, setAssignmentDescription] = React.useState("")

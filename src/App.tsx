@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
@@ -43,7 +44,7 @@ function App() {
 
   const getInfo = async () => {
     try {
-      refresh();
+      refresh()
       const response = await handleGetInfo()
       setUserInfo({
         user_id: response?.data.user_id,
@@ -55,15 +56,13 @@ function App() {
       console.log(error)
     }
   }
-  useEffect(() => {
-
-  })
+  useEffect(() => {})
   useEffect(() => {
     getInfo()
   }, [userInfo.role])
   const activeLabelStyles = {
     transform: "scale(0.85) translateY(-24px)"
-  };
+  }
   const theme = extendTheme({
     components: {
       Form: {
@@ -75,9 +74,10 @@ function App() {
                   ...activeLabelStyles
                 }
               },
-              "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label": {
-                ...activeLabelStyles
-              },
+              "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label":
+                {
+                  ...activeLabelStyles
+                },
               label: {
                 top: 0,
                 left: 0,
@@ -95,7 +95,7 @@ function App() {
         }
       }
     }
-  });
+  })
   return (
     <ChakraProvider theme={theme}>
       <Router>

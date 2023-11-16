@@ -22,7 +22,6 @@ import {
   HStack,
   Icon
 } from "@chakra-ui/react"
-import axios from "axios"
 import React, { useState, useEffect } from "react"
 import {
   ArrowBackIcon,
@@ -31,67 +30,67 @@ import {
   Search2Icon
 } from "@chakra-ui/icons"
 import { FaFilter } from "react-icons/fa"
-import { debounce, get } from "lodash"
+import { debounce } from "lodash"
 import useAxiosPrivate from "../../hooks/axiosPrivate"
 import { handleGetInfo } from "../../utils/auth"
 
 const Report: React.FC = () => {
-  const [userInfo, setUserInfo] = useState({
+  const [UserInfo, setUserInfo] = useState({
     user_id: 0,
     name: "",
     email: "",
     role: ""
-  });
+  })
   const axiosInstance = useAxiosPrivate()
 
-  const [userId, setUserId] = useState(0);
-  const [students, setStudents] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [search, setSearch] = useState("");
-  const [numberOfPages, setNumberOfPages] = useState(0);
-  const MAX_PAGE_BUTTONS = 3;
+  const [userId, setUserId] = useState(0)
+  const [students, setStudents] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [search, setSearch] = useState("")
+  const [numberOfPages, setNumberOfPages] = useState(0)
+  const MAX_PAGE_BUTTONS = 3
 
   const fetchStudents = async () => {
     const url = new URL(
       process.env.REACT_APP_API_URL + "/api/university/stats/" + userId
-    );
-    const params = new URLSearchParams();
-    params.append("name", search);
-    params.append("itemsperpage", String(itemsPerPage));
-    params.append("currentPage", String(currentPage));
-    console.log(params.toString());
-    url.search = params.toString();
-    const response = await axiosInstance.get(url.toString());
-    const students = await response.data;
-    setNumberOfPages(Math.ceil(students.data.total / itemsPerPage || 100));
-    setStudents(students.data.data);
-  };
+    )
+    const params = new URLSearchParams()
+    params.append("name", search)
+    params.append("itemsperpage", String(itemsPerPage))
+    params.append("currentPage", String(currentPage))
+    console.log(params.toString())
+    url.search = params.toString()
+    const response = await axiosInstance.get(url.toString())
+    const students = await response.data
+    setNumberOfPages(Math.ceil(students.data.total / itemsPerPage || 100))
+    setStudents(students.data.data)
+  }
 
-  const debounceFetch = debounce(fetchStudents, 500);
+  const debounceFetch = debounce(fetchStudents, 500)
 
   useEffect(() => {
     const getInfoAndFetchStudents = async () => {
-      const response = await handleGetInfo();
+      const response = await handleGetInfo()
       setUserInfo({
         user_id: response?.data.user_id,
         name: response?.data.name,
         email: response?.data.email,
         role: response?.data.roles
-      });
+      })
 
       if (userId === 0 && response?.data.user_id !== 0) {
-        setUserId(response?.data.user_id);
+        setUserId(response?.data.user_id)
       }
 
-      debounceFetch();
-    };
+      debounceFetch()
+    }
 
-    getInfoAndFetchStudents();
-  }, [search, itemsPerPage, currentPage, userId]);
+    getInfoAndFetchStudents()
+  }, [search, itemsPerPage, currentPage, userId])
 
   useEffect(() => {
-    setCurrentPage(1);
+    setCurrentPage(1)
   }, [itemsPerPage])
 
   const startPage =

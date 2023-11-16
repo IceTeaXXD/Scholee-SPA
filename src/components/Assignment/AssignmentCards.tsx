@@ -15,7 +15,6 @@ import { FiEdit } from "react-icons/fi"
 import { Link } from "react-router-dom"
 import { DeleteAssignmentDialog } from "./DeleteAssignmentDialog"
 import { EditAssignmentModal } from "./EditAssignmentModal"
-import axios from "axios"
 import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 export interface AssignmentCardsProps {
@@ -40,11 +39,12 @@ export const AssignmentCards = ({
   // use fetch student
   const useFetchStudent = (sid: any) => {
     const [students, setStudents] = useState([])
-    const STUDENT_URL = process.env.REACT_APP_API_URL + '/api/scholarship/user/' + sid
+    const STUDENT_URL =
+      process.env.REACT_APP_API_URL + "/api/scholarship/user/" + sid
     const fetchStudent = async () => {
       try {
-        const response = await axiosInstance.get(STUDENT_URL);
-        setStudents(response.data.data.scholarships);
+        const response = await axiosInstance.get(STUDENT_URL)
+        setStudents(response.data.data.scholarships)
       } catch (err: any) {
         console.log(err)
       }
@@ -54,7 +54,12 @@ export const AssignmentCards = ({
   //use fetch file
   const useFetchFile = (sid: any, aid: any) => {
     const [submissionFile, setSubmissionFile] = useState([])
-    const FILE_URL = process.env.REACT_APP_API_URL + "/api/files/scholarship/" + sid + "/assignment/" + aid
+    const FILE_URL =
+      process.env.REACT_APP_API_URL +
+      "/api/files/scholarship/" +
+      sid +
+      "/assignment/" +
+      aid
 
     const fetchFile = async () => {
       try {
@@ -68,23 +73,26 @@ export const AssignmentCards = ({
     return { submissionFile, fetchFile }
   }
   const axiosInstance = useAxiosPrivate()
-  const { submissionFile, fetchFile } = useFetchFile(scholarship_id, assignment_id);
-  const { students, fetchStudent } = useFetchStudent(scholarship_id);
+  const { submissionFile, fetchFile } = useFetchFile(
+    scholarship_id,
+    assignment_id
+  )
+  const { students, fetchStudent } = useFetchStudent(scholarship_id)
   const [applicants, setApplicants] = useState(students.length)
   const [submissions, setSubmissions] = useState(submissionFile.length)
   useEffect(() => {
     const fetchData = async () => {
-      await fetchFile();
+      await fetchFile()
       setSubmissions(submissionFile.length)
     }
-    fetchData();
-  }, [submissionFile.length]);
+    fetchData()
+  }, [submissionFile.length])
   useEffect(() => {
     const fetchData = async () => {
-      await fetchStudent();
+      await fetchStudent()
       setApplicants(students.length)
     }
-    fetchData();
+    fetchData()
   }, [students.length])
   // TODO: SET THE APPLICANTS AND SUBMSISSIONS @MATTHEW MAHENDRA
   const [isOpenEditAssignment, setIsOpenEditAssignment] = useState(false)

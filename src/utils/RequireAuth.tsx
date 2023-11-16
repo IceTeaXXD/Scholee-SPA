@@ -1,5 +1,5 @@
 import { useLocation, Outlet, useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import useRefreshToken from "../hooks/useRefreshToken"
 import { handleGetInfo } from "./auth"
 

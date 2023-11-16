@@ -1,4 +1,12 @@
-import { Flex, Box, SimpleGrid, Heading, Text, useColorModeValue, useColorMode } from "@chakra-ui/react"
+import {
+  Flex,
+  Box,
+  SimpleGrid,
+  Heading,
+  Text,
+  useColorModeValue,
+  useColorMode
+} from "@chakra-ui/react"
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
 
@@ -33,9 +41,7 @@ const UniversityHome = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Link
-            to={`/report`}
-          >
+          <Link to={`/report`}>
             <ArrowForwardIcon w={6} h={6} mr={2} /> View Students
           </Link>
         </Box>
@@ -48,9 +54,7 @@ const UniversityHome = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Link
-            to={`/dashboard`}
-          >
+          <Link to={`/dashboard`}>
             <ArrowForwardIcon w={6} h={6} mr={2} /> View Dashboard
           </Link>
         </Box>
