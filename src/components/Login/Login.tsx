@@ -1,6 +1,6 @@
-import { useState } from "react";
-import Cookies from "js-cookie";
-import { motion } from "framer-motion";
+import { useState } from "react"
+import Cookies from "js-cookie"
+import { motion } from "framer-motion"
 
 import {
   Flex,
@@ -9,7 +9,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Switch,
   useColorMode,
   useColorModeValue,
   Box,
@@ -17,35 +16,35 @@ import {
   IconButton,
   InputGroup,
   InputRightElement
-} from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaSun, FaMoon } from "react-icons/fa";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { handleLogin } from "../../utils/auth";
+} from "@chakra-ui/react"
+import { Link, useNavigate } from "react-router-dom"
+import { FaSun, FaMoon } from "react-icons/fa"
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
+import { handleLogin } from "../../utils/auth"
 const Login = () => {
   // const {handleLogin} = useAuth()
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errMsg, setErrMsg] = useState("")
   const [showPassword, setShowPassword] = useState(false)
 
-  const { colorMode, toggleColorMode } = useColorMode();
-  const formBackground = useColorModeValue("white", "gray.800");
-  const buttonColor = useColorModeValue("gray.800", "white");
-  const navigate = useNavigate();
+  const { colorMode, toggleColorMode } = useColorMode()
+  const formBackground = useColorModeValue("white", "gray.800")
+  const buttonColor = useColorModeValue("gray.800", "white")
+  const navigate = useNavigate()
 
   async function handleSubmit(e: any) {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const res = await handleLogin(email, password);
-      Cookies.set("accToken", res?.accToken);
+      const res = await handleLogin(email, password)
+      Cookies.set("accToken", res?.accToken)
       if (res && res.status === "success") {
-        navigate("/");
+        navigate("/")
       } else {
-        setErrMsg(res?.message || "Credentials not match");
+        setErrMsg(res?.message || "Credentials not match")
       }
     } catch (err: any) {
-      console.log(err);
+      console.log(err)
     }
   }
 
@@ -53,7 +52,11 @@ const Login = () => {
     setShowPassword(!showPassword)
   }
   return (
-    <motion.div initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <motion.div
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Flex h="100vh">
         {/* IMAGE */}
         <Box
@@ -115,7 +118,9 @@ const Login = () => {
                 <FormLabel bg={formBackground}>Password</FormLabel>
                 <InputRightElement>
                   <IconButton
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                     icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
                     onClick={handlePasswordVisibility}
                     variant="ghost"
@@ -145,14 +150,22 @@ const Login = () => {
             </Box>
             <FormControl>
               <FormLabel>
-                Don't have an account? <Link to="/register-org"> <u>Register Organization</u></Link> or <Link to="/register-uni"><u>Register University</u></Link>
+                Don't have an account?{" "}
+                <Link to="/register-org">
+                  {" "}
+                  <u>Register Organization</u>
+                </Link>{" "}
+                or{" "}
+                <Link to="/register-uni">
+                  <u>Register University</u>
+                </Link>
               </FormLabel>
             </FormControl>
           </Box>
         </Flex>
       </Flex>
     </motion.div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

@@ -21,9 +21,10 @@ import { useState, useEffect } from "react"
 import { handleGetInfo, handleLogout } from "../../utils/auth"
 interface MobileProps extends FlexProps {
   onOpen: () => void
+  onClose: () => void
 }
 
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = ({ onOpen, onClose, ...rest }: MobileProps) => {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState({
     user_id: 0,
@@ -109,7 +110,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  onClose()
+                }}
+              >
+                Settings
+              </MenuItem>
               <MenuDivider />
               <Link
                 to="/login"

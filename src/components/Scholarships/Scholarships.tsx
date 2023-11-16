@@ -33,7 +33,6 @@ import { FiEdit } from "react-icons/fi"
 import { CheckIcon, ChevronDownIcon, Search2Icon } from "@chakra-ui/icons"
 import { debounce } from "lodash"
 import { DataTable } from "./DataTable"
-import axios from "axios"
 import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 const Scholarships: React.FC = () => {
@@ -220,7 +219,7 @@ const Scholarships: React.FC = () => {
 
   return (
     <Box p="12">
-      <Heading size="sm" as="h1" mb="6" fontSize={48}>
+      <Heading size="sm" as="h1" mb="6" fontSize={{ base: 30, md: 36, lg: 48 }}>
         List of Scholarships
       </Heading>
 

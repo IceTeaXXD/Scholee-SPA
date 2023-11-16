@@ -10,7 +10,7 @@ import {
 import { ArrowForwardIcon } from "@chakra-ui/icons"
 import { Link } from "react-router-dom"
 
-const UniversityHome = () => {
+const OrganizationHome = () => {
   const { colorMode, toggleColorMode } = useColorMode()
   const boxColor = useColorModeValue("green.200", "green.800")
 
@@ -41,9 +41,31 @@ const UniversityHome = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <Link to={`/report`}>
-            <ArrowForwardIcon w={6} h={6} mr={2} /> View Students
+          <Link to={`/scholarships`}>
+            <ArrowForwardIcon w={6} h={6} mr={2} /> View Scholarships
           </Link>
+        </Box>
+        <Box
+          bg={boxColor}
+          height="80px"
+          borderRadius="md"
+          p={4}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <ArrowForwardIcon w={6} h={6} mr={2} /> View Applications
+        </Box>
+        <Box
+          bg={boxColor}
+          height="80px"
+          borderRadius="md"
+          p={4}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <ArrowForwardIcon w={6} h={6} mr={2} /> View Assignments
         </Box>
         <Box
           bg={boxColor}
@@ -63,4 +85,4 @@ const UniversityHome = () => {
   )
 }
 
-export default UniversityHome
+export default OrganizationHome

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { handleGetInfo } from "../../utils/auth"
-import OrganizationReport from "./OrganizationReport"
-import UniversityReport from "./UniversityReport"
+import { UniversityDashboard } from "./UniversityDashboard"
+import { OrganizationDashboard } from "./OrganizationDashboard"
 
-const Report = () => {
+
+const Dashboard = () => {
   const [userInfo, setUserInfo] = useState({
     user_id: 0,
     name: "",
@@ -27,9 +28,9 @@ const Report = () => {
   return (
     <>
       {userInfo.role === "university" ? (
-        <UniversityReport />
+        <UniversityDashboard />
       ) : userInfo.role === "organization" ? (
-        <OrganizationReport />
+        <OrganizationDashboard />
       ) : (
         <></>
       )}
@@ -37,4 +38,4 @@ const Report = () => {
   )
 }
 
-export default Report
+export default Dashboard
