@@ -132,7 +132,7 @@ const Acceptance = () => {
     };
 
     const handleRejectConfirm = () => {
-        const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${scholarshipid}/accept`)
+        const url = new URL(process.env.REACT_APP_API_URL + `/api/scholarship/acceptance/${scholarshipid}`)
         axios.post(url.toString(), {
             "status": "rejected",
             "user_id": Number(selectedID)
