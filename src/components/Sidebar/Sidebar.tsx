@@ -30,7 +30,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} onClose={onClose} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
