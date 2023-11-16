@@ -5,10 +5,11 @@ interface NavItemProps extends FlexProps {
   icon: IconType
   children: React.ReactNode
   link: string
+  onClick?: () => void
 }
-const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, link, onClick, ...rest }: NavItemProps) => {
   return (
-    <Link to={link}>
+    <Link to={link} onClick={onClick}>
       <Box style={{ textDecoration: "none" }} _focus={{ boxShadow: "none" }}>
         <Flex
           align="center"

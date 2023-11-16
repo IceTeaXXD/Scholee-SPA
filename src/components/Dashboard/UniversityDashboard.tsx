@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { InfoIcon } from "@chakra-ui/icons"
 import {
   Heading,
@@ -10,43 +11,46 @@ import {
   Button
 } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
-import axios from "axios"
 import { useEffect, useState } from "react"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 import { handleGetInfo } from "../../utils/auth"
 
 export const UniversityDashboard = () => {
-  const [userInfo, setUserInfo] = useState({
+  const axiosInstance = useAxiosPrivate()
+  const [UserInfo, setUserInfo] = useState({
     user_id: 0,
     name: "",
     email: "",
     role: ""
-  });
+  })
 
   const [studentCount, setStudentCount] = useState()
 
   useEffect(() => {
     const getInfo = async () => {
       try {
-        const response = await handleGetInfo();
+        const response = await handleGetInfo()
         setUserInfo({
           user_id: response?.data.user_id,
           name: response?.data.name,
           email: response?.data.email,
           role: response?.data.roles
-        });
+        })
 
-        const students = await axios.get(
-          process.env.REACT_APP_API_URL + "/api/university/stats/" + response?.data.user_id
-        );
+        const students = await axiosInstance.get(
+          process.env.REACT_APP_API_URL +
+            "/api/university/stats/" +
+            response?.data.user_id
+        )
 
-        setStudentCount(students.data.data.data[0].applicant_count)  
+        setStudentCount(students.data.data.data[0].applicant_count)
       } catch (error) {
-        console.error("Error in useEffect:", error);
+        console.error("Error in useEffect:", error)
       }
-    };
+    }
 
-    getInfo();
-  }, []);
+    getInfo()
+  }, [])
 
   return (
     <>

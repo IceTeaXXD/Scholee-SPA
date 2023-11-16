@@ -22,8 +22,8 @@ import {
 import React from "react"
 import { FiEdit } from "react-icons/fi"
 import { useParams } from "react-router-dom"
-import axios from "../../api/axios"
 import { Field, Form, Formik } from "formik"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 interface CreateAssignmentModalProps {
   afterCreate: () => void
@@ -32,6 +32,7 @@ interface CreateAssignmentModalProps {
 export const CreateAssignmentModal = ({
   afterCreate
 }: CreateAssignmentModalProps) => {
+  const axiosInstance = useAxiosPrivate()
   const { scholarshipid } = useParams()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [overlay, setOverlay] = React.useState(<ModalOverlay />)
@@ -47,7 +48,7 @@ export const CreateAssignmentModal = ({
       const assignmentdescription = values.description
 
       const URL = process.env.REACT_APP_API_URL + "/api/assignment"
-      await axios.post(URL, {
+      await axiosInstance.post(URL, {
         scholarship_id: Number(scholarshipid),
         name: assignmentname,
         desc: assignmentdescription

@@ -1,30 +1,31 @@
 import { Box, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import axios from "../../api/axios"
 import { AssignmentCards, AssignmentCardsProps } from "./AssignmentCards"
 import { CreateAssignmentModal } from "./CreateAssignmentModal"
-
-const useFetchAssignments = () => {
-  const [assignments, setAssignments] = useState([])
-  const { scholarshipid } = useParams()
-
-  const fetchAssignments = async () => {
-    try {
-      const URL =
-        process.env.REACT_APP_API_URL + "/api/assignment/" + scholarshipid
-      const response = await axios.get(URL)
-      setAssignments(response.data.data)
-    } catch (error) {
-      console.error("Error fetching assignments:", error)
-      setAssignments([])
-    }
-  }
-
-  return { assignments, fetchAssignments }
-}
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 const AssignmentDetails = () => {
+  const axiosInstance = useAxiosPrivate()
+
+  const useFetchAssignments = () => {
+    const [assignments, setAssignments] = useState([])
+    const { scholarshipid } = useParams()
+
+    const fetchAssignments = async () => {
+      try {
+        const URL =
+          process.env.REACT_APP_API_URL + "/api/assignment/" + scholarshipid
+        const response = await axiosInstance.get(URL)
+        setAssignments(response.data.data)
+      } catch (error) {
+        console.error("Error fetching assignments:", error)
+        setAssignments([])
+      }
+    }
+
+    return { assignments, fetchAssignments }
+  }
   const { assignments, fetchAssignments } = useFetchAssignments()
   const [shouldFetchAssignments, setShouldFetchAssignments] = useState(true)
 
@@ -45,11 +46,16 @@ const AssignmentDetails = () => {
       overflow={"hidden"}
     >
       <Box width={{ base: "full", sm: "lg", lg: "xl" }} margin={"auto"}>
-        <Heading size="sm" as="h1" fontSize={48}>
+        <Heading
+          size="sm"
+          as="h1"
+          mb="6"
+          fontSize={{ base: 30, md: 36, lg: 48 }}
+        >
           List of Assignments
         </Heading>
       </Box>
-      <SimpleGrid columns={1} spacing={"5"} mt={16} mb={10} mx={"auto"}>
+      <SimpleGrid columns={1} spacing={"5"} mb={10} mx={"auto"}>
         <CreateAssignmentModal
           afterCreate={() => setShouldFetchAssignments(true)}
         />

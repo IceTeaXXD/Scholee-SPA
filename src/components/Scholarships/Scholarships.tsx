@@ -33,7 +33,7 @@ import { FiEdit } from "react-icons/fi"
 import { CheckIcon, ChevronDownIcon, Search2Icon } from "@chakra-ui/icons"
 import { debounce } from "lodash"
 import { DataTable } from "./DataTable"
-import axios from "axios"
+import useAxiosPrivate from "../../hooks/axiosPrivate"
 
 const Scholarships: React.FC = () => {
   type Scholarship = {
@@ -44,6 +44,7 @@ const Scholarships: React.FC = () => {
     coverage: Number
     action: JSX.Element
   }
+  const axiosInstance = useAxiosPrivate()
 
   const columnHelper = createColumnHelper<(typeof scholarships)[0]>()
 
@@ -88,7 +89,7 @@ const Scholarships: React.FC = () => {
       params.append("currentPage", currentPage.toString())
       api_url.search = params.toString()
 
-      const response = await axios.get(api_url.toString())
+      const response = await axiosInstance.get(api_url.toString())
 
       if (!response) {
         throw new Error("Error fetching scholarships.")
@@ -135,14 +136,14 @@ const Scholarships: React.FC = () => {
               </Link>
             </Tooltip>
             <Tooltip label={`${scholarship.count} views`}>
-                <Button
-                  variant="ghost"
-                  colorScheme="grey"
-                  size="sm"
-                  leftIcon={<Icon as={ViewIcon} />}
-                >
-                  {`${scholarship.count} views`}
-                </Button>
+              <Button
+                variant="ghost"
+                colorScheme="grey"
+                size="sm"
+                leftIcon={<Icon as={ViewIcon} />}
+              >
+                {`${scholarship.count} views`}
+              </Button>
             </Tooltip>
           </Stack>
         )
@@ -155,7 +156,7 @@ const Scholarships: React.FC = () => {
 
   const fetchScholarshipTypes = async () => {
     try {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         process.env.REACT_APP_API_URL + "/api/scholarshiptype"
       )
 
@@ -218,7 +219,7 @@ const Scholarships: React.FC = () => {
 
   return (
     <Box p="12">
-      <Heading size="sm" as="h1" mb="6" fontSize={48}>
+      <Heading size="sm" as="h1" mb="6" fontSize={{ base: 30, md: 36, lg: 48 }}>
         List of Scholarships
       </Heading>
 

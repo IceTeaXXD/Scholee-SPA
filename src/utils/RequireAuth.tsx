@@ -1,8 +1,7 @@
 import { useLocation, Outlet, useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { handleGetInfo } from "../utils/auth"
+import { useState } from "react"
 import useRefreshToken from "../hooks/useRefreshToken"
-import { isatty } from "tty"
+import { handleGetInfo } from "./auth"
 
 const RequireAuth = ({ allowedRoles }: any) => {
   const location = useLocation()
@@ -10,43 +9,24 @@ const RequireAuth = ({ allowedRoles }: any) => {
 
   const navigate = useNavigate()
   const refresh = useRefreshToken()
-    const fetchData = async () => {
-      try {
-        const response = await handleGetInfo()
-        const roles = response?.data.roles
-        setUserRoles(roles)
-        if (roles) {
-          const isAuthorized = allowedRoles.includes(roles)
-          if (!isAuthorized) {
-            navigate("/unauthorized", { state: { from: location } })
-          }
-        } else {
-          try {
-            await refresh()
-            const refreshedResponse = await handleGetInfo()
-            const roles = refreshedResponse?.data.roles
-            setUserRoles(roles)
-            const isAuthorized = allowedRoles.includes(roles)
-            if (!isAuthorized) {
-              navigate("/unauthorized", { state: { from: location } })
-            }
-          } catch (refreshError) {
-            console.error("Error refreshing token:", refreshError)
-            navigate("/login", { state: { from: location } })
-          }
+  const fetchData = async () => {
+    try {
+      const response = await handleGetInfo()
+      const roles = response?.data.roles
+      setUserRoles(roles)
+      if (roles) {
+        const isAuthorized = allowedRoles.includes(roles)
+        if (!isAuthorized) {
+          navigate("/unauthorized", { state: { from: location } })
         }
-      } catch (error) {
-        console.error("Error fetching roles:", error)
+      } else {
         try {
           await refresh()
           const refreshedResponse = await handleGetInfo()
           const roles = refreshedResponse?.data.roles
           setUserRoles(roles)
-
           const isAuthorized = allowedRoles.includes(roles)
-
           if (!isAuthorized) {
-            console.log("Unauthorized after refresh")
             navigate("/unauthorized", { state: { from: location } })
           }
         } catch (refreshError) {
@@ -54,9 +34,27 @@ const RequireAuth = ({ allowedRoles }: any) => {
           navigate("/login", { state: { from: location } })
         }
       }
-    }
+    } catch (error) {
+      console.error("Error fetching roles:", error)
+      try {
+        await refresh()
+        const refreshedResponse = await handleGetInfo()
+        const roles = refreshedResponse?.data.roles
+        setUserRoles(roles)
 
-    fetchData()
+        const isAuthorized = allowedRoles.includes(roles)
+
+        if (!isAuthorized) {
+          navigate("/unauthorized", { state: { from: location } })
+        }
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError)
+        navigate("/login", { state: { from: location } })
+      }
+    }
+  }
+
+  fetchData()
 
   return <Outlet />
 }
