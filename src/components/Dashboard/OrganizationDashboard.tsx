@@ -90,7 +90,9 @@ export const OrganizationDashboard = () => {
       const api_url = new URL(
         process.env.REACT_APP_API_URL + "/api/scholarship"
       )
-
+      const params = new URLSearchParams()
+      params.append("itemsPerPage", "5")
+      api_url.search = params.toString()
       const response = await axiosInstance.get(api_url.toString())
 
       if (!response) {
@@ -183,7 +185,7 @@ export const OrganizationDashboard = () => {
 
       <Box mt="6">
         <Heading as="h3" size="md" mb="4">
-          Scholarship Details
+          Scholarship Overview
         </Heading>
         <Box bg="white" mb="4" borderRadius="md">
           <DataTable data={scholarships} columns={columns} />
