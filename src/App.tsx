@@ -107,7 +107,7 @@ function App() {
             <Route
               element={
                 <RequireAuth
-                  allowedRoles={[ROLES.University, ROLES.Organization]}
+                  allowedRoles={[ROLES.University]}
                 />
               }
             >

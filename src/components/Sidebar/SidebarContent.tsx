@@ -46,7 +46,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     LinkItems.push(
       { name: "Home", icon: FiHome, link: "/" },
       { name: "Dashboard", icon: FiBriefcase, link: "/dashboard" },
-      { name: "Report", icon: FiBarChart, link: "/report" },
       { name: "Scholarships", icon: FiCompass, link: "/scholarships" }
     )
   } else {
