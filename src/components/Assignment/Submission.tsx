@@ -119,6 +119,7 @@ export const Submissions = () => {
               </Flex>
             </AccordionButton>
             <Box display="flex" justifyContent="center" alignItems="center">
+              <Text fontWeight="bold" mr="5"> Grade: </Text>
               <Editable
                 defaultValue="Rasengan ⚡️"
                 isPreviewFocusable={true}

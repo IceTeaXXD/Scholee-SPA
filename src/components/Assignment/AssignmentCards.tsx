@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { DeleteIcon, ViewIcon } from "@chakra-ui/icons"
 import {
   useColorModeValue,
@@ -78,22 +79,22 @@ export const AssignmentCards = ({
     assignment_id
   )
   const { students, fetchStudent } = useFetchStudent(scholarship_id)
-  const [applicants, setApplicants] = useState(students.length)
-  const [submissions, setSubmissions] = useState(submissionFile.length)
+  const [applicants, setApplicants] = useState(students?.length || 0)
+  const [submissions, setSubmissions] = useState(submissionFile?.length || 0)
   useEffect(() => {
     const fetchData = async () => {
       await fetchFile()
       setSubmissions(submissionFile.length)
     }
     fetchData()
-  }, [submissionFile.length])
+  }, [submissionFile?.length])
   useEffect(() => {
     const fetchData = async () => {
       await fetchStudent()
-      setApplicants(students.length)
+      setApplicants(students?.length)
     }
     fetchData()
-  }, [students.length])
+  }, [students?.length])
   // TODO: SET THE APPLICANTS AND SUBMSISSIONS @MATTHEW MAHENDRA
   const [isOpenEditAssignment, setIsOpenEditAssignment] = useState(false)
   const [isOpenDeleteAssignment, setIsOpenDeleteAssignment] =
