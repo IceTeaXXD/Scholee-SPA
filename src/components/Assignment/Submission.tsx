@@ -27,7 +27,6 @@ export const Submissions = () => {
     const FILE_URL =
       process.env.REACT_APP_API_URL +
       `/api/files/scholarship/${sid}/assignment/${aid}`
-
     const fetchFile = async () => {
       try {
         const response = await axiosInstance.get(FILE_URL)

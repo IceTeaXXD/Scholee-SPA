@@ -10,6 +10,7 @@ const useAxiosPrivate = () => {
       async (config) => {
         try {
           await refresh()
+          config.headers['X-API-KEY'] = process.env.REACT_APP_API_KEY;
           return config
         } catch (error) {
           return Promise.reject(error)
