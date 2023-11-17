@@ -9,6 +9,7 @@ interface FileDetails {
   file_id: number
   file_path: string
   user_id_student: number
+  score : number
 }
 
 interface UserDetails {
@@ -18,6 +19,7 @@ interface UserDetails {
 }
 
 export const Submissions = () => {
+  const [value, setValue] = useState("1");
   const axiosInstance = useAxiosPrivate()
 
   const useFetchFile = (sid: any, aid: any) => {
@@ -76,12 +78,22 @@ export const Submissions = () => {
     fetchFile()
   }, [scholarshipid, assignmentid])
 
-  function EditableControls() {
+  function EditableControls({
+    scholarshipId,
+    assignmentId,
+    fileId,
+    userId,
+  }: {
+    scholarshipId: number;
+    assignmentId: number;
+    fileId: number;
+    userId: number;
+  }) {
     const {
       isEditing,
       getSubmitButtonProps,
       getCancelButtonProps,
-      getEditButtonProps
+      getEditButtonProps,
     } = useEditableControls();
 
     return isEditing ? (
@@ -89,7 +101,19 @@ export const Submissions = () => {
         <IconButton
           icon={<CheckIcon />}
           aria-label="Submit"
-          {...getSubmitButtonProps()}
+          {...getSubmitButtonProps({
+            onClick: async () => {
+              try {
+                // Make a PATCH request to update the score
+                await axios.patch(
+                  `${process.env.REACT_APP_API_URL}/api/files/scholarship/${scholarshipId}/assignment/${assignmentId}`,
+                  { score: value, fid: fileId }
+                );
+              } catch (error : any) {
+                console.error("Error updating score:", error.message);
+              }
+            },
+          })}
         />
         <IconButton
           icon={<CloseIcon boxSize={3} />}
@@ -119,12 +143,27 @@ export const Submissions = () => {
               </Flex>
             </AccordionButton>
             <Box display="flex" justifyContent="center" alignItems="center">
-              <Text fontWeight="bold" mr="5"> Grade: </Text>
+              <Text fontWeight="bold" mr="5">
+                {" "}
+                Grade:{" "}
+              </Text>
               <Editable
-                defaultValue="Rasengan ⚡️"
+                defaultValue={file.score?.toString() || "1"}
                 isPreviewFocusable={true}
                 selectAllOnFocus={false}
                 maxWidth="300px"
+                onSubmit={(nextValue) => {
+                  const num = Number(nextValue);
+                  if (num < 1 || num > 100 || isNaN(num)) {
+                    setValue("1");
+                    console.log("value",value)
+                    return "1";
+                  } else {
+                    setValue(nextValue)
+                    console.log(nextValue)
+                    return nextValue;
+                  }
+                }}
               >
                 <Tooltip label="Click to edit" shouldWrapChildren={true}>
                   <EditablePreview
@@ -135,7 +174,12 @@ export const Submissions = () => {
                 </Tooltip>
                 <Flex>
                   <Input as={EditableInput} />
-                  <EditableControls />
+                  <EditableControls
+                    scholarshipId={Number(scholarshipid)}
+                    assignmentId={Number(assignmentid)}
+                    fileId={file.file_id}
+                    userId={file.user_id_student}
+                  />
                 </Flex>
               </Editable>
             </Box>
