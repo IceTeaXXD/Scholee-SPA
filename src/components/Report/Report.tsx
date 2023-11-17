@@ -26,9 +26,9 @@ const Report = () => {
 
   return (
     <>
-      {userInfo.role === "university" ? (
+      {String(userInfo.role) === "university" ? (
         <UniversityReport />
-      ) : userInfo.role === "organization" ? (
+      ) : String(userInfo.role) === "organization" ? (
         <OrganizationReport />
       ) : (
         <></>

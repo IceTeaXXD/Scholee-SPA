@@ -22,6 +22,32 @@ yarn install
 yarn start
 ```
 
+## Pages
+### Login Page
+<img src="./doc/login.png" w="30" h="50">
+
+### Register Page
+<img src="./doc/register.png" w="30" h="50">
+
+### Home Page
+<img src="./doc/home.png" w="30" h="50">
+
+### Dashboard
+<img src="./doc/dashboard.png" w="30" h="50">
+
+### Scholarship Report Page
+<img src="./doc/report.png" w="30" h="50">
+
+### Assignment Page
+<img src="./doc/assignment.png" w="30" h="50">
+
+### Scholarship Acceptance Page
+<img src="./doc/scholarshipacc.png" w="30" h="50">
+
+### University Report Page
+<img src="./doc/universityreport.png" w="30" h="50">
+
+
 ## Contributors
 | Functionalities | 13521004   | 13521007 | 13521024 |
 | --------------- | :--------: | :------: | :------: |
